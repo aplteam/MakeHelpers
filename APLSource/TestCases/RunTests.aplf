@@ -1,0 +1,8 @@
+ RunTests;htmlFilename
+ Prepare
+ T.Run 1
+ :If 0<≢T.codeCoverage
+ :AndIf 0 ##.MakeHelpers.YesOrNo'Put Code Coverage Report on display?'
+     htmlFilename←CodeCoverage.ProcessDataAndCreateReport T.codeCoverage.filename
+     {}APLTreeUtils2.GoToWebPage htmlFilename
+ :EndIf

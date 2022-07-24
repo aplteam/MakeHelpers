@@ -1,0 +1,17 @@
+ {zipFilename}←CreateZipFile(name folder version)
+⍝ Everything in `folder\` goes into `<name>.zip`.\\
+⍝ `version` should be a simple text string with something like `'1.2.3'` or `'1.2.3'` or `'1.2.3-beta-1'`\\
+⍝ In case `version` carries a build number it will be removed.\\
+⍝ If you don't want a version number to be added at all then just pass an empty vector.\\
+ zipFilename←name
+ :If 1=≡version
+ :AndIf 0<≢version
+     zipFilename←name,'-',DropBuildNumber version
+ :EndIf
+ zipFilename,←{'.zip'/⍨'.zip'≢⎕C ¯4↑⍵}zipFilename
+ 1 ⎕NDELETE folder,zipFilename
+ zipFilename←F.GetTempPath,zipFilename
+ 1 ⎕NDELETE zipFilename
+ {}folder ZipArchive.ZipFolder zipFilename
+ folder ⎕NMOVE zipFilename
+⍝Done

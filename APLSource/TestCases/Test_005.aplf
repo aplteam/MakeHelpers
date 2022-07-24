@@ -1,0 +1,38 @@
+ R←Test_005(stopFlag batchFlag);⎕TRAP;parms2;tempFolder;wsid;rc;lx
+⍝ Exercise both CreateStandAloneExeParms and MakeStandAloneRunTimeExe
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If 'W'≠⊃APLTreeUtils2.GetOperatingSystem ⍬
+     →0,R←T._WindowsOnly
+ :EndIf
+
+ tempFolder←FilesAndDirs.GetTempSubDir'Maker_',⊃⎕SI
+ #.⎕SHADOW'Foo' ⋄ 'Foo'#.⎕NS''
+ Assert' '=1↑0⍴#.Foo.⎕FX'r←Version' 'r←''1.9.2'''
+ lx←⎕LX
+ ⎕LX←'#.MakeHelpers.TestCases.RunTests'
+ wsid←⎕WSID
+ ⎕WSID←tempFolder,'/Foo.dws'
+ 0 ⎕SAVE ⎕WSID
+
+ parms2←##.MakeHelpers.CreateStandAloneExeParms ⎕WSID'#.Foo'
+ →T.GoToTidyUp'1.9.2'≢parms2.FileVersion
+ parms2.icon←##.CiderConfig.HOME,'/Tests/SAMPLE.ICO'
+ parms2.FileDescription←'Foo'
+ parms2.ProductVersion←'1.0.0'
+ parms2.CompanyName←'This and that Ltd'
+ parms2.ProductName←'Foo'
+ parms2.FileVersion←'1.0.0'
+ parms2.LegalCopyright←'See https://thisandthat.com/'
+
+ rc←1 ##.MakeHelpers.MakeStandAloneRunTimeExe parms2
+ →T.GoToTidyUp 1≠⎕NEXISTS tempFolder,'/Foo.exe'
+
+ R←T._OK
+
+∆TidyUp:
+ :Trap 0 ⋄ {}FilesAndDirs.RmDir tempFolder ⋄ :EndTrap
+ ⎕WSID←wsid
+ ⎕LX←lx
+⍝Done

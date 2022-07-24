@@ -1,0 +1,29 @@
+ R←Test_046(stopFlag batchFlag);⎕TRAP;make
+⍝ Exercise IncreaseBuildID on a class with a Version function that returns a simple character string
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP'
+ 'TEMP'#.⎕NS''
+ make←{,¨':Class Foo' '∇r←Version' ':Access Public Shared',(⊂'r←''',⍵,''''),'∇' ':EndClass'}
+
+ #.TEMP.⎕FIX make'1.0.0'
+ 1 ##.MakeHelpers.IncreaseBuildID'#.TEMP.Foo.Version'
+ →T.FailsIf'1.0.0+1'≢#.TEMP.Foo.Version
+ 1 ##.MakeHelpers.IncreaseBuildID'#.TEMP.Foo.Version'
+ →T.FailsIf'1.0.0+2'≢#.TEMP.Foo.Version
+
+ #.TEMP.⎕FIX make'1.0.0+11'
+ 1 ##.MakeHelpers.IncreaseBuildID'#.TEMP.Foo.Version'
+ →T.FailsIf'1.0.0+12'≢#.TEMP.Foo.Version
+ 1 ##.MakeHelpers.IncreaseBuildID'#.TEMP.Foo.Version'
+ →T.FailsIf'1.0.0+13'≢#.TEMP.Foo.Version
+
+ #.TEMP.⎕FIX make'1.0.0-beta-1+11'
+ 1 ##.MakeHelpers.IncreaseBuildID'#.TEMP.Foo.Version'
+ →T.FailsIf'1.0.0-beta-1+12'≢#.TEMP.Foo.Version
+ 1 ##.MakeHelpers.IncreaseBuildID'#.TEMP.Foo.Version'
+ →T.FailsIf'1.0.0-beta-1+13'≢#.TEMP.Foo.Version
+
+ R←T._OK
+⍝Done

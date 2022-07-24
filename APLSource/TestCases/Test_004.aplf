@@ -1,0 +1,19 @@
+ R←Test_004(stopFlag batchFlag);⎕TRAP;tempFolder;TEMP;data
+⍝ Exercise CheckVersionNo
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempFolder←FilesAndDirs.GetTempSubDir'Maker_',⊃⎕SI
+ (##.CiderConfig.HOME,'/Tests/MyPkg/*')##.MakeHelpers.CopyTo tempFolder
+ TEMP←⎕NS''
+ Assert' '=1↑0⍴TEMP.⎕FX⊃⎕NGET(tempFolder,'/APLSource/Version.aplf')1
+
+ 1 ##.MakeHelpers.CheckVersionNo TEMP.Version tempFolder
+ data←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET tempFolder,'/apl-package.json'
+ →T.GoToTidyUp TEMP.Version≢data.version
+
+ R←T._OK
+
+∆TidyUp:
+ :Trap 0 ⋄ {}FilesAndDirs.RmDir tempFolder ⋄ :EndTrap
+⍝Done

@@ -1,0 +1,6 @@
+(
+ '* 0.1.0 from 2022-07-24'
+ '  First version, which stems from the "Maker" projects which is now deprecated. '
+ '  `MakeHelpers` is a Tatin package, and expected to be installed in MyUCMDs/ or an equivalent,'
+ '  although all helpers are available via the API, not as user commands.'
+)

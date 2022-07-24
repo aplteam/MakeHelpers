@@ -1,0 +1,27 @@
+ R←Test_007(stopFlag batchFlag);⎕TRAP;F;folder;noOf1;noOf2;list;tempFolder
+⍝ Exercise ConvertMarkdownToHtml5
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ F←FilesAndDirs
+
+ folder←##.CiderConfig.HOME,'/Tests/MarkdownTests/Docs'
+ noOf1←⍴⊃F.Dir folder,'/*.md'
+
+ noOf2←(##.CiderConfig.HOME,'/CSS/')##.MakeHelpers.ConvertMarkdownToHtml5 folder folder
+ →T.PassesIf noOf1=noOf2
+ →T.PassesIf 2=≢list←⊃F.Dir folder,'/*.html'
+ F.DeleteFile list
+
+ tempFolder←F.GetTempSubDir⊃⎕SI
+
+ noOf2←(##.CiderConfig.HOME,'/CSS/')##.MakeHelpers.ConvertMarkdownToHtml5 folder tempFolder
+ →T.GoToTidyUp noOf1≠noOf2
+ →T.GoToTidyUp 2≠≢list←⊃F.Dir tempFolder,'/*.html'
+ F.DeleteFile list
+
+ R←T._OK
+
+∆TidyUp:
+ :Trap 0 ⋄ F.RmDir tempFolder ⋄ :EndTrap
+⍝Done

@@ -1,0 +1,29 @@
+ R←Test_041(stopFlag batchFlag);⎕TRAP;make
+⍝ Exercise IncreaseBuildID on a class with a Version function that returns a nested three-element vector
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP'
+ 'TEMP'#.⎕NS''
+ make←{,¨':Class Foo' '∇r←Version' ':Access Public Shared',(⊂'r←''MakerTest'' ',('''',⍵,''''),' ''2019-01-05'''),'∇' ':EndClass'}
+
+ #.TEMP.⎕FIX make'1.0.0'
+ 1 ##.MakeHelpers.IncreaseBuildID'#.TEMP.Foo.Version'
+ →T.FailsIf'1.0.0+1'≢2⊃#.TEMP.Foo.Version
+ 1 ##.MakeHelpers.IncreaseBuildID'#.TEMP.Foo.Version'
+ →T.FailsIf'1.0.0+2'≢2⊃#.TEMP.Foo.Version
+
+ #.TEMP.⎕FIX make'1.0.0+11'
+ 1 ##.MakeHelpers.IncreaseBuildID'#.TEMP.Foo.Version'
+ →T.FailsIf'1.0.0+12'≢2⊃#.TEMP.Foo.Version
+ 1 ##.MakeHelpers.IncreaseBuildID'#.TEMP.Foo.Version'
+ →T.FailsIf'1.0.0+13'≢2⊃#.TEMP.Foo.Version
+
+ #.TEMP.⎕FIX make'1.0.0-beta-1+11'
+ 1 ##.MakeHelpers.IncreaseBuildID'#.TEMP.Foo.Version'
+ →T.FailsIf'1.0.0-beta-1+12'≢2⊃#.TEMP.Foo.Version
+ 1 ##.MakeHelpers.IncreaseBuildID'#.TEMP.Foo.Version'
+ →T.FailsIf'1.0.0-beta-1+13'≢2⊃#.TEMP.Foo.Version
+
+ R←T._OK
+⍝Done
