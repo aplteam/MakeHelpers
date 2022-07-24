@@ -1,4 +1,4 @@
- {r}←{isTest}IncreaseBuildID fnsName;version;buildID;result;p;buff
+ {r}←{isTest}IncreaseBuildID fnsName;version;buildID;result;p;buff;name
 ⍝ Increases the build-ID of `fnsName` which must be the fully qualified name of a `Version` function
 ⍝ (if there is any) that lives either as a public method in a class or a trad-function in a namespace.\\
 ⍝ The build ID is then increased by 1, and Link is notified.\\
@@ -6,6 +6,8 @@
  r←0
  isTest←{0=⎕NC ⍵:0 ⋄ ⍎⍵}'isTest'
  :If 0<⎕NC⊂fnsName
+     name←'.'A.Last fnsName
+ :OrIf 0≠(⍎(¯1+-≢name)↓fnsName).⎕NC⊂name  ⍝ shared method?
      ('Is not a tradFns: ',fnsName)Assert 3.1=|⎕NC⊂fnsName
      :If 2=≡buff←⍎fnsName
  ⍝ Supposed to be a three-element vector: name,version,date

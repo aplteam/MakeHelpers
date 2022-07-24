@@ -9,7 +9,7 @@
 
  #.TEMP.⎕FIX make'1.0.0'
  1 ##.MakeHelpers.IncreaseBuildID'#.TEMP.Foo.Version'
- →T.FailsIf'1.0.0+1'≢2⊃#.TEMP.Foo.Version
+ →T.FailsIf '1.0.0+1'≢2⊃#.TEMP.Foo.Version
  1 ##.MakeHelpers.IncreaseBuildID'#.TEMP.Foo.Version'
  →T.FailsIf'1.0.0+2'≢2⊃#.TEMP.Foo.Version
 

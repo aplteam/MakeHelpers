@@ -1,6 +1,6 @@
 # MakeHelpers
 
-`MakeHelpers` offers a set of utilities that helps building a new version of a project,
+`MakeHelpers` offers a set of utilities that help building a new version of a project,
 be it a package or an application or something in between.
 
 `MakeHelpers` works best with projects managed by Cider.

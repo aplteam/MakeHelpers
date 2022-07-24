@@ -77,8 +77,6 @@
           ⎕SE._MakeHelpers.CreatedAt←⊃(//)⎕VFI⊃⎕NGET home,'/CreatedAt.txt'
           ⎕SE.Tatin.LoadDependencies(home,'packages')(name,'.##')
           ⎕SE.MakeHelpers←⎕SE._MakeHelpers.API
-          ⎕SE._MakeHelpers.A←⎕se.APLTreeUtils2  ⍝TODO⍝ 
-          ⎕SE._MakeHelpers.F←⎕se.FilesAndDirs   ⍝TODO⍝ 
       :EndIf
     ∇
 

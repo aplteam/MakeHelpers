@@ -1,4 +1,4 @@
- R←Test_015(stopFlag batchFlag);⎕TRAP;tempFolder;parms
+ R←Test_015(stopFlag batchFlag);⎕TRAP;tempFolder;parms;res;expected
 ⍝ Exercise CreateTatinPackageFromSingleScript on a pakage without dependencies
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -15,7 +15,10 @@
  Assert ⎕SE.Cider.OpenProject parms
 
  1 ##.MakeHelpers.CreateTatinPackageFromSingleScript #.TEMP.APLTreeUtils2.APLTreeUtils2
- ∘∘∘
+ res←⊃FilesAndDirs.Dir parms.folder,'/Dist/'
+ res/⍨←'.zip'∘≢¨3⊃∘⎕NPARTS¨res
+ expected←'apl-package.json' 'APLTreeUtils2.aplc'
+ →T.GoToTidyUp expected≢{⊃,/1↓⎕NPARTS ⍵}¨res
 
  R←T._OK
 
