@@ -43,6 +43,60 @@ YesOrNo
 
 Details are available via `]MakeHelpers.Help`.
 
+## Example
+
+This is `MakeHelpers`' own `Make` function, which lives in `MakeHelpers.Admin`:
+
+```
+ {r}←{batch}Make flag;M;C;zipFile;fn1;fn2;caption1;caption2;path;LF
+⍝ Creates a new version of MakeHelpers in the Dist/ folder.\\
+⍝  * The user is asked whether the better version of the script is
+⍝    copied from either `MyUCMDs/` or the project (if they differ)
+⍝  * The user is also asked whether the new newly built version
+⍝    should be installed in `MyUCMDs/`
+⍝ If `batch` is 1 (default is 0) none of this happens.\\
+⍝ Returns always ⍬
+ r←⍬
+ batch←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'batch'
+ :If flag
+     M←##.MakeHelpers
+     C←##.CiderConfig
+     LF←⎕ucs 10
+     ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
+     path←⎕NS''            ⍝ holds all paths
+     path.target←C.HOME,'/Dist/'
+     path.temp←(M.F.GetTempSubDir'MakeHelpers'),'/'
+     path.myUCMDs←M.GetMyUCMDsFolder'MakeHelpers'
+     ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
+     M.CheckVersionNo (2⊃M.Version) C.HOME
+     M.RecreateFolder path.target
+     fn1←path.myUCMDs,'/MakeHelpers_uc.dyalog'
+     fn2←C.HOME,'/',C.CIDER.source,'/MakeHelpers_uc.dyalog'
+     :If ⎕NEXISTS fn1
+         caption1←'MyUCMDs/'
+         caption2←C.CIDER.source,'/'
+         batch M.CopyBetter fn1 fn2 caption1 caption2
+     :EndIf
+     (C.HOME,'/',C.CIDER.source,'/MakeHelpers_uc.dyalog')M.CopyTo path.temp
+     (C.HOME,'/apl-package.json')M.CopyTo path.temp
+     (C.HOME,'/packages/apl-dependencies.txt')M.CopyTo path.temp
+     (C.HOME,'/',C.CIDER.source,'/MakeHelpers/*')M.CopyTo path.temp,C.CIDER.source
+     (C.HOME,'/packages/*')M.CopyTo path.temp,'packages/'
+     (path.temp,C.CIDER.source,'/API')M.CreateAPI M M.Public
+     (⊂⍕⎕TS)⎕NPUT path.temp,'CreatedAt.txt'
+     zipFile←⎕SE.Tatin.Pack path.temp path.target
+     (path.temp,'*')M.CopyTo path.target,'MakeHelpers'
+     ⎕←'*** Built of new version successful:',LF,'   ',zipFile
+     :If 0=batch
+     :AndIf 1 M.YesOrNo'Install new version as user command in MyUCMDs/ ?'
+         M.RecreateFolder path.myUCMDs
+         (path.target,'MakeHelpers/*')M.CopyTo path.myUCMDs
+         ⎕←'   Done'
+     :EndIf
+ :EndIf
+⍝Done
+```
+
 ## Installation
 
 In order to install `MakeHelpers` you need either to amend or introduce a file `setup.dyalog` in your `MyUCMDs/` folder. Note that on non-Windows platforms the name of the file must be lowercase.

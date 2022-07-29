@@ -1,6 +1,9 @@
 (
+ '* 0.1.1 from 2022-07-29'
+ '  * `CopyBetter` should check both files for existing but did not'
+ '  * `CreateAPI` did not create shy functions when required'
  '* 0.1.0 from 2022-07-24'
- '  First version, which stems from the "Maker" projects which is now deprecated. '
- '  `MakeHelpers` is a Tatin package, and expected to be installed in MyUCMDs/ or an equivalent,'
- '  although all helpers are available via the API, not as user commands.'
+ '  First version, which stems from the "Maker" project which is now deprecated.'
+ '  `MakeHelpers` is a Tatin package, and expected to be installed in MyUCMDs/ or a'
+ '  similar folder, although all helpers are available via the API, not user commands.'
 )

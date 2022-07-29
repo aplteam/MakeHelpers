@@ -1,5 +1,5 @@
  R←Test_010(stopFlag batchFlag);⎕TRAP;noOf
-⍝ Exercise CreateAPI on MarkUtils itself.
+⍝ Exercise CreateAPI on MakeUtils itself.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

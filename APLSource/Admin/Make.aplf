@@ -1,4 +1,4 @@
- {r}←{batch}Make flag;M;C;zipFile;fn1;fn2;caption1;caption2;path
+ {r}←{batch}Make flag;M;C;zipFile;fn1;fn2;caption1;caption2;path;LF
 ⍝ Creates a new version of MakeHelpers in the Dist/ folder.\\
 ⍝  * The user is asked whether the better version of the script is
 ⍝    copied from either `MyUCMDs/` or the project (if they differ)
@@ -11,6 +11,7 @@
  :If flag
      M←##.MakeHelpers
      C←##.CiderConfig
+     LF←⎕ucs 10
      ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
      path←⎕NS''            ⍝ holds all paths
      path.target←C.HOME,'/Dist/'
@@ -35,7 +36,7 @@
      (⊂⍕⎕TS)⎕NPUT path.temp,'CreatedAt.txt'
      zipFile←⎕SE.Tatin.Pack path.temp path.target
      (path.temp,'*')M.CopyTo path.target,'MakeHelpers'
-     ⎕←'*** Built of new version successful:',(⎕UCS 10),'   ',zipFile
+     ⎕←'*** Built of new version successful:',LF,'   ',zipFile
      :If 0=batch
      :AndIf 1 M.YesOrNo'Install new version as user command in MyUCMDs/ ?'
          M.RecreateFolder path.myUCMDs

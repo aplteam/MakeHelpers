@@ -1,4 +1,4 @@
- {r}←{quietFlag}CopyBetter y;file1;file2;caption1;caption2;ts2;ts1;msg;sep;ts1_;ts2_
+ {r}←{quietFlag}CopyBetter y;file1;file2;caption1;caption2;ts2;ts1;msg;sep;ts1_;ts2_;b
 ⍝ Compare two different files and asks the user for copying over the "better" one.\\
 ⍝ Both files are checked for existence. If one or both are missing no action is taken.\\
 ⍝ `⍵` must be a vector of length 2 or 4. The first two are mandatory: the two filenames.\\
@@ -11,8 +11,11 @@
  y←⊆y
  '⍵ must have a length of 2 or 4'⎕SIGNAL 11/⍨~(≢y)∊2 4
  (file1 file2 caption1 caption2)←4↑y,y
- :If ∧/⎕NEXISTS¨file1 file2
- :AndIf ≢/{F.NGET ⍵}¨file1 file2
+ :If 0∊b←⎕NEXISTS¨file1 file2
+     ('Does not exist: ',⊃{⍺,',',⍵}/(~b)/file1 file2)Assert 0
+ :EndIf
+ 'You cannot copy a file onto itself'Assert file1≢file2
+ :If ≢/{F.NGET ⍵}¨file1 file2
      (ts1 ts2)←F.GetModifiedDate¨file1 file2
      (ts1_ ts2_)←F.DateToReal¨ts1 ts2
      sep←⎕UCS 10

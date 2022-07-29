@@ -49,14 +49,22 @@
      :If 3=⌊type        ⍝ Function?
          r+←1
          at←Sref.⎕AT name
+         header←1⊃Sref.⎕NR name
          :If 0=1 2⊃at   ⍝ Niladic functions need special treatment
-             header←1⊃Sref.⎕NR name
              Tref.⎕FX header({(1⊃⍵),'←##.',(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
          :Else
              :If 2=|1 2⊃at
-                 Tref.{⍎⍵,'←{⍺←⊢ ⋄ ⍺ ##.',⍵,' ⍵}'}name
+                 :If '{'=⊃A.DLB header
+                     Tref.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ ##.',⍵,' ⍵}'}name
+                 :Else
+                     Tref.{⍎⍵,'←{⍺←⊢ ⋄ ⍺ ##.',⍵,' ⍵}'}name
+                 :EndIf
              :Else
-                 Tref.{⍎⍵,'←{##.',⍵,' ⍵}'}name
+                 :If '{'=⊃A.DLB header
+                     Tref.{⍎⍵,'←{1:shy←##.',⍵,' ⍵}'}name
+                 :Else
+                     Tref.{⍎⍵,'←{##.',⍵,' ⍵}'}name
+                 :EndIf
              :EndIf
          :EndIf
      :ElseIf 4=⌊type     ⍝ Operator
@@ -92,7 +100,7 @@
              extension←'aplf'
              filename←name,'.',extension
              body←Tref.⎕NR name
-             (⊂body)⎕NPUT (savePath,'/',filename) 1
+             (⊂body)⎕NPUT(savePath,'/',filename)1
          :Else
              ⍝ User does not want to save anything.
          :EndIf
