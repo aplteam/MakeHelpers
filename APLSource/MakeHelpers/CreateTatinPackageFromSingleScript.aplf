@@ -1,4 +1,4 @@
-  {r}←{force}CreateTatinPackageFromSingleScript y;ref;targetDir;header;ext;name;home;cfg;deps;json;flag;buff;tempFolder;depFolder;force
+ {r}←{force}CreateTatinPackageFromSingleScript y;ref;targetDir;header;ext;name;home;cfg;deps;json;flag;buff;tempFolder;depFolder;force
 ⍝ Takes a ref pointing to a script (namespace or class) as mandatory argument.
 ⍝ Must be part of a project that is managed by Cider.\\
 ⍝ The script will become a Tatin package.\\
@@ -64,6 +64,9 @@
  :EndIf
  (home,'/apl-package.json')CopyTo tempFolder
  (home,'/',cfg.CIDER.source,'/',name,ext)CopyTo tempFolder
+ :If 0<≢json.assets
+     (home,'/',json.assets)CopyTo tempFolder
+ :EndIf
  r←⎕SE.Tatin.Pack tempFolder targetDir
  (tempFolder,'*')CopyTo targetDir
  F.RmDir tempFolder
