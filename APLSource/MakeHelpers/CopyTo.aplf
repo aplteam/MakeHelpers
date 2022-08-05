@@ -17,10 +17,21 @@
      :If F.IsFile x
      :AndIf F.IsDir y
      :AndIf ~(¯1↑y)∊'/\'
-         'Cannot copy file over folder.'⎕SIGNAL 11
+         'Cannot copy file over folder'⎕SIGNAL 11
      :EndIf
-     y↓⍨←-∨/'/\'∊⍨¯1↑y
-     F.MkDir y
+     :If F.IsFile x
+     :AndIf (¯1↑y)∊'/\'
+         y,←⊃{⍺,⍵}/1↓⎕NPARTS x
+     :Else
+         y↓⍨←-∨/'/\'∊⍨¯1↑y
+     :EndIf
+     :If F.IsFile x
+         :If ~F.Exists y
+             'Create!'F.CheckPath(1⊃⎕NPARTS y)
+         :EndIf
+     :Else
+         F.MkDir y
+     :EndIf
      :If ∨/'?*'∊⊃,/1↓⎕NPARTS x
          y ⎕NCOPY⍠('IfExists' 'Replace')('Wildcard' 1)⊣x
      :Else
@@ -28,7 +39,7 @@
      :EndIf
  :Else
      :If ~(¯1↑y)∊'/\'
-         'Cannot copy file over folder.'Assert 0=F.IsDir y
+         'Cannot copy file over folder'Assert 0=F.IsDir y
      :EndIf
      y←F.NormalizePath y
      x←F.NormalizePath¨x

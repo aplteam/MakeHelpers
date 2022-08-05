@@ -9,7 +9,8 @@
  parms←⎕SE.Cider.CreateOpenParms''
  parms.folder←tempFolder,'APLTreeUtils2'
  parms.watch←'ns'
- parms.projectSpace←#.TEMP
+ parms.parent←'#.TEMP'
+ parms.projectSpace←''
  parms.quietFlag←1
  parms.importFlag←1
  Assert ⎕SE.Cider.OpenProject parms

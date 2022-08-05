@@ -1,0 +1,37 @@
+ R←Test_LeanPub_025(stopFlag batchFlag);⎕TRAP;ns;md;parms;expected
+⍝ Test whether two specialties in succession with just one blank line in between work fine. Was once a bug.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ md←''
+ md,←⊂'A para'
+ md,←⊂''
+ md,←⊂'X> # An Exercise!'
+ md,←⊂''
+ md,←⊂'X> This is an exercise.'
+ md,←⊂''
+ md,←⊂'Another para'
+
+ parms←MarkAPL.CreateParms
+ parms.leanpubExtensions←1
+
+ ns←MarkAPL.Init parms md
+ ns←MarkAPL.Process ns
+
+ expected←⊂'<p>A para</p>'
+ expected,←⊂'<div class="leanpub">'
+ expected,←⊂'<img src="https://download.aplwiki.com/LeanPub/Images/exercise.png" alt="Exercise">'
+ expected,←⊂'<div>'
+ expected,←⊂'<h3>An Exercise!</h3>'
+ expected,←⊂'</div>'
+ expected,←⊂'</div>'
+ expected,←⊂'<div class="leanpub">'
+ expected,←⊂'<img src="https://download.aplwiki.com/LeanPub/Images/exercise.png" alt="Exercise">'
+ expected,←⊂'<div>'
+ expected,←⊂'<p>This is an exercise.</p>'
+ expected,←⊂'</div>'
+ expected,←⊂'</div>'
+ expected,←⊂'<p>Another para</p>'
+ →T.PassesIf expected≡ns.html~⊂''
+
+ R←T._OK

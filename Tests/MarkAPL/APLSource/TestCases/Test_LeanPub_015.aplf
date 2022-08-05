@@ -1,0 +1,26 @@
+ R←Test_LeanPub_015(stopFlag batchFlag);⎕TRAP;ns;md;parms;expected
+⍝ Test whether the leanpub extension "Exercise" (`X> `) works fine.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ md←''
+ md,←⊂'A para'
+ md,←⊂''
+ md,←⊂'X> # An Exercise!'
+ md,←⊂'X>'
+ md,←⊂'X> This is an exercise.'
+ md,←⊂''
+ md,←⊂'Another para'
+
+ parms←MarkAPL.CreateParms
+ parms.leanpubExtensions←1
+
+ ns←MarkAPL.Init parms md
+ ns←MarkAPL.Process ns
+
+ expected←⊂'<p>A para</p>'
+ expected,←⊂'<div class="leanpub"><img src="https://download.aplwiki.com/LeanPub/Images/exercise.png" alt="Exercise"><div><h3>An Exercise!</h3><p>This is an exercise.</p></div></div>'
+ expected,←⊂'<p>Another para</p>'
+ →T.PassesIf≡/∊¨expected(ns.html~⊂'')
+
+ R←T._OK

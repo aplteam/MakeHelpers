@@ -1,0 +1,23 @@
+ R←Test_Header_018(stopFlag batchFlag);⎕TRAP;md;ns;parms
+⍝ Test numbering headers were two headers share their names but one has an ID assigned to it.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ md←''
+ md,←⊂'# Main 1'
+ md,←⊂'## Level 2'
+ md,←⊂'# Main 2'
+ md,←⊂'## Level 2{#foo}'
+ md,←⊂'A simple para'
+
+ parms←MarkAPL.CreateParms
+ parms.verbose←0
+ parms.toc←6
+
+ ns←MarkAPL.Init parms md
+ ns←MarkAPL.Process ns
+
+ →T.PassesIf 3=+/'<li><a href="#Level-2">Level 2</a></li>' '<li><a href="#Main-2">Main 2</a>' '<li><a href="#foo">Level 2</a>'∊ns.html
+ →T.PassesIf 2=+/'<a href="#foo" id="foo" class="autoheader_anchor">' '<h2 data-id="Level-2">Level 2</h2>'∊ns.html
+
+ R←T._OK

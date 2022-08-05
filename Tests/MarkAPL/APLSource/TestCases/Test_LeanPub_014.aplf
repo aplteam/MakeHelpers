@@ -1,0 +1,26 @@
+ R←Test_LeanPub_014(stopFlag batchFlag);⎕TRAP;ns;md;parms;expected
+⍝ Test whether the leanpub extension "Error" (`E> `) works fine.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ md←''
+ md,←⊂'A para'
+ md,←⊂''
+ md,←⊂'E> # An Error Message!'
+ md,←⊂'E>'
+ md,←⊂'E> This is an error message.'
+ md,←⊂''
+ md,←⊂'Another para'
+
+ parms←MarkAPL.CreateParms
+ parms.leanpubExtensions←1
+
+ ns←MarkAPL.Init parms md
+ ns←MarkAPL.Process ns
+
+ expected←⊂'<p>A para</p>'
+ expected,←⊂'<div class="leanpub"><img src="https://download.aplwiki.com/LeanPub/Images/error.png" alt="Error"><div><h3>An Error Message!</h3><p>This is an error message.</p></div></div>'
+ expected,←⊂'<p>Another para</p>'
+ →T.PassesIf≡/∊¨expected(ns.html~⊂'')
+
+ R←T._OK

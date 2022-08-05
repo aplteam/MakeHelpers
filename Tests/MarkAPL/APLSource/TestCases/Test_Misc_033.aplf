@@ -1,0 +1,13 @@
+ R←Test_Misc_033(stopFlag batchFlag);⎕TRAP;md;ns
+⍝ Para with an opening < as the very first char but without a closing > - was once a bug
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ md←⊂'<<< This is special'
+
+ ns←MarkAPL.Init''md
+ ns←MarkAPL.Process ns
+
+ →T.PassesIf'<p>&lt;&lt;&lt; This is special</p>'≡∊ns.html
+
+ R←T._OK

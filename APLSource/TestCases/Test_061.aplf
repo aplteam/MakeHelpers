@@ -1,0 +1,21 @@
+ R←Test_061(stopFlag batchFlag);⎕TRAP;F;dir1;file;dir2;rc
+⍝ CopyTo: copy a file into a non-existing folder
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ F←FilesAndDirs
+ dir1←F.GetTempSubDir''
+ dir2←F.GetTempSubDir''
+ dir2,←'/AddedLevel'
+ (⊂'Sample')F.NPUT file←dir1,'/sample.txt'
+
+ rc←file ##.MakeHelpers.CopyTo dir2,'/'
+ Assert 0=rc
+ →T.GoToTidyUp 0=F.IsFile dir2,'/sample.txt'
+
+ R←T._OK
+
+∆TidyUp:
+ F.RmDir dir1
+ F.RmDir dir2
+⍝Done

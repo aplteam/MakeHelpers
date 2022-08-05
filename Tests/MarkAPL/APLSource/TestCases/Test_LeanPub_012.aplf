@@ -1,0 +1,27 @@
+ R←Test_LeanPub_012(stopFlag batchFlag);⎕TRAP;ns;md;parms;expected
+⍝ Test whether the leanpub extension "Tip" (`T> `) works fine.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ md←''
+ md,←⊂'A para'
+ md,←⊂''
+ md,←⊂'T> # A Tip!'
+ md,←⊂'T>'
+ md,←⊂'T> This is a tip.'
+ md,←⊂''
+ md,←⊂'Another para'
+
+ parms←MarkAPL.CreateParms
+ parms.leanpubExtensions←1
+
+ ns←MarkAPL.Init parms md
+ ns←MarkAPL.Process ns
+
+ expected←'<p>A para</p>' '<div class="leanpub">'
+ expected,←⊂'<img src="https://download.aplwiki.com/LeanPub/Images/tip.png" alt="Tip">'
+ expected,←'<div>' '<h3>A Tip!</h3>' '<p>This is a tip.</p>' '</div>' '</div>'
+ expected,←⊂'<p>Another para</p>'
+ →T.PassesIf≡/∊¨expected ns.html
+
+ R←T._OK

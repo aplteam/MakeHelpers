@@ -1,0 +1,64 @@
+ {r}←{force}CreateTatinPackageFromNamespace y;ref;cfg;home;targetDir;tempFolder;name;deps;depFolder;json;flag;buff
+⍝ Takes a ref pointing to an ordinary namespace.
+⍝ Must be part of a project that is managed by Cider.\\
+⍝ The namspace will become a Tatin package.\\
+⍝ `targetDir` (second right argument) is optional and defaults to `Dist/`.
+⍝ Specifying a full path as `targetDir` is usually only useful for test cases.\\
+⍝ A file `apl-package.json` must exist in the project. This is copied to `targetDir/`.\\
+⍝ It then checks whether there is a file `apl-dependencies.txt` in the project; if that is the case it is copied
+⍝ together with the dependencies.\\
+⍝ Finally a ZIP file is created from these files.\\
+⍝ In case the version number of the project and the one defined package configuration file differ, the
+⍝ user will be questioned whether she wants the package config file to be updated.
+⍝ You can enforce an update by passing 1 as `⍺` (`force`).\\
+ r←⍬
+ force←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'force'
+ ref←1⊃,y
+ '⍵ is not a namespace'Assert'Namespace'≡ref ⎕WG'Type'
+ 'Not managed by Cider'Assert 0<ref.##.⎕NC'CiderConfig'
+ 'HOME is empty?!'Assert 0<≢ref.##.CiderConfig.HOME
+ '⍵ must be either a ref or a ref and a target folder'Assert(≢y)∊1 2
+ cfg←ref.##.CiderConfig
+ home←cfg.HOME
+ 'File not found: apl-package.json'Assert F.IsFile home,'/apl-package.json'
+ :If 1=≢y
+     targetDir←(EstablishProjectFolder ref.##),'/Dist/'  ⍝ The default
+ :Else
+     targetDir←2⊃y
+ :EndIf
+ tempFolder←(F.GetTempSubDir'MakeHelpers'),'/'
+ name←A.Last⍕ref
+ IncreaseBuildID(⍕ref),'.Version'
+ RecreateFolder targetDir
+ :If 0<≢deps←{⍵/⍨~'='∊¨⍵}','(≠⊆⊢)cfg.CIDER.tatinFolder
+     depFolder←home,'/',(⊃deps),'/'
+     :If F.IsDir depFolder
+         'Not found: apl-dependencies.txt'Assert F.IsFile depFolder,'apl-dependencies.txt'
+         (home,'/',(⊃deps),'/apl-dependencies.txt')CopyTo tempFolder,'/'
+     :EndIf
+ :EndIf
+ json←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET home,'/apl-package.json'
+ flag←≢/json.version({1=≡⍵:⍵ ⋄ 2⊃⍵}ref.Version)
+ :If flag
+     :If force
+         ⎕←(⎕PW-1)⍴'--- ',name,' ',⎕PW⍴'-'
+         ⎕←(33↑'version-no according to the "Version" function'),': ',{1=≡⍵:⍵ ⋄ 2⊃⍵}ref.Version
+         ⎕←(33↑'version-no in apl-package.json'),': ',json.version
+     :OrIf 1 YesOrNo'Would you like to update apl-package.json to ',({1=≡⍵:⍵ ⋄ 2⊃⍵}2⊃ref.Version),' ?'
+         json.version←{1=≡⍵:⍵ ⋄ 2⊃⍵}ref.Version
+         buff←⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣json
+         (⊂buff)⎕NPUT(home,'/apl-package.json')1
+     :Else
+         'Version conflict between apl-package.json and the "Version" function'Assert 0
+     :EndIf
+ :EndIf
+ (home,'/apl-package.json')CopyTo tempFolder
+ (home,'/',cfg.CIDER.source,'/',name,'/*')CopyTo tempFolder,cfg.CIDER.source,'/',name,'/'
+ :If 0<≢json.assets
+     (home,'/',json.assets)CopyTo tempFolder
+ :EndIf
+ r←⎕SE.Tatin.Pack tempFolder targetDir
+ ⎕MKDIR targetDir,name
+ (tempFolder,'*')CopyTo targetDir,name,'/'
+ F.RmDir tempFolder
+⍝Done

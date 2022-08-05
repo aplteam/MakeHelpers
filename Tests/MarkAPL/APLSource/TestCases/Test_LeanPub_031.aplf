@@ -1,0 +1,34 @@
+ R←Test_LeanPub_031(stopFlag batchFlag);⎕TRAP;ns;md;parms;expected;html;home
+⍝ Test the leanpub extension "highlight lines of code" with a non-default CSS file.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ md←''
+ md,←⊂'A para'
+ md,←⊂'~~~'
+ md,←⊂'(+⌿⍵)÷⍴,⍵'
+ md,←⊂'leanpub-start-insert'
+ md,←⊂'{{⍵/⍨2=+⌿0=⍵∘.|⍵}⍳⍵}'
+ md,←⊂'leanpub-end-insert'
+ md,←⊂'(+⌿⍵)÷⍴,⍵'
+ md,←⊂'~~~'
+ md,←⊂'Another para'
+
+ parms←MarkAPL.CreateParms
+ parms.leanpubExtensions←1
+ parms.createFullHtmlPage←1
+ parms.linkToCSS←1
+ parms.screenCSS←'MoreCSS/Dark_Screen.css'
+ parms.printCSS←'MoreCSS/Dark_Print.css'
+
+ ns←MarkAPL.Init parms md
+ ns←MarkAPL.Process ns
+ html←parms MarkAPL.MakeHTML_Doc ns.html
+
+ home←FilesAndDirs.EnforceSlash FilesAndDirs.PWD,'/'
+ expected←''
+ expected,←⊂'<link href="file:///',(FilesAndDirs.EnforceSlash parms.homeFolder,'/Files/MoreCSS/Dark_Screen.css"'),' rel="stylesheet" media="screen">'
+ expected,←⊂'<link href="file:///',(FilesAndDirs.EnforceSlash parms.homeFolder,'/Files/MoreCSS/Dark_Print.css"'),' rel="stylesheet" media="print">'
+ →T.PassesIf∧/expected∊html
+
+ R←T._OK

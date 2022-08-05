@@ -1,0 +1,54 @@
+ R←Test_HTML_005(stopFlag batchFlag);⎕TRAP;md;ns
+⍝ Test <![CDATA[ ]]>  tags.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+⍝ No HTML block: trailing empty line is missing:
+ md←'This is a para.' '' '<![CDATA[This]]> ignored' 'Another para'
+ ns←MarkAPL.Init''md
+ ns←MarkAPL.Process ns
+ →T.PassesIf(,⊂'<p>&lt;![CDATA[This]]&gt; ignored Another para</p>')∊ns.html
+
+⍝ No HTML block: leading empty line is missing:
+ md←'This is a para.' '<![CDATA[' 'This' 'That' ']]>' '' 'Another para'
+ ns←MarkAPL.Init''md
+ ns←MarkAPL.Process ns
+ →T.PassesIf(,⊂'<p>This is a para. &lt;![CDATA[ This That ]]&gt;</p>')∊ns.html
+
+⍝ No HTML block: no empty lines at all:
+ md←'This is a para.' '<![CDATA[' 'This' 'That' ']]> This will be ignored' 'Another para'
+ ns←MarkAPL.Init''md
+ ns←MarkAPL.Process ns
+ →T.PassesIf(,⊂'<p>This is a para. &lt;![CDATA[ This That ]]&gt; This will be ignored Another para</p>')≡ns.html
+
+⍝ From here we actually have HTML blocks:
+
+ md←'This is a para.' '' '<![CDATA[This]]> ignored' '' 'Another para'
+ ns←MarkAPL.Init''md
+ ns←MarkAPL.Process ns
+ →T.PassesIf'<![CDATA['{⍺≡(⍴⍺)↑⍵}2⊃ns.html
+ →T.PassesIf∨/']]>'⍷2⊃ns.html
+ →T.PassesIf'<p>Another para</p>'{⍺≡(-⍴⍺)↑⍵}⊃¯1↑ns.html
+
+ md←'This is a para.' '' '<![CDATA[' 'This' 'That' ']]>' '' 'Another para'
+ ns←MarkAPL.Init''md
+ ns←MarkAPL.Process ns
+ →T.PassesIf'<![CDATA['≡2⊃ns.html
+ →T.PassesIf']]>'≡5⊃ns.html
+ →T.PassesIf'<p>Another para</p>'≡⊃¯1↑ns.html
+
+ md←'This is a para.' '' '<![CDATA[' 'This' 'That' ']]> This will be ignored' '' 'Another para'
+ ns←MarkAPL.Init''md
+ ns←MarkAPL.Process ns
+ →T.PassesIf'<![CDATA['≡2⊃ns.html
+ →T.PassesIf']]>'≡5⊃ns.html
+ →T.PassesIf'<p>Another para</p>'≡⊃¯1↑ns.html
+
+ md←'This is a para.' '' '<![CDATA[' 'This' 'That' 'More ]]>' '' 'Another para'
+ ns←MarkAPL.Init''md
+ ns←MarkAPL.Process ns
+ →T.PassesIf'<![CDATA['≡2⊃ns.html
+ →T.PassesIf'More ]]>'≡5⊃ns.html
+ →T.PassesIf'<p>Another para</p>'≡⊃¯1↑ns.html
+
+ R←T._OK

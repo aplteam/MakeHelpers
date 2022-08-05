@@ -1,0 +1,8 @@
+ R←Test_Misc_100(stopFlag batchFlag);⎕TRAP
+⍝ Ask whether the online documentation has been updated
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ →T.FailsIf 0=1 ∆YesOrNo'   Have you updated the online version of the MarkAPL documentation? (reminder)'
+
+ R←T._OK

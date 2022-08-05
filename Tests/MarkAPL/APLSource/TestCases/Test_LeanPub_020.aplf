@@ -1,0 +1,26 @@
+ R←Test_LeanPub_020(stopFlag batchFlag);⎕TRAP;ns;md;parms;expected
+⍝ Test whether the leanpub extension "Discussion" works when it's the last line (special!). It should.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ md←''
+ md,←⊂'A para'
+ md,←⊂''
+ md,←⊂'D> # A Discussion!'
+
+ parms←MarkAPL.CreateParms
+ parms.leanpubExtensions←1
+
+ ns←MarkAPL.Init parms md
+ ns←MarkAPL.Process ns
+
+ expected←⊂'<p>A para</p>'
+ expected,←⊂'<div class="leanpub">'
+ expected,←⊂'<img src="https://download.aplwiki.com/LeanPub/Images/discussion.png" alt="Discussion">'
+ expected,←⊂'<div>'
+ expected,←⊂'<h3>A Discussion!</h3>'
+ expected,←⊂'</div>'
+ expected,←⊂'</div>'
+ →T.PassesIf expected≡ns.html~⊂''
+
+ R←T._OK

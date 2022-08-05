@@ -1,0 +1,26 @@
+ R←Test_LeanPub_013(stopFlag batchFlag);⎕TRAP;ns;md;parms;expected
+⍝ Test whether the leanpub extension "Information" (`I> `) works fine.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ md←''
+ md,←⊂'A para'
+ md,←⊂''
+ md,←⊂'I> # A Piece of Information!'
+ md,←⊂'I>'
+ md,←⊂'I> This is information.'
+ md,←⊂''
+ md,←⊂'Another para'
+
+ parms←MarkAPL.CreateParms
+ parms.leanpubExtensions←1
+
+ ns←MarkAPL.Init parms md
+ ns←MarkAPL.Process ns
+
+ expected←⊂'<p>A para</p>'
+ expected,←⊂'<div class="leanpub"><img src="https://download.aplwiki.com/LeanPub/Images/information.png" alt="Information"><div><h3>A Piece of Information!</h3><p>This is information.</p></div></div>'
+ expected,←⊂'<p>Another para</p>'
+ →T.PassesIf≡/∊¨expected ns.html
+
+ R←T._OK

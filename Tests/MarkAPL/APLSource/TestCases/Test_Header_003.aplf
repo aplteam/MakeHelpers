@@ -1,0 +1,21 @@
+ R←Test_Header_003(stopFlag batchFlag);⎕TRAP;ns;html;md
+⍝ Test anchors created for headers of level 1 & 2 with no-pound-syntax.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ md←''
+ md,←⊂'Main Header'
+ md,←⊂'=========='
+ md,←⊂'First level-2 Header'
+ md,←⊂'-----'
+ md,←⊂'Second level-2 Header'
+ md,←⊂'-----'
+
+ ns←MarkAPL.Init''md
+ ns←MarkAPL.Process ns
+
+ →T.FailsIf~∨/'<a href="#Main-Header" id="Main-Header" class="autoheader_anchor">'⍷∊ns.html
+ →T.FailsIf~∨/'<a href="#First-level-2-Header" id="First-level-2-Header" class="autoheader_anchor">'⍷∊ns.html
+ →T.FailsIf~∨/'<a href="#Second-level-2-Header" id="Second-level-2-Header" class="autoheader_anchor">'⍷∊ns.html
+
+ R←T._OK

@@ -1,0 +1,17 @@
+ R←Test_Misc_039(stopFlag batchFlag);⎕TRAP;md;b;ns;html;expected
+⍝ Specify an HTML entity by escaping the `&` char: should survive.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ md←''
+ md,←⊂'This: &frac14 shows the HTML entity text'
+ md,←⊂''
+ md,←⊂'This: \&frac14 shows the glyph `¼`'
+
+ ns←MarkAPL.Init''md
+ ns←MarkAPL.Process ns
+
+ expected←'<p>This: &amp;frac14 shows the HTML entity text</p>' '<p>This: &frac14 shows the glyph <code>¼</code></p>'
+ →T.PassesIf expected≡ns.html
+
+ R←T._OK

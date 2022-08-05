@@ -1,0 +1,27 @@
+ R←Test_LeanPub_010(stopFlag batchFlag);⎕TRAP;ns;md;parms;expected
+⍝ Test whether the leanpub extension "Warning" (`W> `) works fine.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ md←''
+ md,←⊂'A para'
+ md,←⊂''
+ md,←⊂'W> # A Warning!'
+ md,←⊂'W>'
+ md,←⊂'W> This is a paragraph inside a warning.'
+ md,←⊂''
+ md,←⊂'Another para'
+
+ parms←MarkAPL.CreateParms
+ parms.leanpubExtensions←1
+
+ ns←MarkAPL.Init parms md
+ ns←MarkAPL.Process ns
+
+ expected←'<p>A para</p>' '<div class="leanpub">'
+ expected,←⊂'<img src="https://download.aplwiki.com/LeanPub/Images/warning.png" alt="Warning">'
+ expected,←'<div>' '<h3>A Warning!</h3>' '<p>This is a paragraph inside a warning.</p>' '</div>'
+ expected,←'</div>' '<p>Another para</p>'
+ →T.PassesIf≡/∊¨expected ns.html
+
+ R←T._OK

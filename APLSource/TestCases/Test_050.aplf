@@ -6,14 +6,14 @@
  F←FilesAndDirs
  dir←F.GetTempSubDir''
  (⊂'First')F.NPUT file1←dir,'/first.txt'
- ⎕DL 1.2
+ ⎕DL 1.2 ⍝ Must be more than 1 second
  (⊂'Second')F.NPUT file2←dir,'/Second.txt'
 
  res←1 ##.MakeHelpers.CopyBetter file1 file2
  →T.GoToTidyUp 2≠res
  →T.GoToTidyUp(2⍴⊂'Second')≢({⊃F.NGET ⍵}¨file1 file2)~¨⊂⎕TC
 
- ⎕DL 1.2
+ ⎕DL 1.2 ⍝ Must be more than 1 second
  (⊂'Third')F.NPUT file1 1
  res←1 ##.MakeHelpers.CopyBetter file1 file2
  →T.GoToTidyUp 1≠res
