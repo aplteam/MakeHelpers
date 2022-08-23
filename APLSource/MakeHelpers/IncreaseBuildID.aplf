@@ -1,9 +1,10 @@
- {r}←{isTest}IncreaseBuildID fnsName;version;buildID;result;p;buff;name
+ {version}←{isTest}IncreaseBuildID fnsName;buildID;result;p;buff;name
 ⍝ Increases the build-ID of `fnsName` which must be the fully qualified name of a `Version` function
-⍝ (if there is any) that lives either as a public method in a class or a trad-function in a namespace.\\
+⍝ that lives either as a public method in a class or a trad-function in a namespace.\\
+⍝ Returns the new version string as simple character vector.
 ⍝ The build ID is then increased by 1, and Link is notified.\\
 ⍝ The left argument is used only by test cases.
- r←0
+ r←''
  isTest←{0=⎕NC ⍵:0 ⋄ ⍎⍵}'isTest'
  :If 0<⎕NC⊂fnsName
      name←'.'A.Last fnsName
@@ -38,6 +39,5 @@
              {}⎕SE.Link.Add⍕fnsName
          :EndIf
      :EndIf
-     r←1
  :EndIf
 ⍝Done

@@ -1,11 +1,11 @@
- {r}←{savePath}CreateAPI y;sourceNamespace;names;API_name;type;name;at;body;header;fullName;targetNamespace;Tref;Sref;filename;extension;flag
+ {r}←{savePath}CreateAPI y;sourceNamespace;names;API_name;type;name;at;body;header;fullName;targetNamespace;Tref;Sref;filename;extension;flag;b
 ⍝ Deletes and then re-creates a namespace `API_Name` within `sourceNamespace` and then establishes cover functions
 ⍝ or references etc serving as API (public interface).\\
 ⍝ If you wish you may specify `API_name` as a fully qualified name which is useful mostly for test cases.
-⍝ If you don't then it is assumed to live inside `targetNamespace`.\\
+⍝ If you don't then it is assumed to live inside `sourceNamespace`.\\
 ⍝ `⍵` must be a vector of length 2 or 3:\\
 ⍝ [1] (mandatory) name of the source namespace\\
-⍝ [2] (mandatory) list of all public names\\
+⍝ [2] (mandatory) list of all public names, typically returned by a function named "Public" or the like.\\
 ⍝ [3] (optional): the name of the target namespace; defaults to "API"\\
 ⍝ By default Link is told about the functions (but not refs) created;
 ⍝ instead you may specify a folder via `⍺` which must exist. If you do all functions are saved within that folder without involving Link.
@@ -16,6 +16,7 @@
  r←0
  (sourceNamespace names API_name)←3↑y,⊂'API'
  savePath←{0<⎕NC ⍵:⍎⍵ ⋄ ¯1}'savePath'
+ 'No API names specified?!'Assert 0<≢names
  names←⊆names
  API_name←⍕{0<⎕NC ⍵:⍎⍵ ⋄ 'API'}'API_name'
  Sref←⍎sourceNamespace←⍕sourceNamespace
@@ -28,9 +29,8 @@
      :If 0<≢(⍎targetNamespace).⎕NL⍳16
          :Trap 0
              ⎕SE.Link.Expunge targetNamespace
-             ⎕DL 1
-         :Else
              ⎕DL 0.5
+         :Else
              ⎕SE.Link.Expunge targetNamespace
              ⎕DL 0.5
          :EndTrap
@@ -40,6 +40,9 @@
  :If ¯1≢savePath
  :AndIf 0<≢savePath
      'Create!'F.CheckPath savePath
+ :EndIf
+ :If ∨/b←0=Sref.⎕NC↑names
+     0 Assert⍨'Not found in ',(⍕Sref),': ',⊃{⍺,', ',⍵}/b/names
  :EndIf
  :For name :In names
      name~←' '
