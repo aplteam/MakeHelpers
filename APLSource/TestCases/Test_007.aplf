@@ -8,7 +8,7 @@
  folder←##.CiderConfig.HOME,'/Tests/MarkdownTests/Docs'
  noOf1←⍴⊃F.Dir folder,'/*.md'
 
- noOf2←(##.CiderConfig.HOME,'/CSS/')##.MakeHelpers.ConvertMarkdownToHtml5 folder folder
+ noOf2←##.MakeHelpers.ConvertMarkdownToHtml5 folder folder
  →T.PassesIf noOf1=noOf2
  →T.PassesIf 2=≢list←⊃F.Dir folder,'/*.html'
  F.DeleteFile list

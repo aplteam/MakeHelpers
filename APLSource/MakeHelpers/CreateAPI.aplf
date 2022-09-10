@@ -1,8 +1,8 @@
- {r}←{savePath}CreateAPI y;sourceNamespace;names;API_name;type;name;at;body;header;fullName;targetNamespace;Tref;Sref;filename;extension;flag;b
-⍝ Deletes and then re-creates a namespace `API_Name` within `sourceNamespace` and then establishes cover functions
+ {r}←{savePath}CreateAPI y;refTosourceNS;names;API_name;type;name;at;body;header;fullName;targetNamespace;Tref;filename;extension;flag;b
+⍝ Deletes and then re-creates a namespace `API_Name` within `refTosourceNS` and then establishes cover functions
 ⍝ or references etc serving as API (public interface).\\
 ⍝ If you wish you may specify `API_name` as a fully qualified name which is useful mostly for test cases.
-⍝ If you don't then it is assumed to live inside `sourceNamespace`.\\
+⍝ If you don't then it is assumed to live inside `refTosourceNS`.\\
 ⍝ `⍵` must be a vector of length 2 or 3:\\
 ⍝ [1] (mandatory) name of the source namespace\\
 ⍝ [2] (mandatory) list of all public names, typically returned by a function named "Public" or the like.\\
@@ -14,16 +14,18 @@
 ⍝ Handles niladic, monadic, dyadic and ambivalent functions as well as scripted namespaces, classes and
 ⍝ interfaces and variables but **not** operators.
  r←0
- (sourceNamespace names API_name)←3↑y,⊂'API'
+ (refTosourceNS names API_name)←3↑y,⊂'API'
+ 'Source namespace (1⊃⍵) is not a reference'Assert 0 1≡{(≡⍵)(≢⍵)}refTosourceNS
+ 'Source namespace (1⊃⍵) is not a namespace'Assert 0=+/'[]'∊refTosourceNS
+ 'Source namespace (1⊃⍵) is not a namespace'Assert 9.1≡⎕NC⊂⍕refTosourceNS
  savePath←{0<⎕NC ⍵:⍎⍵ ⋄ ¯1}'savePath'
  'No API names specified?!'Assert 0<≢names
  names←⊆names
  API_name←⍕{0<⎕NC ⍵:⍎⍵ ⋄ 'API'}'API_name'
- Sref←⍎sourceNamespace←⍕sourceNamespace
  :If (⊃API_name)∊'#⎕'
      targetNamespace←API_name
  :Else
-     targetNamespace←sourceNamespace,'.',API_name
+     targetNamespace←(⍕refTosourceNS),'.',API_name
  :EndIf
  :If 0<⎕NC targetNamespace
      :If 0<≢(⍎targetNamespace).⎕NL⍳16
@@ -41,18 +43,18 @@
  :AndIf 0<≢savePath
      'Create!'F.CheckPath savePath
  :EndIf
- :If ∨/b←0=Sref.⎕NC↑names
-     0 Assert⍨'Not found in ',(⍕Sref),': ',⊃{⍺,', ',⍵}/b/names
+ :If ∨/b←0=refTosourceNS.⎕NC↑names
+     0 Assert⍨'Not found in ',(⍕refTosourceNS),': ',⊃{⍺,', ',⍵}/b/names
  :EndIf
  :For name :In names
      name~←' '
      'Public names must not carry a "."'Assert~'.'∊name
      flag←1
-     type←Sref.⎕NC⊂name
+     type←refTosourceNS.⎕NC⊂name
      :If 3=⌊type        ⍝ Function?
          r+←1
-         at←Sref.⎕AT name
-         header←1⊃Sref.⎕NR name
+         at←refTosourceNS.⎕AT name
+         header←1⊃refTosourceNS.⎕NR name
          :If 0=1 2⊃at   ⍝ Niladic functions need special treatment
              Tref.⎕FX header({(1⊃⍵),'←##.',(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
          :Else
@@ -96,9 +98,9 @@
      :If flag
      :AndIf 3=⌊type
          :If ¯1≡savePath
-             fullName←targetNamespace,'.',name
+             fullName←(⍕Tref),'.',name
              ⎕DL 0.05
-             {}⎕SE.Link.Add fullName
+             ⎕SE.Link.Add fullName
          :ElseIf 0<≢savePath
              extension←'aplf'
              filename←name,'.',extension

@@ -15,6 +15,7 @@
  r,←⊂'IncreaseBuildID'
  r,←⊂'MakeStandAloneRunTimeExe'
  r,←⊂'RecreateFolder'
+ r,←⊂'RemoveStuffButSetupExe'
  r,←⊂'Select'
  r,←⊂'YesOrNo'
  r,←⊂'Version'

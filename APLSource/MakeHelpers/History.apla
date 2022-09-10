@@ -1,4 +1,10 @@
 (
+ '* 0.2.2 from 2022-08-30'
+ '  * `RemoveStuffButSetupExe` added'
+ '  * `CreateAPI` now requires a reference rather than a name pointing to the source'
+ '  * Bug fixes'
+ '    * `CreateTatinPackageFromNamespace` improved including documentation'
+ '    * `ConvertMarkdownToHtml5`: the left argument is now optional. The default will do most of the time'
  '* 0.2.1 from 2022-08-23'
  '  * Bug fix in `CreateAPI`'
  '* 0.2.0 from 2022-08-05'

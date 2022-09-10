@@ -11,6 +11,8 @@
 ⍝ In case the version number of the project and the one defined package configuration file differ, the
 ⍝ user will be questioned whether she wants the package config file to be updated. You can enforce an
 ⍝ update by passing 1 as `⍺` (`force`).\\
+⍝ Note that function copies the scipt into the top folder of the package, therefore the `source` parameter
+⍝ of the package must be the name and extension of the script and nothing else.
  r←⍬
  force←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'force'
  ref←1⊃,y
