@@ -1,6 +1,8 @@
 (
+ '* 0.2.4 from 2022-09-24'
+ '  * Bug fix in `MakeStandAloneRunTimeExe`: ⎕NQ must be executed in # to work'
  '* 0.2.3 from 2022-09-21'
- '  `CreateZipFile` was buggy.'
+ '  * `CreateZipFile` was buggy.'
  '* 0.2.2 from 2022-09-10'
  '  * `RemoveStuffButSetupExe` added'
  '  * `CreateAPI` now requires a reference rather than a name pointing to the source'

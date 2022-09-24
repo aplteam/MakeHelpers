@@ -35,7 +35,7 @@
  tempFile←'exe'F.GetTempFilename2 2⊃⎕NPARTS p.Filename
  :Repeat
      :Trap 11
-         rc←2 ⎕NQ'#' 'Bind'tempFile'StandaloneNativeExe'RUNTIME p.Resource p.Icon p.Commandline details
+         rc←2 #.⎕NQ'#' 'Bind'tempFile'StandaloneNativeExe'RUNTIME p.Resource p.Icon p.Commandline details
          success←1
      :Else
          :Trap 0
