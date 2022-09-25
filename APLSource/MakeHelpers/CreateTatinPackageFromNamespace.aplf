@@ -17,7 +17,8 @@
 ⍝ Instead you can enforce such an update by passing 1 as `⍺` (`force`).\\
  r←⍬
  force←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'force'
- ref←1⊃,y
+ y←⊆y
+ ref←⍎⍕1⊃,y
  '⍵ is not a namespace'Assert'Namespace'≡ref ⎕WG'Type'
  'Not managed by Cider'Assert 0<ref.##.⎕NC'CiderConfig'
  'HOME is empty?!'Assert 0<≢ref.##.CiderConfig.HOME

@@ -1,0 +1,7 @@
+:Namespace ns
+
+∇ r←Hello
+  r←'World'
+∇
+
+:EndNamespace

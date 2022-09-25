@@ -1,0 +1,28 @@
+ R←Test_019(stopFlag batchFlag);⎕TRAP;tempFolder;list;parms;rc
+⍝ Exercise CreateTatinPackageFromNamespace
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempFolder←(FilesAndDirs.GetTempSubDir'Maker_',⊃⎕SI),'/'
+ (##.CiderConfig.HOME,'/Tests/Inno')##.MakeHelpers.CopyTo tempFolder
+ Assert 0=⎕NEXISTS tempFolder,'Inno\Dist\' ⍝ Paranoia
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ parms←⎕SE.Cider.CreateOpenParms''
+ parms.folder←tempFolder,'Inno'
+ parms.projectSpace←'TEMP'
+ parms.quietFlag←1
+ rc←⎕SE.Cider.OpenProject parms
+ Assert 1=rc
+
+ 1 ##.MakeHelpers.CreateTatinPackageFromNamespace #.TEMP.Inno
+ list←⊃FilesAndDirs.Dir tempFolder,'Inno\Dist\'
+ →T.GoToTidyUp 2≠≢list
+ →T.GoToTidyUp~'.zip' ''≡3⊃¨⎕NPARTS¨list
+
+ R←T._OK
+
+∆TidyUp:
+ {}⎕SE.Cider.CloseProject'#.TEMP'
+ :Trap 0 ⋄ {}FilesAndDirs.RmDir tempFolder ⋄ :EndTrap
+ #.⎕EX'TEMP'
+⍝Done
