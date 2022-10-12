@@ -1,4 +1,7 @@
 (
+ '* 0.2.5 from 2022-10-12'
+ '  * `MakeStandAloneRunTimeExe` did not check return code of "Bind" when it should'
+ '  * Depends on the CommTools package now'
  '* 0.2.4 from 2022-09-25'
  '  * Bug fix in `MakeStandAloneRunTimeExe`: ⎕NQ must be executed in # to work'
  '  * Two test cases added and another one corrected'
