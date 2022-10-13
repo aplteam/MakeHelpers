@@ -60,10 +60,11 @@
  'Creating stand-alone EXE failed even after 10 attempts'Assert success
  ⎕DL 0.1
  :Trap 19 22
-     ⎕NDELETE p.Filename        ⍝ Paranoia
+     1 ⎕NDELETE p.Filename        ⍝ Paranoia
      ⎕DL 0.2
      p.Filename ⎕NMOVE tempFile
  :Else
+     :Trap 0 ⋄ 1 ⎕NDELETE tempFile ⋄ :EndTrap
      rc←¯1
  :EndTrap
 ⍝Done

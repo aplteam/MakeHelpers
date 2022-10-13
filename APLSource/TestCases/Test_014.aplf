@@ -9,7 +9,7 @@
 
  0 0⍴⍞,0/⎕←'This test needs you: selet the first option when given some options'
 
- res←0 0('Test case ',⊃⎕SI)##.MakeHelpers.Select'Option '∘,¨'123'
+ res←('Test case ',⊃⎕SI)##.MakeHelpers.Select'Option '∘,¨'123'
  →T.PassesIf 1≡res
 
  R←T._OK

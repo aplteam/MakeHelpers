@@ -30,10 +30,10 @@
  :If 0<⎕NC targetNamespace
      :If 0<≢(⍎targetNamespace).⎕NL⍳16
          :Trap 0
-             ⎕SE.Link.Expunge targetNamespace
+             {}⎕SE.Link.Expunge targetNamespace
              ⎕DL 0.5
          :Else
-             ⎕SE.Link.Expunge targetNamespace
+             {}⎕SE.Link.Expunge targetNamespace
              ⎕DL 0.5
          :EndTrap
      :EndIf
@@ -100,7 +100,7 @@
          :If ¯1≡savePath
              fullName←(⍕Tref),'.',name
              ⎕DL 0.05
-             ⎕SE.Link.Add fullName
+             {}⎕SE.Link.Add fullName
          :ElseIf 0<≢savePath
              extension←'aplf'
              filename←name,'.',extension
