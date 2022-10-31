@@ -68,6 +68,7 @@ This is `MakeHelpers`' own `Make` function, which lives in `MakeHelpers.Admin`:
      path.temp←(M.F.GetTempSubDir'MakeHelpers'),'/'
      path.myUCMDs←M.GetMyUCMDsFolder'MakeHelpers'
      ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
+     M.IncreaseBuildID(⍕M),'.Version'
      M.CheckVersionNo (2⊃M.Version) C.HOME
      M.RecreateFolder path.target
      fn1←path.myUCMDs,'/MakeHelpers_uc.dyalog'

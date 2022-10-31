@@ -45,7 +45,7 @@
           :Case ⎕C'Help'
               r,←⊂']MakeHelpers.Help'
           :Case ⎕C'Version'
-              ∘∘∘
+              r,←⊂']MakeHelpers.Version'
           :EndSelect
       :Case 1
           :Select ⎕C Cmd

@@ -11,14 +11,15 @@
  :If flag
      M←##.MakeHelpers
      C←##.CiderConfig
-     LF←⎕ucs 10
+     LF←⎕UCS 10
      ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
      path←⎕NS''            ⍝ holds all paths
      path.target←C.HOME,'/Dist/'
      path.temp←(M.F.GetTempSubDir'MakeHelpers'),'/'
      path.myUCMDs←M.GetMyUCMDsFolder'MakeHelpers'
      ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
-     M.CheckVersionNo (2⊃M.Version) C.HOME
+     M.IncreaseBuildID(⍕M),'.Version'
+     M.CheckVersionNo(2⊃M.Version)C.HOME
      M.RecreateFolder path.target
      fn1←path.myUCMDs,'/MakeHelpers_uc.dyalog'
      fn2←C.HOME,'/',C.CIDER.source,'/MakeHelpers_uc.dyalog'
