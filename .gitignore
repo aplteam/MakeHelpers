@@ -1,5 +1,12 @@
 aplcore
-/Dist/
 CONTINUE.dws
 conga.crash
+/Dist/
 /TestResults/
+
+/packages/*
+!/packages/apl-dependencies.txt
+!/packages/apl-buildlist.json
+/packages_dev/*
+!/packages_dev/apl-dependencies.txt
+!/packages_dev/apl-buildlist.json
