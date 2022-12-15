@@ -32,5 +32,5 @@
 
 ∆TidyUp:
  {}⎕SE.Link.Break'#.TEMP'
- :Trap 0 ⋄ 0 0⍴FilesAndDirs.RmDir folder2 ⋄ :EndTrap
+ :Trap 0 ⋄ 0 0⍴FilesAndDirs.RmDirByForce folder2 ⋄ :EndTrap
 ⍝Done

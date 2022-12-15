@@ -25,5 +25,5 @@
  R←T._OK
 
 ∆TidyUp:
- :Trap 0 ⋄ {}FilesAndDirs.RmDir tempFolder ⋄ :EndTrap
+ :Trap 0 ⋄ {}FilesAndDirs.RmDirByForce tempFolder ⋄ :EndTrap
 ⍝Done

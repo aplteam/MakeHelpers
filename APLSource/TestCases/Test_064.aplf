@@ -16,6 +16,6 @@
  R←T._OK
 
 ∆TidyUp:
- F.RmDir dir1
- F.RmDir dir2
+ F.RmDirByForce dir1
+ F.RmDirByForce dir2
 ⍝Done

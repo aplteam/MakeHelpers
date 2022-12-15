@@ -65,5 +65,5 @@
  r←⎕SE.Tatin.Pack tempFolder targetDir
  ⎕MKDIR targetDir,name
  (tempFolder,'*')CopyTo targetDir,name,'/'
- F.RmDir tempFolder
+ F.RmDirByForce tempFolder
 ⍝Done

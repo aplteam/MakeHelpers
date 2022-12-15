@@ -1,4 +1,4 @@
- R←Test_002(stopFlag batchFlag);⎕TRAP;F;folder;rc;folder2;more;en
+ R←Test_002(stopFlag batchFlag);⎕TRAP;F;folder;rc;folder2;more
 ⍝ Exercise RecreateFolder
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -6,7 +6,7 @@
  F←FilesAndDirs
  folder←F.NormalizePath'.\Tests\Test-RecreateFolder'
  folder2←folder,'\aaa\bbb'
- {}F.RmDir folder2
+ {}F.RmDirByForce folder2
  rc←##.MakeHelpers.RecreateFolder folder2
  →T.GoToTidyUp 0≠≢rc
  ⎕DL 0.01
@@ -18,6 +18,6 @@
 
 ∆TidyUp:
  ⎕DL 0.1
- (rc en more)←F.RmDir folder
+ (rc more)←F.RmDirByForce folder
  Assert 0=rc
 ⍝Done

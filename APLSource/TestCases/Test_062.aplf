@@ -12,12 +12,12 @@
 
  rc←dir1 ##.MakeHelpers.CopyTo dir2,'/'
  Assert 0=rc
- →T.GoToTidyUp 0=F.IsFile dir2,'/',(2⊃⎕nparts dir1),'/sample1.txt'
- →T.GoToTidyUp 0=F.IsFile dir2,'/',(2⊃⎕nparts dir1),'/sample2.txt'
+ →T.GoToTidyUp 0=F.IsFile dir2,'/',(2⊃⎕NPARTS dir1),'/sample1.txt'
+ →T.GoToTidyUp 0=F.IsFile dir2,'/',(2⊃⎕NPARTS dir1),'/sample2.txt'
 
  R←T._OK
 
 ∆TidyUp:
- F.RmDir dir1
- F.RmDir dir2
+ F.RmDirByForce dir1
+ F.RmDirByForce dir2
 ⍝Done

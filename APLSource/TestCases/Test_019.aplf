@@ -23,6 +23,6 @@
 
 ∆TidyUp:
  {}⎕SE.Cider.CloseProject'#.TEMP'
- :Trap 0 ⋄ {}FilesAndDirs.RmDir tempFolder ⋄ :EndTrap
+ :Trap 0 ⋄ {}FilesAndDirs.RmDirByForce tempFolder ⋄ :EndTrap
  #.⎕EX'TEMP'
 ⍝Done

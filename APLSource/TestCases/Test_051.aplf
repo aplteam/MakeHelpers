@@ -42,5 +42,5 @@
  R←T._OK
 
 ∆TidyUp:
- F.RmDir dir
+ F.RmDirByForce dir
 ⍝Done
