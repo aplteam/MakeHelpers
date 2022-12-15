@@ -1,6 +1,8 @@
 (
- '* 0.4.0 from 2022-11-??'
- '  `YesOrNo` and `Select` are now called from `CommTools`'
+ '* 0.4.0 from 2022-11-15'
+ '  * `RecreateFolder` now uses FilesAndDirs.RmDirByForce, making it way more successful.'
+ '  * `YesOrNo` and `Select` are now called from `CommTools`'
+ '  * Test cases completely automated now'
  '* 0.3.0 from 2022-10-13'
  '  * Potentially breaking change: `Select` has changed its syntax'
  '  * `MakeStandAloneRunTimeExe` did not check return code of "Bind" when it should'

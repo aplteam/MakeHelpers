@@ -1,16 +1,15 @@
- R←Test_014(stopFlag batchFlag);⎕TRAP;res
+ R←Test_014(stopFlag batchFlag);⎕TRAP;res;caption
 ⍝ Exercise Select
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If batchFlag
-     →0,R←T._NoBatchTest
- :EndIf
-
- 0 0⍴⍞,0/⎕←'This test needs you: selet the first option when given some options'
-
- res←('Test case ',⊃⎕SI)##.MakeHelpers.Select'Option '∘,¨'123'
+ caption←'Test case ',⊃⎕SI
+ ##.MakeHelpers.CommTools.Select_Choices←1 2⍴caption 1
+ res←caption ##.MakeHelpers.Select'Option '∘,¨'123'
  →T.PassesIf 1≡res
 
  R←T._OK
+
+∆TidyUp:
+ ##.MakeHelpers.CommTools.Cleanup
 ⍝Done
