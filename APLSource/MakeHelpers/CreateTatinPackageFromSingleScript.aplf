@@ -71,5 +71,5 @@
  :EndIf
  r←⎕SE.Tatin.Pack tempFolder targetDir
  (tempFolder,'*')CopyTo targetDir
- F.RmDirByForce tempFolder
+ {}F.RmDirByForce tempFolder
 ⍝Done

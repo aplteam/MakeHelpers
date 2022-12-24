@@ -25,5 +25,5 @@
  R←T._OK
 
 ∆TidyUp:
- :Trap 0 ⋄ F.RmDirByForce path ⋄ :EndTrap
+ :Trap 0 ⋄ {}F.RmDirByForce path ⋄ :EndTrap
 ⍝Done

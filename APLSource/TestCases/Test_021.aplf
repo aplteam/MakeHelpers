@@ -1,0 +1,10 @@
+ R←Test_021(stopFlag batchFlag);⎕TRAP
+⍝ Exercise CR
+⍝ Does not do anything but avoids "CR" being reported as uncovered by the tests
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ →T.PassesIf(⎕UCS 13)≡##.MakeHelpers.CR
+
+ R←T._OK
+⍝Done

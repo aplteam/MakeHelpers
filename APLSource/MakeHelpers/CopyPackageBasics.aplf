@@ -1,0 +1,26 @@
+ {r}←CopyPackageBasics(cfg C toPath);pkgFilename;depFilename;licenseFilename;buff
+⍝ Attempts to copy three files from the package project to `path`:
+⍝ * apl-package.json - must exist
+⍝ * apl-dependencies.txt - may exist
+⍝ * LICENSE - may exist
+⍝ All these files will live in the project's home folder, if at all.
+ r←0
+ toPath,←(~'/\'∊⍨¯1↑toPath)/'/'
+ pkgFilename←(C.HOME,'/apl-package.json')
+ ('Not found: ',pkgFilename)Assert ⎕NEXISTS pkgFilename
+ pkgFilename CopyTo toPath
+ r+←1
+ :If 0<≢C.CIDER.tatinFolder
+     buff←','(≠⊆⊢)C.CIDER.tatinFolder
+ :AndIf 0<≢buff←(~'='∊¨buff)/buff
+ :AndIf 1=≢buff
+     depFilename←C.HOME,'/',(⊃buff),'/apl-dependencies.txt'
+ :AndIf ⎕NEXISTS depFilename
+     depFilename CopyTo toPath
+     r+←1
+ :EndIf
+ licenseFilename←C.HOME,'/LICENSE'
+ :If ⎕NEXISTS licenseFilename
+     licenseFilename CopyTo toPath
+     r+←1
+ :EndIf

@@ -10,6 +10,7 @@
 ⍝ Note that if the "name" and/or the "extension" part of `x` contain either "*" or "?"
 ⍝ then the matching files are copied, not the folder as such.\\
 ⍝ Throws an error in case something went wrong.\\
+⍝ Note that since Version
 ⍝ Returns always a 0.
  r←0
  :If 2>|≡x
@@ -33,9 +34,9 @@
          F.MkDir y
      :EndIf
      :If ∨/'?*'∊⊃,/1↓⎕NPARTS x
-         y ⎕NCOPY⍠('IfExists' 'Replace')('Wildcard' 1)⊣x
+         y ⎕NCOPY⍠('IfExists' 'Replace')('Wildcard' 1)('PreserveAttributes' 1)⊣x
      :Else
-         y ⎕NCOPY⍠('IfExists' 'Replace')⊣x
+         y ⎕NCOPY⍠('IfExists' 'Replace')('PreserveAttributes' 1)⊣x
      :EndIf
  :Else
      :If ~(¯1↑y)∊'/\'

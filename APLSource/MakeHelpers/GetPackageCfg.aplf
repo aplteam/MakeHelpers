@@ -1,0 +1,6 @@
+ cfg←GetPackageCfg path;cfgFilename;json
+⍝ Return the package config file as a namespace.
+ cfgFilename←path{⍺,'/',(⍵≢(-≢⍵)↑⍺)/⍵}'/apl-package.json'
+ json←⊃F.NGET cfgFilename
+ cfg←⎕JSON⍠('Dialect' 'JSON5')⊢json
+⍝Done

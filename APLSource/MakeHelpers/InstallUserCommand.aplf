@@ -1,0 +1,12 @@
+ {success}←{force}InstallUserCommand(zipFilename path);res
+⍝ Asks the user whether she wants to install `zipFilename` as a user command in `path`
+⍝ (typically MyUCMDs\) but only if `batch` is 0.
+ success←0
+ force←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'force'
+ :If force
+ :OrIf 1 YesOrNo'Install new version as user command in ',path,' ?'
+     RecreateFolder path
+     res←⎕SE.Tatin.InstallPackages zipFilename path
+     'Installing user command failed'Assert 0<≢res
+     success←1
+ :EndIf

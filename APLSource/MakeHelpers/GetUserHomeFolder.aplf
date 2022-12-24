@@ -1,4 +1,4 @@
- r←{OS}GetUserHomeFolder add;p;v;w;l;d;h;lad;as;u
+ r←{os}GetUserHomeFolder add;p;v;w;l;d;h;lad;as;u
 ⍝ Returns standard path for any user-specific data.\\
 ⍝ Works on all platforms but returns different results.\\
 ⍝ `⍵`, if not empty, is added to the resulting path.\\
@@ -9,9 +9,9 @@
 ⍝ * `'/home/{⎕AN}/Tatin'     ←→ GetUserHomeFolder ''`
 ⍝ * `'/home/{⎕AN}/Tatin/foo' ←→ GetUserHomeFolder 'foo'`
 ⍝ `⍺` is optional and only specified by test cases: used to simulate different versions of the operating system.
- OS←{0<⎕NC ⍵:⍎⍵ ⋄ A.GetOperatingSystem''}'OS'
+ os←{0<⎕NC ⍵:⍎⍵ ⋄ A.GetOperatingSystem''}'os'
  add←{(((~'/\'∊⍨⊃⍵)∧0≠≢⍵)/'/'),⍵}add
- (p v)←2↑OS
+ (p v)←2↑os
  (w l)←'WL'∊''⍴p
  d←'/Tatin'
  (h lad)←2 ⎕NQ'.' 'GetEnvironment'('HOME' 'APPDATA')

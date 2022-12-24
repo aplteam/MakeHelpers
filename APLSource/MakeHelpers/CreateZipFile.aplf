@@ -17,5 +17,5 @@
  1 ⎕NDELETE folder,'/',zipFilename
  zipFilename←folder,'/',zipFilename
  1 ⎕NDELETE zipFilename
- {}folder ZipArchive.ZipFolder zipFilename
+ {}folder ZipArchive.ZipFolder zipFilename  ⍝##⍝
 ⍝Done

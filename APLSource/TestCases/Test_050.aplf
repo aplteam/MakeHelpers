@@ -26,5 +26,5 @@
  R←T._OK
 
 ∆TidyUp:
- F.RmDirByForce dir
+ {}F.RmDirByForce dir
 ⍝Done

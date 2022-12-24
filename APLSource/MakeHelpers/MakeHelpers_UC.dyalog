@@ -3,7 +3,6 @@
 
     ⎕IO←⎕ML←1
 
-
     ∇ r←List;c
       :Access Shared Public
       r←⍬
@@ -26,7 +25,7 @@
     ∇ r←Run(Cmd Args)
       :Access Shared Public
       r←''
-      LoadCode ⍬
+      LoadCode ##.SourceFile
       :Select ⎕C Cmd
       :Case ⎕C'Version'
           r←⎕SE.MakeHelpers.Version
@@ -64,19 +63,18 @@
       :EndSelect
     ∇
 
-    ∇ {r}←LoadCode dummy;home;name;res;A_;F_
+    ∇ {r}←LoadCode sourceFile;home;name;A_;F_
       r←0
-      home←GetHomeFolder
+      home←{⍵↓⍨-'/\'∊⍨¯1↑⍵}GetHomeFolder
+      home←{⍵↓⍨-+/3>+\(⌽⍵)∊'/\'}home
       :If 0=⎕SE.⎕NC'_MakeHelpers'
-      :OrIf ⎕SE._MakeHelpers.CreatedAt≢⊃(//)⎕VFI⊃⎕NGET home,'/CreatedAt.txt'
+      :OrIf 1
           name←'⎕SE._MakeHelpers'
           ⎕EX name
           name ⎕SE.⎕NS''
           r←1
-          res←⎕SE.Link.Import name(home,'/APLSource')
-          ⎕SE._MakeHelpers.CreatedAt←⊃(//)⎕VFI⊃⎕NGET home,'/CreatedAt.txt'
-          ⎕SE.Tatin.LoadDependencies(home,'packages')(name,'.##')
-          ⎕SE.MakeHelpers←⎕SE._MakeHelpers.API
+        ⍝ ⎕SE._MakeHelpers.CreatedAt←
+          ⎕SE.Tatin.LoadDependencies home name ⍝ (name,'.##')
       :EndIf
     ∇
 
