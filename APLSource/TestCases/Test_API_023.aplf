@@ -17,7 +17,7 @@
  script←(script[1]),(⊂'⍝ Says "Hello"'),1↓script
  ⎕DL 1
  (⊂script)FilesAndDirs.NPUT(toPath,'/',pkgName,'/My_UC.dyalog')1 ⍝ That makes it younger
- →T.GoToTidyUp 1≠1 ##.MakeHelpers.FetchLaterUserCommand'My_UC.dyalog'cfg C toPath
+ →T.GoToTidyUp 1≠1 ##.MakeHelpers.FetchLaterUserCommand 'My_UC.dyalog' cfg C(toPath,'/demo-Hello-0.1.0')
 
  script1←⊃FilesAndDirs.NGET toPath,'/',pkgName,'/My_UC.dyalog'
  script2←⊃FilesAndDirs.NGET fromPath,'/APLSource/My_UC.dyalog'
@@ -27,14 +27,14 @@
  ⎕DL 1
  script←(script[1]),2↓script ⍝ Remove the comment line
  (⊂script)FilesAndDirs.NPUT(fromPath,'/APLSource/My_UC.dyalog')1 ⍝ That makes it younger again
- →T.GoToTidyUp 2≠1 ##.MakeHelpers.FetchLaterUserCommand'My_UC.dyalog'cfg C toPath
+ →T.GoToTidyUp 2≠1 ##.MakeHelpers.FetchLaterUserCommand'My_UC.dyalog'cfg C (toPath,'/demo-Hello-0.1.0')
  script1←⊃FilesAndDirs.NGET toPath,'/',pkgName,'/My_UC.dyalog'
  script2←⊃FilesAndDirs.NGET fromPath,'/APLSource/My_UC.dyalog'
  Assert 0=+/'⍝ Says "Hello"'⍷script1
  →T.GoToTidyUp script1≢script2
 
  ⎕DL 1
- →T.GoToTidyUp 0≠1 ##.MakeHelpers.FetchLaterUserCommand'My_UC.dyalog'cfg C toPath
+ →T.GoToTidyUp 0≠1 ##.MakeHelpers.FetchLaterUserCommand'My_UC.dyalog'cfg C (toPath,'/demo-Hello-0.1.0')
 
  R←T._OK
 
