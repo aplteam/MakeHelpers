@@ -4,10 +4,10 @@
 ⍝ `⍵`, if not empty, is added to the resulting path.\\
 ⍝ Under Windows typically:\\
 ⍝ * ``%APPDATA%\Tatin'     ←→ GetUserHomeFolder ''`
-⍝ * ``%APPDATA%\Tatin\foo' ←→ GetUserHomeFolder 'foo'`
+⍝ * ``%APPDATA%\Tatin\foo' ←→ GetUserHomeFolder 'foo'`\\
 ⍝ On non-Windows platforms:\\
 ⍝ * `'/home/{⎕AN}/Tatin'     ←→ GetUserHomeFolder ''`
-⍝ * `'/home/{⎕AN}/Tatin/foo' ←→ GetUserHomeFolder 'foo'`
+⍝ * `'/home/{⎕AN}/Tatin/foo' ←→ GetUserHomeFolder 'foo'`\\
 ⍝ `⍺` is optional and only specified by test cases: used to simulate different versions of the operating system.
  os←{0<⎕NC ⍵:⍎⍵ ⋄ A.GetOperatingSystem''}'os'
  add←{(((~'/\'∊⍨⊃⍵)∧0≠≢⍵)/'/'),⍵}add

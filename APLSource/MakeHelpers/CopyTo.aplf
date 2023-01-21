@@ -4,13 +4,12 @@
 ⍝ * A nested vector of character vectors, each being a filename
 ⍝ * A simple string representing either a filename or a folder
 ⍝   * A folder is copied over together with its contents
-⍝   * A simple file is copied over as such
+⍝   * A simple file is copied over as such\\
 ⍝ `y` must be a folder in case `x` specified a folder or is a list of files.
 ⍝ Otherwise it must be a filename.\\
 ⍝ Note that if the "name" and/or the "extension" part of `x` contain either "*" or "?"
-⍝ then the matching files are copied, not the folder as such.\\
+⍝ then the matching files and folders are copied.\\
 ⍝ Throws an error in case something went wrong.\\
-⍝ Note that since Version
 ⍝ Returns always a 0.
  r←0
  :If 2>|≡x

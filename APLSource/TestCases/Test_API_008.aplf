@@ -1,0 +1,10 @@
+ R←Test_API_008(stopFlag batchFlag);⎕TRAP;folder
+⍝ Exercise GetMyUCMDsFolder
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ folder←##.MakeHelpers.GetMyUCMDsFolder''
+ →T.PassesIf'MyUCMDs'{('/\'∊⍨¯1↑(-≢⍺)↓⍵)∧⍺≡(-≢⍺)↑⍵}folder
+
+ R←T._OK
+⍝Done

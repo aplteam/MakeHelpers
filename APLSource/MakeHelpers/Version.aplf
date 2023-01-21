@@ -1,3 +1,9 @@
- r←Version
+ r←Version;json;ns
 ⍝ See also `History`
- r←'Maker' '0.5.0+57' '2022-12-21'
+ :If 0<##.⎕NC'CiderConfig'
+     json←⊃⎕NGET ##.CiderConfig.HOME,'/apl-package.json'
+ :Else
+     json←⊃⎕NGET TatinVars.HOME,'/apl-package.json'
+ :EndIf
+ ns←⎕JSON⍠('Dialect' 'JSON5')⊢json
+ r←ns.version

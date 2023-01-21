@@ -7,7 +7,7 @@
  flag←0
  :If ⎕NEXISTS testPath
      :If ⎕NEXISTS testFilename,'.dcf'
-         ind←('Code Coverage'0 1)##.MakeHelpers.Select'Append' 'Replace' 'Neither'
+         ind←('Code Coverage' 0 1)##.MakeHelpers.Select'Append' 'Replace' 'Neither'
          →(3=ind)/0
          flag←1
          :If 2≡ind
@@ -22,7 +22,7 @@
  :If flag
      3 ⎕MKDIR testPath  ⍝
      T.codeCoverage←⎕NEW CodeCoverage(,⊂'#.',{⍵,'.',⍵}2↓⍕⎕THIS.##)
-     ∘∘∘
+     T.codeCoverage.ignore←'#.MakeHelpers.MakeHelpers.MakeHelpers_UC'
      T.codeCoverage.filename←testFilename
  :EndIf
 ⍝Done

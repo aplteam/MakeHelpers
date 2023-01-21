@@ -22,23 +22,30 @@ Once `MakeHelpers` was brought into `⎕SE` it's available via `⎕SE.MakeHelper
 This is a list of helpers available:
 
 ```
-CheckVersionNo                    
-ConvertMarkdownToHtml5            
-CopyBetter                        
-CopyTo                            
-CreateAPI                         
-CreateStandAloneExeParms          
-CreateTatinPackageFromSingleScript
-CreateZipFile                     
-DropBuildNumber                   
-GetMyUCMDsFolder                  
-GetUserHomeFolder                 
-IncreaseBuildID                   
-MakeStandAloneRunTimeExe          
-RecreateFolder                    
-Select                            
-Version                           
-YesOrNo                           
+ CheckVersionNo                     
+ ConvertMarkdownToHtml5             
+ CopyBetter                         
+ CopyPackageBasics                  
+ CopyTo                             
+ CreateAPI                          
+ CreateStandAloneExeParms           
+ CreateTatinPackageFromSingleScript 
+ CreateTatinPackageFromNamespace    
+ CreateZipFile                      
+ CR                                 
+ DropBuildNumber                    
+ GetMyUCMDsFolder                   
+ GetPackageCfg                      
+ GetUserHomeFolder                  
+ HandleVersionNumber
+ IncreaseBuildID                    
+ InstallUserCommand                 
+ MakeStandAloneRunTimeExe           
+ RecreateFolder                     
+ RemoveStuffButSetupExe             
+ Select                             
+ YesOrNo                            
+ Version                            
 ```
 
 Details are available via `]MakeHelpers.Help`.
@@ -48,59 +55,54 @@ Details are available via `]MakeHelpers.Help`.
 This is `MakeHelpers`' own `Make` function, which lives in `MakeHelpers.Admin`:
 
 ```
- {r}←{batch}Make flag;M;C;zipFile;fn1;fn2;caption1;caption2;path;LF
-⍝ Creates a new version of MakeHelpers in the Dist/ folder.\\
-⍝  * The user is asked whether the better version of the script is
-⍝    copied from either `MyUCMDs/` or the project (if they differ)
-⍝  * The user is also asked whether the new newly built version
-⍝    should be installed in `MyUCMDs/`
-⍝ If `batch` is 1 (default is 0) none of this happens.\\
-⍝ Returns always ⍬
- r←⍬
- batch←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'batch'
- :If flag
-     M←##.MakeHelpers
-     C←##.CiderConfig
-     LF←⎕ucs 10
-     ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
-     path←⎕NS''            ⍝ holds all paths
-     path.target←C.HOME,'/Dist/'
-     path.temp←(M.F.GetTempSubDir'MakeHelpers'),'/'
-     path.myUCMDs←M.GetMyUCMDsFolder'MakeHelpers'
-     ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
-     M.IncreaseBuildID(⍕M),'.Version'
-     M.CheckVersionNo (2⊃M.Version) C.HOME
-     M.RecreateFolder path.target
-     fn1←path.myUCMDs,'/MakeHelpers_uc.dyalog'
-     fn2←C.HOME,'/',C.CIDER.source,'/MakeHelpers_uc.dyalog'
-     :If ⎕NEXISTS fn1
-         caption1←'MyUCMDs/'
-         caption2←C.CIDER.source,'/'
-         batch M.CopyBetter fn1 fn2 caption1 caption2
-     :EndIf
-     (C.HOME,'/',C.CIDER.source,'/MakeHelpers_uc.dyalog')M.CopyTo path.temp
-     (C.HOME,'/apl-package.json')M.CopyTo path.temp
-     (C.HOME,'/packages/apl-dependencies.txt')M.CopyTo path.temp
-     (C.HOME,'/',C.CIDER.source,'/MakeHelpers/*')M.CopyTo path.temp,C.CIDER.source
-     (C.HOME,'/packages/*')M.CopyTo path.temp,'packages/'
-     (path.temp,C.CIDER.source,'/API')M.CreateAPI M M.Public
-     (⊂⍕⎕TS)⎕NPUT path.temp,'CreatedAt.txt'
-     zipFile←⎕SE.Tatin.Pack path.temp path.target
-     (path.temp,'*')M.CopyTo path.target,'MakeHelpers'
-     ⎕←'*** Built of new version successful:',LF,'   ',zipFile
-     :If 0=batch
-     :AndIf 1 M.YesOrNo'Install new version as user command in MyUCMDs/ ?'
-         M.RecreateFolder path.myUCMDs
-         (path.target,'MakeHelpers/*')M.CopyTo path.myUCMDs
-         ⎕←'   Done'
-     :EndIf
- :EndIf
-⍝Done
+ ∇  {r}←{version}Make batch;M;C;zipFilename;path;res;cfg
+ ⍝ Creates a new version of MakeHelpers in the Dist/ folder.\\
+ ⍝  * The user is asked whether the better version of the script is copied from either
+ ⍝ `MyUCMDs/` or the project (if they differ)
+ ⍝  * The user is also asked whether the new version should be installed in `MyUCMDs/`
+ ⍝ If `batch` is 1 (default is 0) none of this happens.\\
+ ⍝ `version` can be either a full-fledged version number or something like "+0.0.1".
+ ⍝ If no left argument is provided the user is questioned.\\
+ ⍝ Returns always ⍬
+   r←⍬
+   M←⎕SE.MakeHelpers ⋄ C←##.CiderConfig
+   '⍵ must be a Boolean'M.##.Assert(,⊂batch)∊0 1
+   path←C.HOME,'/Dist/'
+   cfg←M.GetPackageCfg C.HOME
+   :If 0=⎕NC'version'
+       version←cfg M.HandleVersionNumber C.HOME
+   :EndIf
+   :If ~batch
+       M.FetchLaterUserCommand'MakeHelpers_UC.dyalog'cfg C('[MyUCMDs]MakeHelpers/')
+   :EndIf
+   M.CreateAPI ##.MakeHelpers ##.MakeHelpers.Public
+   M.RecreateFolder path
+   zipFilename←⎕SE.Tatin.BuildPackage C.HOME path version
+   ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
+   :If ~batch
+   :AndIf 1 M.YesOrNo'Install new version as user command in MyUCMDs?'
+       M.RecreateFolder M.GetMyUCMDsFolder'/MakeHelpers'
+       res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]MakeHelpers'
+       ⎕←'  New version installed as user command in MyUCMDs/: ',res
+   :EndIf
+ ⍝Done
+ ∇
 ```
 
 ## Installation
 
-In order to install `MakeHelpers` you need either to amend or introduce a file `setup.dyalog` in your `MyUCMDs/` folder. Note that on non-Windows platforms the name of the file must be lowercase.
+Since version 0.5.0 installing `MakeHelpers` can and must be installed as a Tatin package. Assuming that you want to install it into the `MyUCMDs/` folder:
+
+```
+]Tatin.InstallPackages group-name-1.2.3 [MyUCMDs]
+```
+
+For Tatin to understand `[MyUCMDs]` you need at least version 0.86.0
+
+After installing `MakeHelpers` this way any new instance of Dyalog APL will know the user command `]MakeHelpers`. However, the API is not available until the user command is invoked once.
+
+This can be overcome by introducing or modifying a script `setup.dyalog` in the `MyUCMDs/` folder. Details are available at <https://aplwiki.com/wiki/Dyalog_User_Commands>
+
 
 ### How does `setup.dyalog` work?
 

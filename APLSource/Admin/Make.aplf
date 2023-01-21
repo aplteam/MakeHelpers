@@ -1,37 +1,31 @@
- {r}←{batch}Make flag;M;C;zipFile;path;name;cfg
+ {r}←{version}Make batch;M;C;zipFilename;path;res;cfg
 ⍝ Creates a new version of MakeHelpers in the Dist/ folder.\\
-⍝  * The user is asked whether the better version of the script is
-⍝    copied from either `MyUCMDs/` or the project (if they differ)
-⍝  * The user is also asked whether the new newly built version
-⍝    should be installed in `MyUCMDs/`
+⍝  * The user is asked whether the better version of the script is copied from either
+⍝ `MyUCMDs/` or the project (if they differ)
+⍝  * The user is also asked whether the new version should be installed in `MyUCMDs/`
 ⍝ If `batch` is 1 (default is 0) none of this happens.\\
+⍝ `version` can be either a full-fledged version number or something like "+0.0.1".
+⍝ If no left argument is provided the user is questioned.\\
 ⍝ Returns always ⍬
  r←⍬
- batch←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'batch'
- :If flag
-     M←##.MakeHelpers
-     C←##.CiderConfig
-     ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
-     path←⎕NS''            ⍝ holds all paths
-     path.target←C.HOME,'/Dist/'
-     path.myUCMDs←M.GetMyUCMDsFolder'MakeHelpers'
-     path.temp←(M.F.GetTempSubDir'MakeHelpers'),'/'
-     ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
-     M.IncreaseBuildID(⍕M),'.Version'
-     M.CheckVersionNo(2⊃M.Version)C.HOME
-     M.RecreateFolder path.target
-     cfg←M.GetPackageCfg C.HOME
-     M.CopyPackageBasics cfg C path.temp
-     M.GetLaterUserCommand'MakeHelpers_UC.dyalog'cfg C path.myUCMDs batch
-     (C.HOME,'/',C.CIDER.source,'/MakeHelpers')M.CopyTo path.temp,C.CIDER.source,'/'
-     (path.temp,C.CIDER.source,'/MakeHelpers/API')M.CreateAPI M M.Public
-     zipFile←⎕SE.Tatin.Pack path.temp path.target
-     (path.temp,'*')M.CopyTo path.target,'MakeHelpers'
-     ⎕←'*** New version build successfully:',M.CR,'   ',zipFile
-     :If 0=batch
-     :AndIf M.InstallUserCommand(zipFile path.myUCMDs)
-         ⎕←'  New version installed as user command in ',path.myUCMDs
-     :EndIf
-     {}M.F.RmDirByForce path.temp
+ M←⎕SE.MakeHelpers ⋄ C←##.CiderConfig
+ '⍵ must be a Boolean'M.##.Assert(,⊂batch)∊0 1
+ path←C.HOME,'/Dist/'
+ cfg←M.GetPackageCfg C.HOME
+ :If 0=⎕NC'version'
+     version←cfg M.HandleVersionNumber C.HOME
+ :EndIf
+ :If ~batch
+     M.FetchLaterUserCommand'MakeHelpers_UC.dyalog'cfg C('[MyUCMDs]MakeHelpers/')
+ :EndIf
+ M.CreateAPI ##.MakeHelpers ##.MakeHelpers.Public
+ M.RecreateFolder path
+ zipFilename←⎕SE.Tatin.BuildPackage C.HOME path version
+ ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
+ :If ~batch
+ :AndIf 1 M.YesOrNo'Install new version as user command in MyUCMDs?'
+     M.RecreateFolder M.GetMyUCMDsFolder'/MakeHelpers'
+     res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]MakeHelpers'
+     ⎕←'  New version installed as user command in MyUCMDs/: ',res
  :EndIf
 ⍝Done

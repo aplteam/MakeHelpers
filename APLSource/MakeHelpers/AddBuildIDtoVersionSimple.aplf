@@ -1,7 +1,7 @@
  {body}←x AddBuildIDtoVersionSimple buildID;version;row;version2;fnsname;ref;rc;buff;offset;length;varsName;line;result;assignment;flag
  ⍝ `x` can either be a reference pointing to a class, an Interface or a scripted namespace
  ⍝ or the name of a function in an ordinary namespace.\\
- ⍝ Generally `AddBuildIDtoVersion` executes the `Version` function (⍺) if there is
+ ⍝ Generally `AddBuildIDtoVersionSimple` executes the `Version` function (⍺) if there is
  ⍝ any. It then either adds the build ID (⍵, an integer) if there was not any yet
  ⍝ or replaces it by the built ID given.
  :If ¯1≡×⎕NC⊂⍕x                                  ⍝ Member of a class?

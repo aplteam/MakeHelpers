@@ -1,0 +1,46 @@
+ R←Test_API_051(stopFlag batchFlag);⎕TRAP;F;dir;file1;file2;res;qdmx
+⍝ Exercise CopyBetter on two files of which one or both do not exist
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ F←FilesAndDirs
+ dir←F.GetTempSubDir''
+ file1←dir,'/first.txt'
+ file2←dir,'/Second.txt'
+
+ :Trap 11
+     {}1 ##.MakeHelpers.CopyBetter file1 file2
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp'Does not exist:'{⍺≢(≢⍺)↑⍵}1⊃qdmx.DM
+ :EndTrap
+
+ (⊂'First')F.NPUT file1
+ ⎕DL 0.2
+
+ :Trap 11
+     {}1 ##.MakeHelpers.CopyBetter file1 file2
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp'Does not exist:'{⍺≢(≢⍺)↑⍵}1⊃qdmx.DM
+ :EndTrap
+
+ ⎕NDELETE file1
+ (⊂'Second')F.NPUT file2
+ ⎕DL 0.2
+
+ :Trap 11
+     {}1 ##.MakeHelpers.CopyBetter file1 file2
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp'Does not exist:'{⍺≢(≢⍺)↑⍵}1⊃qdmx.DM
+ :EndTrap
+
+ R←T._OK
+
+∆TidyUp:
+ {}F.RmDirByForce dir
+⍝Done

@@ -1,0 +1,23 @@
+ R←Test_API_002(stopFlag batchFlag);⎕TRAP;F;folder;rc;folder2;more
+⍝ Exercise RecreateFolder
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ F←FilesAndDirs
+ folder←F.NormalizePath'.\Tests\Test-RecreateFolder'
+ folder2←folder,'\aaa\bbb'
+ {}F.RmDirByForce folder2
+ rc←##.MakeHelpers.RecreateFolder folder2
+ →T.GoToTidyUp 0≠≢rc
+ ⎕DL 0.01
+ (⊂'Hello world')⎕NPUT folder,'\aaa\MyFile.txt'
+ rc←2 ##.MakeHelpers.RecreateFolder folder2
+ →T.GoToTidyUp 0≠≢rc
+
+ R←T._OK
+
+∆TidyUp:
+ ⎕DL 0.1
+ (rc more)←F.RmDirByForce folder
+ Assert 0=rc
+⍝Done

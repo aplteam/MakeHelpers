@@ -1,8 +1,11 @@
 (
- '* 0.5.0 from 2022-12-21'
+ '* 0.5.0 from 2023-03-12'
+ '  * `MakeHelpers` can now be installed as a package'
+ '  * New method `FetchLaterUserCommand` added'
+ '  * New method `GetPackageCfg` added'
  '  * `CopyTo` now preserves file attributes which is particularly important for time stamp comparisons'
+ '  * These methods got deleted: `CreateTatinPackageFromSingleScript` and `CreateTatinPackageFromNamespace`'
  '  * Bug fixes'
- '    * Both `CreateTatinPackageFromSingleScript` and `CreateTatinPackageFromNamespace` printed a 0 to ⎕SE'
  '    * `RmDirByForce`-calls in tests flooded ⎕SE with zeros'
  '* 0.4.0 from 2022-11-15'
  '  * `RecreateFolder` now uses FilesAndDirs.RmDirByForce, making it way more successful.'

@@ -1,1 +1,5 @@
- YesOrNo←{⍺←⊢ ⋄ ⍺ CommTools.YesOrNo ⍵}  ⍝##⍝
+ YesOrNo←{
+ ⍝ Cover function for CommTools.YesOrNo: ask simple yes/no-questions
+     ⍺←⊢
+     ⍺ CommTools.YesOrNo ⍵
+ }

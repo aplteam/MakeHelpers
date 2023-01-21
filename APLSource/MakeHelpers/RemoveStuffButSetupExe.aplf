@@ -1,5 +1,5 @@
  {r}←RemoveStuffButSetupExe folder;list;ind;isFile;isDir
-⍝ Use this to remove everything from folder/ but a file that name starts with "Setup" and has the extension ".exe"
+⍝ Use this to remove everything from `folder/` but a file with a name that starts with "Setup" and has the extension ".exe".\\
 ⍝ Does not worry about case sensitivity because this is Windows-only in any case.
  r←⍬
  list←⊃('recursive' 1)F.Dir folder,'/'
