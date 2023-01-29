@@ -94,7 +94,7 @@ This is `MakeHelpers`' own `Make` function, which lives in `MakeHelpers.Admin`:
 Since version 0.5.0 installing `MakeHelpers` can and must be installed as a Tatin package. Assuming that you want to install it into the `MyUCMDs/` folder:
 
 ```
-]Tatin.InstallPackages group-name-1.2.3 [MyUCMDs]
+]Tatin.InstallPackages [tatin]makehelpers [myucmds]
 ```
 
 For Tatin to understand `[MyUCMDs]` you need at least version 0.86.0
