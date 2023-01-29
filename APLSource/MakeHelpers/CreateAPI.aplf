@@ -51,7 +51,7 @@
      name~←' '
      :Select level←'.'+.=name
      :Case 0
-          ⍝ No action required
+         subNamespace←''
      :Case 1
          subNamespace←{⍵↑⍨¯1+⍵⍳'.'}name
          :If 0=Tref.⎕NC subNamespace
@@ -68,8 +68,13 @@
          at←refTosourceNS.⎕AT name
          header←1⊃refTosourceNS.⎕NR name
          :If 0=1 2⊃at   ⍝ Niladic functions need special treatment
+             backRef,←{0=≢⍵:⍵ ⋄ ⍵,'.'}subNamespace
              header←{⍵↑⍨¯1+⌊/⍵⍳'⍝;'}header
-             Tref.⎕FX header({(1⊃⍵),'←',backRef,(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
+             :If 0=≢subNamespace
+                 Tref.⎕FX header({(1⊃⍵),'←',backRef,(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
+             :Else
+                 (Tref⍎subNamespace).⎕FX header({(1⊃⍵),'←',backRef,(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
+             :EndIf
          :Else
              :If 2=|1 2⊃at
                  :If '{'=⊃A.DLB header

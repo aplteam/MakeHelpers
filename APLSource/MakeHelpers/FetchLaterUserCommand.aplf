@@ -15,16 +15,19 @@
  :EndIf
  path,←{'/'/⍨~'/\'∊⍨¯1↑⍵}path
  fn1←path,uc
- 'Could not locate the user command script?!'Assert F.IsFile fn1
- caption1←path
- caption2←C.CIDER.source,'/'
- buff←{⍵↑⍨(≢⍵)⌊⌊/⍵⍳'/\'}cfg.source
- fn2←C.HOME,'/',buff,'/',uc
- :If cfg.source≢buff
-     (fn2,' not found in neither ',cfg.source,' nor ',buff)Assert ⎕NEXISTS fn2
+ :If F.IsFile fn1
+     caption1←path
+     caption2←C.CIDER.source,'/'
+     buff←{⍵↑⍨(≢⍵)⌊⌊/⍵⍳'/\'}cfg.source
+     fn2←C.HOME,'/',buff,'/',uc
+     :If cfg.source≢buff
+         (fn2,' not found in neither ',cfg.source,' nor ',buff)Assert ⎕NEXISTS fn2
+     :Else
+         (fn2,' not found in ',cfg.source)Assert ⎕NEXISTS fn2
+     :EndIf
+     caption2←buff
+     r←batch CopyBetter fn1 fn2 caption1 caption2
  :Else
-     (fn2,' not found in ',cfg.source)Assert ⎕NEXISTS fn2
+     ⎕←'Could not locate the user command script ',fn1
  :EndIf
- caption2←buff
- r←batch CopyBetter fn1 fn2 caption1 caption2
 ⍝Done

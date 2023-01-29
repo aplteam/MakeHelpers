@@ -17,7 +17,7 @@
 
  →T.GoToTidyUp noOf≠10
  →T.GoToTidyUp 9≠#.TEMP.APLSource.CompareFiles.API.⎕NC'ComparisonTools'
- →T.GoToTidyUp 1≠≢#.TEMP.APLSource.CompareFiles.API.ComparisonTools.⎕nl 3
+ →T.GoToTidyUp 6≠≢#.TEMP.APLSource.CompareFiles.API.ComparisonTools.⎕nl 3
 
  R←T._OK
 

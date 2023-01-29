@@ -25,7 +25,7 @@
  :If ~batch
  :AndIf 1 M.YesOrNo'Install new version as user command in MyUCMDs?'
      M.RecreateFolder M.GetMyUCMDsFolder'/MakeHelpers'
-     res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]MakeHelpers'
+     res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
      ⎕←'  New version installed as user command in MyUCMDs/: ',res
  :EndIf
 ⍝Done
