@@ -1,0 +1,25 @@
+ R←Test_API_071(stopFlag batchFlag);⎕TRAP;version;filename
+⍝ Exercise IncreaseVersionNumberInPackageConfig
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ filename←##.CiderConfig.HOME,'/apl-package.json'
+
+ ##.MakeHelpers.CommTools.Select_Choices←1 2⍴'Bump version of MakeHelpers' 1
+ version←##.MakeHelpers.CompileVersionNumberPattern filename
+ →T.PassesIf 0=≢version
+
+ ##.MakeHelpers.CommTools.Select_Choices←1 2⍴'Bump version of MakeHelpers' 2
+ version←##.MakeHelpers.CompileVersionNumberPattern filename
+ →T.PassesIf'+0.0.1'≡version
+
+ ##.MakeHelpers.CommTools.Select_Choices←1 2⍴'Bump version of MakeHelpers' 3
+ version←##.MakeHelpers.CompileVersionNumberPattern filename
+ →T.PassesIf'+0.1.0'≡version
+
+ ##.MakeHelpers.CommTools.Select_Choices←1 2⍴'Bump version of MakeHelpers' 4
+ version←##.MakeHelpers.CompileVersionNumberPattern filename
+ →T.PassesIf'+1.0.0'≡version
+
+ R←T._OK
+⍝Done

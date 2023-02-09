@@ -1,5 +1,6 @@
  r←Public
  r←''
+ r,←⊂'CompileVersionNumberPattern'
  r,←⊂'ConvertMarkdownToHtml5'
  r,←⊂'CopyBetter'
  r,←⊂'CopyTo'
@@ -12,8 +13,6 @@
  r,←⊂'GetMyUCMDsFolder'
  r,←⊂'GetPackageCfg'
  r,←⊂'GetUserHomeFolder'
- r,←⊂'HandleVersionNumber'
- r,←⊂'IncreaseBuildID2'
  r,←⊂'IncreaseBuildIDInFunction'
  r,←⊂'MakeStandAloneRunTimeExe'
  r,←⊂'RecreateFolder'

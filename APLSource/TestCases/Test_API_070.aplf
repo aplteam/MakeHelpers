@@ -1,0 +1,14 @@
+ R←Test_API_070(stopFlag batchFlag);⎕TRAP;version;Version
+⍝ Exercise IncreaseBuildIDInFunction
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ Assert' '=1↑0⍴#.TEMP.⎕FX'r←Version' 'r←''Foo'' ''1.2.3+4'' ''2023-02-04'''
+
+ version←##.MakeHelpers.IncreaseBuildIDInFunction'#.TEMP.Version'
+ →T.PassesIf'1.2.3+5'≡2⊃#.TEMP.Version
+ →T.PassesIf'1.2.3+5'≡2⊃⍎⎕FX version
+
+ R←T._OK
+⍝Done

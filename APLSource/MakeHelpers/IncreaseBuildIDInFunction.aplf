@@ -1,4 +1,4 @@
- {version}←{isTest}IncreaseBuildIDInFunction fnsName;buildID;result;p;buff;name
+ {version}←{isTest}IncreaseBuildIDInFunction fnsName;buildID;result;buff;name
 ⍝ Increases the build-ID of `fnsName` which must be the fully qualified name of a `Version` function
 ⍝ that lives either as a public method in a class or a trad-function in a namespace or namespace script.\\
 ⍝ The build ID is then increased by 1, the modified script or function fixed and Link is notified.\\
@@ -30,8 +30,6 @@
          version←fnsName AddBuildIDtoVersionSimple buildID
      :EndIf
      :If ~isTest
-         p←⎕NS''
-         p.source←'ns'
          :If ¯1=×⎕NC⊂fnsName ⍝ Member of a class?
          :OrIf {0::0 ⋄ 1⊣⎕SRC⍎⍵}¯1↓1⊃'.'A.SplitPath fnsName
              {}⎕SE.Link.Add ¯1↓1⊃'.'A.SplitPath fnsName

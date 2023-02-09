@@ -71,7 +71,7 @@
              backRef,←{0=≢⍵:⍵ ⋄ ⍵,'.'}subNamespace
              header←{⍵↑⍨¯1+⌊/⍵⍳'⍝;'}header
              :If 0=≢subNamespace
-                 Tref.⎕FX header({(1⊃⍵),'←',backRef,(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
+                 Tref.⎕FX header({('{}'~⍨1⊃⍵),'←',backRef,(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
              :Else
                  (Tref⍎subNamespace).⎕FX header({(1⊃⍵),'←',backRef,(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
              :EndIf

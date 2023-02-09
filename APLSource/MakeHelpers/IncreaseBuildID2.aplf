@@ -1,8 +1,0 @@
- version←IncreaseBuildID2 version
-⍝ Increases the build-ID in "version", or adds "+1" in case there is none yet.
-⍝ Examples:\\
-⍝ * '1.2.3+1'← IncreaseBuildID2 '1.2.3'
-⍝ * '1.2.3+12'← IncreaseBuildID2 '1.2.3+11'
-⍝ * '1.2.3-beta-1+12'← IncreaseBuildID2 '1.2.3-beta-1+11'
- ∘∘∘
-⍝Done
