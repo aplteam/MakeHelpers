@@ -1,4 +1,4 @@
- Prepare;testPath;testFilename;flag;ind
+ Prepare;testPath;testFilename;ask;answer;options;flag;ind
  ⎕IO←1 ⋄ ⎕ML←1
  T←⎕NEW Tester2 ⎕THIS
  ##.∆HOME←FilesAndDirs.PWD,'/packages/'
@@ -7,22 +7,22 @@
  flag←0
  :If ⎕NEXISTS testPath
      :If ⎕NEXISTS testFilename,'.dcf'
-         ind←('Code Coverage' 0 1)##.MakeHelpers.Select'Append' 'Replace' 'Neither'
+         ind←('Code Coverage' 0 1)CommTools.Select'Append' 'Replace' 'Neither'
          →(3=ind)/0
          flag←1
          :If 2≡ind
              1 ⎕NDELETE testFilename,'.dcf'
          :EndIf
      :Else
-         flag←0 ##.MakeHelpers.YesOrNo'Code coverage?'
+         flag←0 CommTools.YesOrNo'Code coverage?'
      :EndIf
  :Else
-     flag←0 ##.MakeHelpers.YesOrNo'Code coverage?'
+     flag←0 CommTools.YesOrNo'Code coverage?'
  :EndIf
  :If flag
      3 ⎕MKDIR testPath  ⍝
      T.codeCoverage←⎕NEW CodeCoverage(,⊂'#.',{⍵,'.',⍵}2↓⍕⎕THIS.##)
-     T.codeCoverage.ignore←'#.MakeHelpers.MakeHelpers.MakeHelpers_UC'
+     T.codeCoverage.ignore←'MakeHelpers_UC.dyalog'
      T.codeCoverage.filename←testFilename
  :EndIf
 ⍝Done

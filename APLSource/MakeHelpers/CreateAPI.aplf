@@ -121,7 +121,7 @@
          flag←0
      :EndIf
      :If flag
-     :AndIf 3=⌊type
+     :AndIf (⌊type)∊2 3 4
          :If ¯1≡savePath
              fullName←(⍕Tref),'.',name
              ⎕DL 0.05
