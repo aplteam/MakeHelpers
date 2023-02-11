@@ -1,4 +1,6 @@
 (
+ '* 0.6.1 from 2023-02-11'
+ '  * Bug fix in `CreateAPI`'
  '* 0.6.0 from 2023-02-11'
  '  * `CreateAPI` can now handle operators as well'
  '* 0.5.1 from 2023-02-09'
