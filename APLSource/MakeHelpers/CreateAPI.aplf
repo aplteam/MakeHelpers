@@ -1,5 +1,5 @@
  {r}←{savePath}CreateAPI y;refTosourceNS;names;API_name;type;name;at;body;header;fullName;targetNamespace;Tref;filename;extension;flag;b;subNamespace;backRef;level
-⍝ Deletes and then re-creates a namespace `API_Name` within `refTosourceNS` and then establishes cover functions
+⍝ Deletes and then re-creates a namespace `API_Name` within `refTosourceNS` and then establishes cover fns/opr
 ⍝ or references (variables) etc serving as API (public interface).\\
 ⍝ If you wish you may specify `API_name` as a fully qualified name which is useful mostly for test cases.
 ⍝ If you don't then it is assumed to live inside `refTosourceNS`.\\
@@ -9,11 +9,11 @@
 ⍝ [3] (`API_name`, optional): the name of the target namespace; defaults to "API"\\
 ⍝ By default Link is told about the functions (but not refs) created.
 ⍝ Instead you may specify a folder via `⍺` which must exist.
-⍝ If you do then all functions are saved within that folder without involving Link.
+⍝ If you do then all fns/opr are saved within that folder without involving Link.
 ⍝ If you don't want anything to be saved on disk at all then specify `''` as `⍺`.\\
-⍝ Returns the number of functions and refs established.\\
-⍝ Handles all objects but operators: niladic, monadic, dyadic and ambivalent functions as well as
-⍝ scripted namespaces, classes, interfaces and variables.
+⍝ Returns the number of fns/opr and refs established.\\
+⍝ Handles all kinds of objects: niladic, monadic, dyadic and ambivalent fns as well as
+⍝ monadic and dyadic operators and scripted namespaces, classes, interfaces and variables.
  r←0
  (refTosourceNS names API_name)←3↑y,⊂'API'
  'Source namespace (1⊃⍵) is not a reference'Assert 0 1≡{(≡⍵)(≢⍵)}refTosourceNS
@@ -32,10 +32,10 @@
      :If 0<≢(⍎targetNamespace).⎕NL⍳16
          :Trap 0
              {}⎕SE.Link.Expunge targetNamespace
-             ⎕DL 0.5
+             ⎕DL 0.05
          :Else
              {}⎕SE.Link.Expunge targetNamespace
-             ⎕DL 0.5
+             ⎕DL 0.05
          :EndTrap
      :EndIf
  :EndIf
@@ -91,8 +91,15 @@
              :EndIf
          :EndIf
      :ElseIf 4=⌊type     ⍝ Operator
-         ⎕←'*** Ignored: operator ',name
-         flag←0
+         :Select 12 refTosourceNS.⎕ATX name  ⍝ Syntax
+         :Case 1 ⍝ monadic operator
+             backRef Tref.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ (⍺⍺ ',⍺,⍵,') ⍵}'}name
+         :Case 2 ⍝ monadic operator
+             backRef Tref.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ (⍺⍺ ',⍺,⍵,' ⍵⍵) ⍵}'}name
+         :Else
+             'An operator that is neither monadic nor dyadic?!'⎕SIGNAL 11
+         :EndSelect
+         r+←1
      :ElseIf 2=⌊type     ⍝ Variable
          backRef Tref.{⍎'⎕THIS.',⍵,'←',⍺,⍵}name
          r+←1
