@@ -1,4 +1,7 @@
 (
+ '* 0.6.2-beta-1 from 2023-02-11'
+ '  * Bug fixes'
+ '    * `CompileVersionNumberPattern` did not find `HOME` in case no `⍺` was passed'
  '* 0.6.1 from 2023-02-11'
  '  * Bug fix in `CreateAPI`'
  '* 0.6.0 from 2023-02-11'

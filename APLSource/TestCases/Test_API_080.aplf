@@ -1,0 +1,29 @@
+ R←Test_API_080(stopFlag batchFlag);⎕TRAP;version;filename;cfg
+⍝ Exercise CompileVersionNumberPattern
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ filename←##.CiderConfig.HOME,'/Tests/MyPkg/apl-package.json'
+ cfg←##.MakeHelpers.GetPackageCfg filename
+
+ ##.MakeHelpers.CommTools.Select_Choices←1 2⍴'Bump version of Maker2' 1
+ version←cfg ##.MakeHelpers.CompileVersionNumberPattern ⍬
+ →T.PassesIf 0=≢version
+
+ ##.MakeHelpers.CommTools.Select_Choices←1 2⍴'Bump version of Maker2' 2
+ version←cfg ##.MakeHelpers.CompileVersionNumberPattern ⍬
+ →T.PassesIf version≡'+0.0.1'
+
+ ##.MakeHelpers.CommTools.Select_Choices←1 2⍴'Bump version of Maker2' 3
+ version←cfg ##.MakeHelpers.CompileVersionNumberPattern ⍬
+ →T.PassesIf version≡'+0.1.0'
+
+ ##.MakeHelpers.CommTools.Select_Choices←1 2⍴'Bump version of Maker2' 4
+ version←cfg ##.MakeHelpers.CompileVersionNumberPattern ⍬
+ →T.PassesIf version≡'+1.0.0'
+
+ version←##.MakeHelpers.CompileVersionNumberPattern ##.CiderConfig.HOME,'/Tests/MyPkg'
+ →T.PassesIf version≡'+1.0.0'
+
+ R←T._OK
+⍝Done

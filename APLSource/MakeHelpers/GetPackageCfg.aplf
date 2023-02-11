@@ -3,7 +3,7 @@
 ⍝ `path` can be either a folder hosting a package config file or the full filename.
 ⍝ If no such file can be found `⍬` is returned.
  path←F.EnforceSlash path
- cfgFilename←path{⍺,(⍵≢(-≢⍵)↑⍺)/'/',⍵}'/apl-package.json'
+ cfgFilename←path{⍺,(⍵≢(-≢⍵)↑⍺)/'/',⍵}'apl-package.json'
  :If ⎕NEXISTS cfgFilename
      json←⊃F.NGET cfgFilename
      cfg←⎕JSON⍠('Dialect' 'JSON5')⊢json
