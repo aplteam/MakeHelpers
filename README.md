@@ -22,30 +22,26 @@ Once `MakeHelpers` was brought into `⎕SE` it's available via `⎕SE.MakeHelper
 This is a list of helpers available:
 
 ```
- CheckVersionNo                     
- ConvertMarkdownToHtml5             
- CopyBetter                         
- CopyPackageBasics                  
- CopyTo                             
- CreateAPI                          
- CreateStandAloneExeParms           
- CreateTatinPackageFromSingleScript 
- CreateTatinPackageFromNamespace    
- CreateZipFile                      
- CR                                 
- DropBuildNumber                    
- GetMyUCMDsFolder                   
- GetPackageCfg                      
- GetUserHomeFolder                  
- HandleVersionNumber
- IncreaseBuildID                    
- InstallUserCommand                 
- MakeStandAloneRunTimeExe           
- RecreateFolder                     
- RemoveStuffButSetupExe             
- Select                             
- YesOrNo                            
- Version                            
+ CompileVersionNumberPattern
+ ConvertMarkdownToHtml5      
+ CopyBetter                  
+ CopyTo                      
+ CreateAPI                   
+ CreateStandAloneExeParms    
+ CreateZipFile               
+ CR                          
+ DropBuildNumber             
+ FetchLaterUserCommand       
+ GetMyUCMDsFolder            
+ GetPackageCfg               
+ GetUserHomeFolder           
+ IncreaseBuildIDInFunction   
+ MakeStandAloneRunTimeExe    
+ RecreateFolder              
+ RemoveStuffButSetupExe      
+ Select                      
+ YesOrNo                     
+ Version                                    
 ```
 
 Details are available via `]MakeHelpers.Help`.
@@ -55,7 +51,7 @@ Details are available via `]MakeHelpers.Help`.
 This is `MakeHelpers`' own `Make` function, which lives in `MakeHelpers.Admin`:
 
 ```
- ∇  {r}←{version}Make batch;M;C;zipFilename;path;res;cfg
+ ∇  {r}←{version}Make batch;M;C;zipFilename;targetPath;res;cfg
  ⍝ Creates a new version of MakeHelpers in the Dist/ folder.\\
  ⍝  * The user is asked whether the better version of the script is copied from either
  ⍝ `MyUCMDs/` or the project (if they differ)
@@ -67,17 +63,17 @@ This is `MakeHelpers`' own `Make` function, which lives in `MakeHelpers.Admin`:
    r←⍬
    M←⎕SE.MakeHelpers ⋄ C←##.CiderConfig
    '⍵ must be a Boolean'M.##.Assert(,⊂batch)∊0 1
-   path←C.HOME,'/Dist/'
+   targetPath←C.HOME,'/Dist/'
    cfg←M.GetPackageCfg C.HOME
    :If 0=⎕NC'version'
-       version←cfg M.HandleVersionNumber C.HOME
+       version←cfg M.CompileVersionNumberPattern C.HOME
    :EndIf
    :If ~batch
        M.FetchLaterUserCommand'MakeHelpers_UC.dyalog'cfg C('[MyUCMDs]MakeHelpers/')
    :EndIf
    M.CreateAPI ##.MakeHelpers ##.MakeHelpers.Public
-   M.RecreateFolder path
-   zipFilename←⎕SE.Tatin.BuildPackage C.HOME path version
+   M.RecreateFolder targetPath
+   zipFilename←⎕SE.Tatin.BuildPackage C.HOME targetPath version
    ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
    :If ~batch
    :AndIf 1 M.YesOrNo'Install new version as user command in MyUCMDs?'
