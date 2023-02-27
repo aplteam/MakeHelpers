@@ -14,6 +14,7 @@
 ⍝ Returns the number of fns/opr and refs established.\\
 ⍝ Handles all kinds of objects: niladic, monadic, dyadic and ambivalent fns as well as
 ⍝ monadic and dyadic operators and scripted namespaces, classes, interfaces and variables.
+⍝ It also honors shy results.
  r←0
  (refTosourceNS names API_name)←3↑y,⊂'API'
  'Source namespace (1⊃⍵) is not a reference'Assert 0 1≡{(≡⍵)(≢⍵)}refTosourceNS
