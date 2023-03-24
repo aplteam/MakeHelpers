@@ -1,6 +1,6 @@
 {r}←{levels}RecreateFolder targetFolder;rc;flag;more;counter;max;targetFolder2
 ⍝ Typically the right argument is `./Dist`. The folder will be removed and then created.\\
-⍝ `level` defaults to 1, meaning that only the very last level of the path is removed.\\
+⍝ `levels` defaults to 1, meaning that only the very last level of the path is removed.\\
 ⍝ Tries a maximum of 4 times with a delay in between when an error occurs.
 ⍝ The loop was introduced because on some systems the first attempt often, the second attempt
 ⍝ sometimes failed, but finally it would succeed.

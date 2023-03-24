@@ -8,7 +8,7 @@
      :Return
  :EndIf
 
- 0 0⍴⍞,⎕←'This test needs you - it will open MakeHelper''s ADOC documentation in a browser; press <enter> to continue.'
+ ##.MakeHelpers.Pause'This test needs you - it will open MakeHelper''s ADOC documentation in a browser'
 
  res←⎕SE.UCMD'MakeHelpers'
 

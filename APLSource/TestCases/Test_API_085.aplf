@@ -1,0 +1,24 @@
+ R←Test_API_085(stopFlag batchFlag);⎕TRAP;expected
+⍝ Exercise SplitVersionFromBuildNumber
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ expected←'1.2.3' ''
+ →T.PassesIf expected≡##.MakeHelpers.SplitVersionFromBuildNumber'1.2.3'
+ expected←'1.2.3' '1234'
+ →T.PassesIf expected≡##.MakeHelpers.SplitVersionFromBuildNumber'1.2.3+1234'
+ expected←'1.2.3' ''
+ →T.PassesIf expected≡##.MakeHelpers.SplitVersionFromBuildNumber'Foo' '1.2.3' '2019-03-07'
+ expected←'1.2.3' '1234'
+ →T.PassesIf expected≡##.MakeHelpers.SplitVersionFromBuildNumber'Foo' '1.2.3+1234' '2019-03-07'
+ expected←'1.2.3' ''
+ →T.PassesIf expected≡##.MakeHelpers.SplitVersionFromBuildNumber'1.2.3' '2023-01-01'
+ expected←'1.2.3' '1234'
+ →T.PassesIf expected≡##.MakeHelpers.SplitVersionFromBuildNumber'1.2.3+1234' '2023-01-01'
+ expected←'1.2.3' ''
+ →T.PassesIf expected≡##.MakeHelpers.SplitVersionFromBuildNumber'<Name>' '1.2.3' '2023-01-01'
+ expected←'1.2.3' '1234'
+ →T.PassesIf expected≡##.MakeHelpers.SplitVersionFromBuildNumber'<Name>' '1.2.3+1234' '2023-01-01'
+
+ R←T._OK
+⍝Done

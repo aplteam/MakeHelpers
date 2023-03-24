@@ -6,7 +6,8 @@
  →T.PassesIf''≡##.MakeHelpers.DropBuildNumber''
  →T.PassesIf'1.2.3'≡##.MakeHelpers.DropBuildNumber'1.2.3'
  →T.PassesIf'1.2.3'≡##.MakeHelpers.DropBuildNumber'1.2.3+4567'
- →T.PassesIf'Foo' '1.2.3' '2019-03-07'≡##.MakeHelpers.DropBuildNumber'Foo' '1.2.3' '2019-03-07'
+ →T.PassesIf '1.2.3' '2019-03-07'≡##.MakeHelpers.DropBuildNumber '1.2.3' '2019-03-07'
+  →T.PassesIf'Foo' '1.2.3' '2019-03-07'≡##.MakeHelpers.DropBuildNumber'Foo' '1.2.3' '2019-03-07'
 
  R←T._OK
 ⍝Done

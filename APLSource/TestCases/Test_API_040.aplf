@@ -1,4 +1,4 @@
- R←Test_API_040(stopFlag batchFlag);⎕TRAP
+ R←Test_API_040(stopFlag batchFlag);⎕TRAP;qdmx
 ⍝ Exercise IncreaseBuildIDInFunction on a function that returns a nested three-element vecotr
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -12,13 +12,22 @@
  1 ##.MakeHelpers.IncreaseBuildIDInFunction'#.TEMP.Version'
  →T.FailsIf'1.0.0+2'≢2⊃#.TEMP.Version
 
- #.TEMP.⎕FX'r←Version' 'r←''MakerTest'' ''1.0.0.3'' ''2019-01-05'''
+ #.TEMP.⎕FX'r←Version' 'r←''MakerTest'' ''1.0.0+3'' ''2019-01-05'''
  1 ##.MakeHelpers.IncreaseBuildIDInFunction'#.TEMP.Version'
  →T.FailsIf'1.0.0+4'≢2⊃#.TEMP.Version
  1 ##.MakeHelpers.IncreaseBuildIDInFunction'#.TEMP.Version'
  →T.FailsIf'1.0.0+5'≢2⊃#.TEMP.Version
 
- #.TEMP.⎕FX'r←Version' 'r←''MakerTest'' ''1.0.0-beta-1.3'' ''2019-01-05'''
+ #.TEMP.⎕FX'r←Version' 'r←''MakerTest'' ''1.0.0.3'' ''2019-01-05'''
+ :Trap 11
+     1 ##.MakeHelpers.IncreaseBuildIDInFunction'#.TEMP.Version'
+     →T.FailsIf 1
+ :Else
+     qdmx←⎕DMX
+     →T.PassesIf'"version" must carry precisely two dots'≡qdmx.EM
+ :EndTrap
+
+ #.TEMP.⎕FX'r←Version' 'r←''MakerTest'' ''1.0.0-beta-1+3'' ''2019-01-05'''
  1 ##.MakeHelpers.IncreaseBuildIDInFunction'#.TEMP.Version'
  →T.FailsIf'1.0.0-beta-1+4'≢2⊃#.TEMP.Version
  1 ##.MakeHelpers.IncreaseBuildIDInFunction'#.TEMP.Version'

@@ -10,6 +10,7 @@
 ⍝ Note that if the "name" and/or the "extension" part of `x` contain either "*" or "?"
 ⍝ then the matching files and folders are copied.\\
 ⍝ Throws an error in case something went wrong.\\
+⍝ Takes ace of missing folder, does not care whether files already exist and preserves attributes.\\
 ⍝ Returns always a 0.
  r←0
  :If 2>|≡x

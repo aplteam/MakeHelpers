@@ -1,4 +1,4 @@
-:Class MakeHelpers_UC
+﻿:Class MakeHelpers_UC
 ⍝ Puts MakeHelper's internal documentation on display
 
     ⎕IO←⎕ML←1
@@ -18,7 +18,7 @@
     ∇ r←Run(Cmd Args)
       :Access Shared Public
       r←''
-      ⎕SE.UCMD'ADOC ⎕se.MakeHelpers.## -title=MakeHelpers'
+      {}⎕SE.UCMD'ADOC ',(⍕⎕SE.MakeHelpers),' -title=MakeHelpers'
     ∇
 
     ∇ r←level Help Cmd;⎕IO;⎕ML
@@ -30,6 +30,6 @@
       :Case 1
           r,←⊂'Puts the internal documentation on display'
       :EndSelect
-    ∇  
+    ∇
 
 :EndClass

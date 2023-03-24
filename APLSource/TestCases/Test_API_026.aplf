@@ -4,8 +4,8 @@
  R←T._Failed
 
  res←##.MakeHelpers.Version
- →T.PassesIf 1=≡res
- →T.PassesIf' '=1↑0⍴res
+ →T.PassesIf 2=≡res
+ →T.PassesIf∧/{' '=⊃1↑0⍴⍵}¨res
 
  R←T._OK
 ⍝Done

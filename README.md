@@ -39,12 +39,15 @@ This is a list of helpers available:
  MakeStandAloneRunTimeExe    
  RecreateFolder              
  RemoveStuffButSetupExe      
- Select                      
+ Select 
+ SplitVersionFromBuildNumber                      
  YesOrNo                     
  Version                                    
 ```
 
 Details are available via `]MakeHelpers.Help`.
+
+Note that `Select`, `YesOrNo` and `Pause` are inherited from `CommTools`.
 
 ## Example
 
