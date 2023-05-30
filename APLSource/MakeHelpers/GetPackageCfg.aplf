@@ -5,10 +5,7 @@
 ⍝ See also `PutPackageCfg`.
  path←F.EnforceSlash path
  cfgFilename←path{⍺,(⍵≢(-≢⍵)↑⍺)/'/',⍵}'apl-package.json'
- :If ⎕NEXISTS cfgFilename
-     json←⊃F.NGET cfgFilename
-     cfg←⎕JSON⍠('Dialect' 'JSON5')⊢json
- :Else
-     cfg←⍬
- :EndIf
+ ('Config file not found: ',cfgFilename)Assert ⎕NEXISTS cfgFilename
+ json←⊃F.NGET cfgFilename
+ cfg←⎕JSON⍠('Dialect' 'JSON5')⊢json
 ⍝Done

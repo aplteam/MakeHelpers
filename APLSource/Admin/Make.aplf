@@ -1,32 +1,20 @@
- {r}←{version}Make batch;M;C;zipFilename;path;res;cfg
-⍝ Creates a new version of MakeHelpers in the Dist/ folder.\\
-⍝  * The user is asked whether the better version of the script is copied from either
-⍝ `MyUCMDs/` or the project (if they differ)
-⍝  * The user is also asked whether the new version should be installed in `MyUCMDs/`
-⍝ If `batch` is 1 (default is 0) none of this happens.\\
-⍝ `version` can be either a full-fledged version number or something like "+0.0.1".
-⍝ If no left argument is provided the user is questioned.\\
-⍝ Returns always ⍬
- r←⍬
- M←⎕SE.MakeHelpers
- C←##.CiderConfig
- '⍵ must be a Boolean'M.##.Assert(,⊂batch)∊0 1
- path←C.HOME,'/Dist/'
- cfg←M.GetPackageCfg C.HOME
- :If 0=⎕NC'version'
+ Make flag;M;C;path;zipFilename;res;version;cfg;parms
+ :If flag
+     M←⎕SE.MakeHelpers
+     C←##.CiderConfig
+     path←C.HOME,'/',C.CIDER.distributionFolder
+     cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET C.HOME,'/apl-package.json'
      version←M.CompileVersionNumberPattern cfg
- :EndIf
- :If ~batch
-     M.FetchLaterUserCommand'MakeHelpers_UC.dyalog'cfg C('[MyUCMDs]MakeHelpers/')
- :EndIf
- M.CreateAPI ##.MakeHelpers ##.MakeHelpers.Public
- M.RecreateFolder path
- zipFilename←⎕SE.Tatin.BuildPackage C.HOME path version
- ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
- :If ~batch
- :AndIf 1 M.YesOrNo'Install new version as user command in MyUCMDs?'
-     M.RecreateFolder M.GetMyUCMDsFolder'/MakeHelpers'
-     res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
-     ⎕←'  New version installed as user command in MyUCMDs/: ',res
+     M.RecreateFolder path
+     parms←⎕SE.Tatin.CreateBuildParms C.HOME
+     parms.targetPath←path
+     parms.version←version
+     zipFilename←⎕SE.Tatin.BuildPackage parms
+     ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
+     :If 1 M.YesOrNo'Install new version as user command in MyUCMDs?'
+         M.RecreateFolder M.GetMyUCMDsFolder'/MakeHelpers'
+         res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
+         ⎕←'  New version installed as user command in MyUCMDs/: ',res
+     :EndIf
  :EndIf
 ⍝Done

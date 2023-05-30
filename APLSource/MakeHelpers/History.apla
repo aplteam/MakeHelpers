@@ -1,6 +1,7 @@
 (
+ '* 0.8.0 from 2023-05-30'
+ '  * `GetPackageCfg` throws an error now when the given folder does not carry a config file  '
  '* 0.7.0 from 2023-03-24'
- '  * ...'
  '  * Documentation improved.'
  '  * Bug fixes                 '
  '    * `CompileVersionNumberPattern` did not find `HOME` in case no `⍺` was passed'
