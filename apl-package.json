@@ -19,5 +19,5 @@
   source: "APLSource/MakeHelpers",
   tags: "build,make",
   userCommandScript: "APLSource/MakeHelpers_UC.dyalog",
-  version: "0.8.0+150",
+  version: "0.8.0+151",
 }
