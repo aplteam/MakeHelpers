@@ -1,33 +1,39 @@
- {r}←{batch}FetchLaterUserCommand(uc cfg C path);fn2;caption1;caption2;cfg;cfgFilename;json;buff;fn1
-⍝ Check whether the user command `uc` in `path` is identical with the one in the project. If they are
+ {r}←{batch}FetchLaterUserCommand(cfg C path);fn2;caption1;caption2;cfg;cfgFilename;json;buff;fn1;uc
+⍝ Check the user command in `path` (if any) is identical with the one in the project. If they are
 ⍝ not identical the user is asked whether she wants to copy the later version over, unless `batch` is
 ⍝ 1, in which case the copy operation is carried out silently.
-⍝ * `uc` is the name of the user command file, including the extension
 ⍝ * `C` is a namespace with a Cider configuration
 ⍝ * `path` is something like the Dyalog MyUCMDs/ folder, though `[myucmds]` is understood and replaced
 ⍝ * `batch`, if specified, must be a boolean indicating the function is called as part of an
 ⍝   automated "make" process, meaning that no user is available in front of the monitor\\
-⍝ Returns 0 for "no action", 1 for the file in `path` winning the day and 2 otherwise.
+⍝ Returns 0 for "no action", 1 for the file in `path` winning the day and 2 otherwise.\\
+⍝ If the script is copied over from `path` and batch←0 then the user is warned that the WS is
+⍝ out of sync in respect to the user command script.
  r←0
  batch←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'batch'
- :If '[myucmds]'{⍺≡⎕C(≢⍺)↑⍵}path
-     path←1 FilesAndDirs.NormalizePath(GetMyUCMDsFolder''),'/',{⍵↓⍨⍵⍳']'}path
- :EndIf
- path,←{'/'/⍨~'/\'∊⍨¯1↑⍵}path
- fn1←path,uc
- :If F.IsFile fn1
-     caption1←path
-     caption2←C.CIDER.source,'/'
-     buff←{⍵↑⍨(≢⍵)⌊⌊/⍵⍳'/\'}cfg.source
-     fn2←C.HOME,'/',buff,'/',uc
-     :If cfg.source≢buff
-         (fn2,' not found in neither ',cfg.source,' nor ',buff)Assert ⎕NEXISTS fn2
-     :Else
-         (fn2,' not found in ',cfg.source)Assert ⎕NEXISTS fn2
+ :If 0<≢uc←{⊃,/1↓⎕NPARTS ⍵}cfg.userCommandScript
+     :If '[myucmds]'{⍺≡⎕C(≢⍺)↑⍵}path
+         path←F.AddTrailingSep 1 F.NormalizePath(GetMyUCMDsFolder''),'/',{⍵↓⍨⍵⍳']'}path
      :EndIf
-     caption2←buff
-     r←batch CopyBetter fn1 fn2 caption1 caption2
- :Else
-     ⎕←'Could not locate the user command script ',fn1
+     fn1←path,cfg.name,'/',uc
+     :If F.IsFile fn1
+         caption1←path
+         caption2←C.CIDER.source,'/'
+         buff←{⍵↑⍨(≢⍵)⌊⌊/⍵⍳'/\'}cfg.source
+         fn2←C.HOME,'/',buff,'/',uc
+         :If cfg.source≢buff
+             (uc,' not found in neither ',path,cfg.name,' nor ',buff)Assert ⎕NEXISTS fn2
+         :Else
+             (uc,' not found in ',cfg.source)Assert ⎕NEXISTS fn2
+         :EndIf
+         caption2←buff
+         r←batch CopyBetter fn1 fn2 caption1 caption2
+     :Else
+         ⎕←'Could not locate the user command script ',fn1
+     :EndIf
+     :If ~batch
+     :AndIf r=1
+         ⎕←'*** Attention,  ',uc,' on disk is now out of sync with the WS!'
+     :EndIf
  :EndIf
 ⍝Done

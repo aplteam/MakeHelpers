@@ -1,35 +1,30 @@
- {r}←{savePath}CreateAPI y;refTosourceNS;names;API_name;type;name;at;body;header;fullName;targetNamespace;Tref;filename;extension;flag;b;subNamespace;backRef;level
-⍝ Deletes and then re-creates a namespace `API_Name` within `refTosourceNS` and then establishes cover fns/opr
-⍝ or references (variables) etc serving as API (public interface).\\
-⍝ If you wish you may specify `API_name` as a fully qualified name which is useful mostly for test cases.
-⍝ If you don't then it is assumed to live inside `refTosourceNS`.\\
-⍝ `⍵` must be a vector of length 2 or 3:\\
-⍝ [1] (`refTosourceNS`, mandatory) name of the source namespace\\
-⍝ [2] (`names`, mandatory) list of all public names, typically returned by a function named "Public" or the like\\
-⍝ [3] (`API_name`, optional): the name of the target namespace; defaults to "API"\\
+ {r}←{savePath}CreateAPIfromCFG(refToSourceNS cfg);names;targetNamespace;Tref;b;name;level;subNamespace;flag;type;backRef;at;header;fullName;extension;filename;body
+⍝ Creates an API according to the config file. No checks are performed, so you must not call this functions in case
+⍝ you don't want the API to be (re)-created automatically.\\
+⍝ Established either all functions and operators in the API or, if there is a function `Public`, only those noted by it.\\
+⍝ The API is always created within `refToSourceNS`.\\
+⍝ `⍵` must be a vector of length 2:\\
+⍝ 1. `refToSourceNS`: ref to the source namespace
+⍝ 2. `cfg`: the package config file in JSON5 format\\
+⍝ Note that `Public` might not only list fns and ops but also classes, interfaces and namespace scripts
 ⍝ By default Link is told about the functions (but not refs) created.
 ⍝ Instead you may specify a folder via `⍺` which must exist.
 ⍝ If you do then all fns/opr are saved within that folder without involving Link.
 ⍝ If you don't want anything to be saved on disk at all then specify `''` as `⍺`.\\
 ⍝ Returns the number of fns/opr and refs established.\\
-⍝ Handles all kinds of objects: niladic, monadic, dyadic and ambivalent fns as well as
-⍝ monadic and dyadic operators and scripted namespaces, classes, interfaces and variables.
-⍝ It also honors shy results.\\
-⍝ See aslo `CreateAPIfromCFG`
+⍝ See also `CreateAPI`
  r←0
- (refTosourceNS names API_name)←3↑y,⊂'API'
- 'Source namespace (1⊃⍵) is not a reference'Assert 0 1≡{(≡⍵)(≢⍵)}refTosourceNS
- 'Source namespace (1⊃⍵) is not a namespace'Assert 0=+/'[]'∊refTosourceNS
- 'Source namespace (1⊃⍵) is not a namespace'Assert 9.1≡⎕NC⊂⍕refTosourceNS
+ 'Source namespace (1⊃⍵) is not a reference'Assert 0 1≡{(≡⍵)(≢⍵)}refToSourceNS
+ 'Source namespace (1⊃⍵) is not a namespace'Assert 0=+/'[]'∊refToSourceNS
+ 'Source namespace (1⊃⍵) is not a namespace'Assert 9.1≡⎕NC⊂⍕refToSourceNS
  savePath←{0<⎕NC ⍵:⍎⍵ ⋄ ¯1}'savePath'
- 'No API names specified?!'Assert 0<≢names
- names←⊆names
- API_name←⍕{0<⎕NC ⍵:⍎⍵ ⋄ 'API'}'API_name'
- :If (⊃API_name)∊'#⎕'
-     targetNamespace←API_name
+ :If 3=refToSourceNS.⎕NC'Public'
+     names←refToSourceNS⍎'Public'           ⍝ A function `Public` rules if it exists
  :Else
-     targetNamespace←(⍕refTosourceNS),'.',API_name
+     names←' '~⍨¨↓refToSourceNS.⎕NL 3 4     ⍝ Default: the names of all fns and ops
  :EndIf
+ 'No API names specified?!'Assert 0<≢names
+ targetNamespace←(⍕refToSourceNS),'.',cfg.api
  :If 0<⎕NC targetNamespace
      :If 0<≢(⍎targetNamespace).⎕NL⍳16
          :Trap 0
@@ -46,8 +41,8 @@
  :AndIf 0<≢savePath
      'Create!'F.CheckPath savePath
  :EndIf
- :If ∨/b←0=refTosourceNS.⎕NC↑names
-     0 Assert⍨'Not found in ',(⍕refTosourceNS),': ',⊃{⍺,', ',⍵}/b/names
+ :If ∨/b←0=refToSourceNS.⎕NC↑names
+     0 Assert⍨'Not found in ',(⍕refToSourceNS),': ',⊃{⍺,', ',⍵}/b/names
  :EndIf
  :For name :In names
      name~←' '
@@ -63,12 +58,12 @@
          'API must not contain namespaces more than level deep'Assert 0
      :EndSelect
      flag←1
-     type←refTosourceNS.⎕NC⊂name
+     type←refToSourceNS.⎕NC⊂name
      backRef←⊃,/(level+1)⍴⊂'##.'
      :If 3=⌊type        ⍝ Function?
          r+←1
-         at←refTosourceNS.⎕AT name
-         header←1⊃refTosourceNS.⎕NR name
+         at←refToSourceNS.⎕AT name
+         header←1⊃refToSourceNS.⎕NR name
          :If 0=1 2⊃at   ⍝ Niladic functions need special treatment
              backRef,←{0=≢⍵:⍵ ⋄ ⍵,'.'}subNamespace
              header←{⍵↑⍨¯1+⌊/⍵⍳'⍝;'}header
@@ -93,7 +88,7 @@
              :EndIf
          :EndIf
      :ElseIf 4=⌊type     ⍝ Operator
-         :Select 12 refTosourceNS.⎕ATX name  ⍝ Syntax
+         :Select 12 refToSourceNS.⎕ATX name  ⍝ Syntax
          :Case 1 ⍝ monadic operator
              backRef Tref.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ (⍺⍺ ',⍺,⍵,') ⍵}'}name
          :Case 2 ⍝ monadic operator

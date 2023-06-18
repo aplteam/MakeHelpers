@@ -1,5 +1,6 @@
 ﻿:Class MakeHelpers_UC
 ⍝ Puts MakeHelper's internal documentation on display
+⍝ Everything else is available via MakeHelper's API
 
     ⎕IO←⎕ML←1
 
@@ -25,11 +26,8 @@
       ⎕IO←⎕ML←1
       :Access Shared Public
       r←''
-      :Select level
-          r,←⊂']MakeHelpers'
-      :Case 1
-          r,←⊂'Puts the internal documentation on display'
-      :EndSelect
+      r,←⊂']MakeHelpers'
+      r,←⊂'Puts the internal documentation on display. All the functionality is available via the API.'
     ∇
 
 :EndClass

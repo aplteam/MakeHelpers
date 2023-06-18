@@ -1,4 +1,10 @@
 (
+ '* 0.9.0 from 2023-06-18'
+ '  * BREAKING CHANGE: `FetchLaterUserCommand` requires only 3 rather than 4 arguments'
+ '  * `FetchLaterUserCommand` prints a message to the session now in case the user command script'
+ '    and the WS are out of sync'
+ '  * New function `CreateAPIfromCFG` created that can create an API on its own from a ref to the project'
+ '    namespace and the package configuration'
  '* 0.8.0 from 2023-05-30'
  '  * `GetPackageCfg` throws an error now when the given folder does not carry a config file  '
  '* 0.7.0 from 2023-03-24'
