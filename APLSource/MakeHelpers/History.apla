@@ -1,6 +1,7 @@
 (
  '* 0.9.0 from 2023-06-18'
- '  * BREAKING CHANGE: `FetchLaterUserCommand` requires only 3 rather than 4 arguments'
+ '  * BREAKING CHANGES: `FetchLaterUserCommand` requires only 3 rather than 4 arguments AND'
+ '    the last argument has changed: now required to be just the path to a user command folder'
  '  * `FetchLaterUserCommand` prints a message to the session now in case the user command script'
  '    and the WS are out of sync'
  '  * New function `CreateAPIfromCFG` created that can create an API on its own from a ref to the project'
