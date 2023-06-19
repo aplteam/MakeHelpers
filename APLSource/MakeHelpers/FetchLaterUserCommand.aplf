@@ -29,7 +29,7 @@
          caption2←buff
          r←batch CopyBetter fn1 fn2 caption1 caption2
      :Else
-         ⎕←'Could not locate the user command script ',fn1
+         ⎕←'*** Could not locate the user command script ',fn1
      :EndIf
      :If ~batch
      :AndIf r=1
