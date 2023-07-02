@@ -15,7 +15,6 @@
 ⍝ Handles all kinds of objects: niladic, monadic, dyadic and ambivalent fns as well as
 ⍝ monadic and dyadic operators and scripted namespaces, classes, interfaces and variables.
 ⍝ It also honors shy results.\\
-⍝ See aslo `CreateAPIfromCFG`
  r←0
  (refTosourceNS names API_name)←3↑y,⊂'API'
  'Source namespace (1⊃⍵) is not a reference'Assert 0 1≡{(≡⍵)(≢⍵)}refTosourceNS
@@ -73,7 +72,11 @@
              backRef,←{0=≢⍵:⍵ ⋄ ⍵,'.'}subNamespace
              header←{⍵↑⍨¯1+⌊/⍵⍳'⍝;'}header
              :If 0=≢subNamespace
-                 Tref.⎕FX header({('{}'~⍨1⊃⍵),'←',backRef,(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
+                 :If '←'∊header  ⍝ With result
+                     Tref.⎕FX header({('{}'~⍨1⊃⍵),'←',backRef,(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
+                 :Else           ⍝ Without result
+                     Tref.⎕FX header({backRef,⍵}{⍵↑⍨¯1+⍵⍳'⍝'}header)
+                 :EndIf
              :Else
                  (Tref⍎subNamespace).⎕FX header({(1⊃⍵),'←',backRef,(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
              :EndIf

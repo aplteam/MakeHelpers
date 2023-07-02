@@ -1,5 +1,5 @@
  {r}←{batch}FetchLaterUserCommand(cfg C path);fn2;caption1;caption2;cfg;cfgFilename;json;buff;fn1;uc
-⍝ Check the user command in `path` (if any) is identical with the one in the project. If they are
+⍝ Check if the user command in `path` (if any) is identical with the one in the project. If they are
 ⍝ not identical the user is asked whether she wants to copy the later version over, unless `batch` is
 ⍝ 1, in which case the copy operation is carried out silently.
 ⍝ * `C` is a namespace with a Cider configuration
@@ -15,7 +15,7 @@
      :If '[myucmds]'{⍺≡⎕C(≢⍺)↑⍵}path
          path←F.AddTrailingSep 1 F.NormalizePath(GetMyUCMDsFolder''),'/',{⍵↓⍨⍵⍳']'}path
      :EndIf
-     fn1←path,cfg.name,'/',uc
+     fn1←(FilesAndDirs.AddTrailingSep path),uc
      :If F.IsFile fn1
          caption1←path
          caption2←C.CIDER.source,'/'

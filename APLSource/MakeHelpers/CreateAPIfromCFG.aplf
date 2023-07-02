@@ -12,7 +12,6 @@
 ⍝ If you do then all fns/opr are saved within that folder without involving Link.
 ⍝ If you don't want anything to be saved on disk at all then specify `''` as `⍺`.\\
 ⍝ Returns the number of fns/opr and refs established.\\
-⍝ See also `CreateAPI`
  r←0
  'Source namespace (1⊃⍵) is not a reference'Assert 0 1≡{(≡⍵)(≢⍵)}refToSourceNS
  'Source namespace (1⊃⍵) is not a namespace'Assert 0=+/'[]'∊refToSourceNS
@@ -25,112 +24,5 @@
  :EndIf
  'No API names specified?!'Assert 0<≢names
  targetNamespace←(⍕refToSourceNS),'.',cfg.api
- :If 0<⎕NC targetNamespace
-     :If 0<≢(⍎targetNamespace).⎕NL⍳16
-         :Trap 0
-             {}⎕SE.Link.Expunge targetNamespace
-             ⎕DL 0.05
-         :Else
-             {}⎕SE.Link.Expunge targetNamespace
-             ⎕DL 0.05
-         :EndTrap
-     :EndIf
- :EndIf
- Tref←⍎targetNamespace ⎕NS''
- :If ¯1≢savePath
- :AndIf 0<≢savePath
-     'Create!'F.CheckPath savePath
- :EndIf
- :If ∨/b←0=refToSourceNS.⎕NC↑names
-     0 Assert⍨'Not found in ',(⍕refToSourceNS),': ',⊃{⍺,', ',⍵}/b/names
- :EndIf
- :For name :In names
-     name~←' '
-     :Select level←'.'+.=name
-     :Case 0
-         subNamespace←''
-     :Case 1
-         subNamespace←{⍵↑⍨¯1+⍵⍳'.'}name
-         :If 0=Tref.⎕NC subNamespace
-             subNamespace Tref.⎕NS''
-         :EndIf
-     :Else
-         'API must not contain namespaces more than level deep'Assert 0
-     :EndSelect
-     flag←1
-     type←refToSourceNS.⎕NC⊂name
-     backRef←⊃,/(level+1)⍴⊂'##.'
-     :If 3=⌊type        ⍝ Function?
-         r+←1
-         at←refToSourceNS.⎕AT name
-         header←1⊃refToSourceNS.⎕NR name
-         :If 0=1 2⊃at   ⍝ Niladic functions need special treatment
-             backRef,←{0=≢⍵:⍵ ⋄ ⍵,'.'}subNamespace
-             header←{⍵↑⍨¯1+⌊/⍵⍳'⍝;'}header
-             :If 0=≢subNamespace
-                 Tref.⎕FX header({('{}'~⍨1⊃⍵),'←',backRef,(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
-             :Else
-                 (Tref⍎subNamespace).⎕FX header({(1⊃⍵),'←',backRef,(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
-             :EndIf
-         :Else
-             :If 2=|1 2⊃at
-                 :If '{'=⊃A.DLB header
-                     backRef Tref.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ ',⍺,⍵,' ⍵}'}name
-                 :Else
-                     backRef Tref.{⍎⍵,'←{⍺←⊢ ⋄ ⍺ ',⍺,⍵,' ⍵}'}name
-                 :EndIf
-             :Else
-                 :If '{'=⊃A.DLB header
-                     backRef Tref.{⍎⍵,'←{1:shy←',⍺,⍵,' ⍵}'}name
-                 :Else
-                     backRef Tref.{⍎⍵,'←{',⍺,⍵,' ⍵}'}name
-                 :EndIf
-             :EndIf
-         :EndIf
-     :ElseIf 4=⌊type     ⍝ Operator
-         :Select 12 refToSourceNS.⎕ATX name  ⍝ Syntax
-         :Case 1 ⍝ monadic operator
-             backRef Tref.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ (⍺⍺ ',⍺,⍵,') ⍵}'}name
-         :Case 2 ⍝ monadic operator
-             backRef Tref.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ (⍺⍺ ',⍺,⍵,' ⍵⍵) ⍵}'}name
-         :Else
-             'An operator that is neither monadic nor dyadic?!'⎕SIGNAL 11
-         :EndSelect
-         r+←1
-     :ElseIf 2=⌊type     ⍝ Variable
-         backRef Tref.{⍎'⎕THIS.',⍵,'←',⍺,⍵}name
-         r+←1
-         extension←'apla'
-     :ElseIf 9.1=type   ⍝ Namespace script?
-         backRef Tref.{⍎'⎕THIS.',⍵,'←',⍺,⍵}name
-         r+←1
-         extension←'apln'
-     :ElseIf 9.4=type   ⍝ Class?
-         backRef Tref.{⍎'⎕THIS.',⍵,'←',⍺,⍵}name
-         r+←1
-         extension←'aplc'
-     :ElseIf 9.5=type   ⍝ Interface?
-         backRef Tref.{⍎'⎕THIS.',⍵,'←',⍺,⍵}name
-         r+←1
-         extension←'apli'
-     :Else
-         ⎕←'*** Ignored: ',name,' (name class=',(⍕type),')'
-         flag←0
-     :EndIf
-     :If flag
-     :AndIf (⌊type)∊2 3 4
-         :If ¯1≡savePath
-             fullName←(⍕Tref),'.',name
-             ⎕DL 0.05
-             {}⎕SE.Link.Add fullName
-         :ElseIf 0<≢savePath
-             extension←'aplf'
-             filename←name,'.',extension
-             body←Tref.⎕NR name
-             (⊂body)⎕NPUT(savePath,'/',filename)1
-         :Else
-             ⍝ User does not want to save anything.
-         :EndIf
-     :EndIf
- :EndFor
+ r←CreateAPI refToSourceNS names targetNamespace
 ⍝Done

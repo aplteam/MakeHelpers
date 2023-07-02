@@ -1,4 +1,8 @@
 (
+ '* 0.9.1 from 2023-07-02'
+ '  * Bug fixes: '
+ '    * `CreateAPIfromCFG` could not deal with niladic functions not returning a result'
+ '    * `FetchLaterUserCommand` had a problem finding the user command script under some circumstances'
  '* 0.9.0 from 2023-06-18'
  '  * BREAKING CHANGES: `FetchLaterUserCommand` requires only 3 rather than 4 arguments AND'
  '    the last argument has changed: now required to be just the path to a user command folder'
