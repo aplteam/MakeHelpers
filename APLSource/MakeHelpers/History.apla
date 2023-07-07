@@ -1,4 +1,7 @@
 (
+ '* 0.9.2 from 2023-07-07'
+ '  * `FetchLaterUserCommand` still had a problem finding the user command script under some circumstances'
+ '  * `CopyBetter` did not differntiate between "no action required" and "cancelled by user - it does now'
  '* 0.9.1 from 2023-07-02'
  '  * Bug fixes: '
  '    * `CreateAPIfromCFG` could not deal with niladic functions not returning a result'

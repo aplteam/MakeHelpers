@@ -1,0 +1,11 @@
+ R←Test_Misc_001(stopFlag batchFlag);⎕TRAP;res
+⍝ Exercise the Box and Frame functions
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ res←##.MakeHelpers.Box ##.MakeHelpers.Frame'Failed!'
+ →T.PassesIf∧/('Failed!'~⍨∊res)∊'┌┐││└─┘'
+ →T.PassesIf∨/'Failed!'⍷∊res
+
+ R←T._OK
+⍝Done
