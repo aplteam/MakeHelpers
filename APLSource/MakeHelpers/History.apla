@@ -1,4 +1,6 @@
 (
+ '* 0.9.3 from 2023-07-12'
+ '  * Bug fix: `FetchLaterUserCommand` failed to act correctly on a missing user command script '
  '* 0.9.2 from 2023-07-07'
  '  * `FetchLaterUserCommand` still had a problem finding the user command script under some circumstances'
  '  * `CopyBetter` did not differntiate between "no action required" and "cancelled by user - it does now'

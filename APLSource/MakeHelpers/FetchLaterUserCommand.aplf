@@ -35,7 +35,7 @@
          caption2←buff
          r←batch CopyBetter fn1 fn2 caption1 caption2
      :Else
-         'Interrupted on behalf of the user'Assert 0=CommTools.YesOrNo'Could not locate the user command script ',fn1,'; carry on?'
+         'Interrupted on behalf of the user'Assert CommTools.YesOrNo'Could not locate the user command script ',fn1,'; carry on?'
      :EndIf
      :If ~batch
      :AndIf r=¯1
