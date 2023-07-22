@@ -10,12 +10,17 @@
 ⍝ 1. Call `MakeStandAloneRunTimeExe` and pass the parameter space as right argument
  r←⎕NS''
  r.(Filename ProjectName)←Filename ProjectName
- r.Filename←(⊃,/¯1↓⎕nparts r.Filename),'.exe'
+ r.Filename←⎕NPARTS r.Filename
+ :If 0=≢2⊃r.Filename
+     (2⊃r.Filename)←ProjectName
+ :EndIf
+ (3⊃r.Filename)←'.exe'
+ r.Filename←⊃,/r.Filename
  r.Icon←''
  r.CompanyName←'YourCompany'
  r.LegalCopyright←'See https://github.com/aplteam/',r.ProjectName
  r.ProductName←r.ProjectName
- :If 0<(⍎r.ProjectName).⎕NC'Version'
+ :If 0<(⍎'#.',r.ProjectName).⎕NC'Version'
      r.FileVersion←{1=≡⍵:⍵ ⋄ 2⊃⍵}#.⍎r.ProjectName,'.Version'  ⍝ Backwards compatability
  :Else
      r.FileVersion←''

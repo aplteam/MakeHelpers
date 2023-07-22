@@ -14,7 +14,7 @@
  ⎕LX←'#.MakeHelpers.TestCases.RunTests'
  wsid←⎕WSID
  ⎕WSID←tempFolder,'/Foo.dws'
- 0 ⎕SAVE ⎕WSID
+⍝ 0 ⎕SAVE ⎕WSID
 
  parms2←##.MakeHelpers.CreateStandAloneExeParms ⎕WSID'#.Foo'
  →T.GoToTidyUp'1.9.2'≢parms2.FileVersion
