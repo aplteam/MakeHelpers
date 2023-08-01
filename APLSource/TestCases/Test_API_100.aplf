@@ -1,0 +1,24 @@
+ R←Test_API_100(stopFlag batchFlag);⎕TRAP;tempFolder;changeFlag1;iss;version
+⍝ Exercise UpdateVersionNumberInInno_ISS
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ version←'3.0.0-beta-1'
+ tempFolder←FilesAndDirs.GetTempSubDir⊃⎕SI
+ tempFolder ⎕NCOPY ##.CiderConfig.HOME,'/Tests/Meddy.iss'
+ iss←⊃⎕NGET tempFolder,'/Meddy.iss'
+ Assert~∨/version⍷iss
+ changeFlag1←##.MakeHelpers.UpdateVersionNumberInInno_ISS(tempFolder,'/Meddy.iss')(version,'+999')
+ Assert changeFlag1
+ iss←⊃⎕NGET tempFolder,'/Meddy.iss'
+ →T.GoToTidyUp~∨/version⍷iss
+ changeFlag1←##.MakeHelpers.UpdateVersionNumberInInno_ISS(tempFolder,'/Meddy.iss')(version,'+999')
+ Assert~changeFlag1
+ iss←⊃⎕NGET tempFolder,'/Meddy.iss'
+ →T.GoToTidyUp~∨/version⍷iss
+
+ R←T._OK
+
+∆TidyUp:
+ {}FilesAndDirs.RmDirByForce tempFolder
+⍝Done

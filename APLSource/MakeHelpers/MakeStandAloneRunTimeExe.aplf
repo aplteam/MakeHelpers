@@ -24,7 +24,7 @@
  details⍪←'CompanyName'p.CompanyName           ⍝ Not shown by Windows Explorer anyway
  details⍪←'Comments'p.Comments                 ⍝ Not shown by Windows Explorer anyway
  details⍪←'ProductName'p.ProjectName
- :If 0<(⍎p.ProjectName).⎕NC'Version'
+ :If 0<(⍎'#.',p.ProjectName).⎕NC'Version'
      version←#.⍎p.ProjectName,'.Version'
      :If 1<≡version
          details⍪←'FileVersion'({⍵↑⍨¯1+⍵⍳'+'}2⊃version)

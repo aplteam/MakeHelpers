@@ -1,4 +1,8 @@
 (
+ '* 0.10.0 from 2023-07-31'
+ '  * `GetProjectCfg` added'
+ '  * `UpdateVersionNumberInInno_ISS` added'
+ '  * Bug fix in `MakeStandAloneRunTimeExe`'
  '* 0.9.4 from 2023-07-22'
  '  * Two bugs fixed in `CreateStandAloneExeParms`'
  '* 0.9.3 from 2023-07-12'
