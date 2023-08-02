@@ -19,7 +19,7 @@
      ('Does not exist: ',⊃{⍺,',',⍵}/(~b)/file1 file2)Assert 0
  :EndIf
  'You cannot copy a file onto itself'Assert file1≢file2
- :If ≢/{F.NGET ⍵}¨file1 file2
+ :If ≢/{⊃F.NGET ⍵}¨file1 file2
      (ts1 ts2)←F.GetModifiedDate¨file1 file2
      (ts1_ ts2_)←F.DateToReal¨ts1 ts2
      sep←⎕UCS 10
