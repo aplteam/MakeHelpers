@@ -1,6 +1,7 @@
 (
  '* 0.10.1 from 2023-08-02'
  '  * Bug fix in `CopyBetter`'
+ '  * LICENSE file fixed'
  '* 0.10.0 from 2023-07-31'
  '  * `GetProjectCfg` added'
  '  * `UpdateVersionNumberInInno_ISS` added'
