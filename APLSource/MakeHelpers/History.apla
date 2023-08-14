@@ -1,5 +1,6 @@
 (
- '* 0.10.1 from 2023-08-02'
+ '* 0.10.1 from 2023-08-14'
+ '  * New version of MarkAPL integrated'
  '  * Bug fix in `CopyBetter`'
  '  * LICENSE file fixed'
  '* 0.10.0 from 2023-07-31'

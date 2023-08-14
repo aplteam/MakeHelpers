@@ -10,6 +10,7 @@
  parms.parent←#.TEMP
  parms.noPkgLoad←1
  parms.importFlag←1
+ parms.ignoreUserExec←1
  res←⎕SE.Cider.OpenProject parms
  cfg←⎕SE.Tatin.ReadPackageConfigFile ##.TatinVars.HOME
  noOf←##.MakeHelpers.CreateAPIfromCFG #.TEMP.FilesAndDirs.FilesAndDirs cfg
