@@ -1,4 +1,6 @@
 (
+ '* 0.10.2 from 2023-09-30'
+ '  * Latest packages integrated, fixing the problem with an endless loop when trying to remove a folder'
  '* 0.10.1 from 2023-08-14'
  '  * New version of MarkAPL integrated'
  '  * Bug fix in `CopyBetter`'
