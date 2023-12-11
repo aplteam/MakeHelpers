@@ -1,5 +1,5 @@
-/* This was MarkAPL's default screen style sheet until version 12.0 */
-/* Version 3.0 from 2023-12-06 */
+/* MarkAPL's default screen style sheet since version 12.0 */
+/* Version 1.0 from 2023-12-06 */
 
 /* Note that there are some variables embedded as comments which will be replaced
    by MarkAPL. The names are embraced by "<<", so for a variable "foo" it is
@@ -17,7 +17,7 @@
  */
 
 html {
-  line-height: 1.15; /* 1 */
+/*  line-height: 1.15; 1 MarkAPL has other ideas */
   -webkit-text-size-adjust: 100%; /* 2 */
 }
 
@@ -355,25 +355,60 @@ template {
 [hidden] {
   display: none;
 }
-
 /* ##########################################################################
    ##########################################################################
    ########################################################################## */
 
 /* MarkAPL: Additional styles */
 
+:root {
+  --global-background-color: #323232;
+  --global-color: #DDD;
+  --header-color: hsl(39,97%,83%);
+  --link-color: #A3A3FF;
+  --visited-link-color: hsl(270,70%,85%);
+  --pre-background-color: #1A1A1A;
+  --table-code-color: #8B0000;
+  --code-color: #FFC266;
+  --code-background-color: #1A1A1A;
+  --nav-background-color: #4C4C4C;
+  --leanpub-background-color: #4C004C;
+  --leanpub-color: #DDD;
+  --leanpub-image-color: #CCCCFF;
+  --accordion-background-color: #4C004C;
+  --collapsible-background-color: #4C004C;
+  --pre-button-background-color: #BCBABB;
+  --svg-background-color: #CCCCFF;
+  --tbody-color-even-color: #DAA520;
+  --tbody-color-odd-color: #E6BD56;
+  --thead-background-color: #B68A1B;
+  --tfoot-background-color: #B68A1B;
+  --th-background-color: #C3941D;
+  --table-a-color: blue;
+  --nav-a-color: #EDEDED;
+  --nav-a-visited-color: #B0B0B0;
+}
+
+/*
+.test-test-test {
+      background-color: #4C004C;
+}
+*/
+
+
+
 body  {
     margin: 0;
-    font-family: "Bookman Old Style", "Callisto MT", Bookman, "Goudy Old Style", Garamond, serif;
-    background-color: #fdfdfd;
+    font-family: Arial, sans-serif;
+    background-color: var(--global-background-color);
     font-size: 18px;
-    line-height: 1.4;
     max-width: 900px; /* <<maxwidth>> */
     padding: 0.83em;
-    color: #292929;
+    color: var(--global-color);
     margin-left: auto;
     margin-right: auto;
     overflow-wrap: break-word;
+    line-height: 1.4;
 }
 
 h1,
@@ -382,25 +417,14 @@ h3,
 h4,
 h5,
 h6 {
-    color: #404040;
-    font-weight: 800;
+    color: var(--header-color);
     padding-left: 0;
 }
 
 h1,
 h2,
 h3,
-h4,
-h5,
-h6 {
-    font-family: "Century Gothic", Verdana, "Sans";
-}
-
-h1,
-h2,
-h3,
-h4,
-p {
+h4 {
     margin-bottom: 0.88em;
 }
 
@@ -457,15 +481,24 @@ h6 {
     padding:0;
 }
 
+hr {
+    border: 0;
+    border-top: 1px solid silver;
+}
+
 a {
-    color: #0099ff;
+    color: var(--link-color);
     margin: 0;
     padding: 0;
     vertical-align: baseline;
 }
 
 a:visited {
-    color: purple;
+    color: var(--visited-link-color);
+}
+
+a:visited code {
+    color: var(--visited-link-color);
 }
 
 a.autoheader_anchor {
@@ -495,9 +528,8 @@ li > ol {
 }
 
 li {
-    line-height: 1.3;
     margin-left: 1.38em;
-    margin-bottom: 0.25em;
+    margin-bottom: 0.5em;
 }
 
 ul > li {
@@ -519,39 +551,42 @@ li ul {
 li p {
     padding: 1px 0 0 0;
     margin: 0.55em 0 0.27em 0;
-    line-height: 1.3;
 }
 
 ul, ol {
-    line-height: 1.3;
     padding: 0;
-    margin: 0.5em;
+    margin: 0.3em 0.5em 0.5em 0.5em;
 }
 
 ul ul,
 ul ol,
 ol ol,
 ol ul {
-    margin-top: 0.25em;
+    margin-top: 0.5em;
 }
 
 p {
-    line-height: 1.2;
-    padding: 0.40em 0 0 0;
+    padding: 0.6em 0 0 0;
     margin: 0;
 }
 
 pre {
     position: relative;
     overflow: auto;
-    padding: 0.55em 0.27em;
+    padding: 0.55em 0.35em 0.55em 0.35em;
     margin: 0.55em 0 0.55em 0 !important;
-    background-color: #faebd7;
-    color: #3e3e3e;
-    border: 1px Silver solid;
+    background-color: var(--pre-background-color);
+    -moz-tab-size: 4;
+    tab-size: 4;
+    -o-tab-size: 4;
     display: block;
     font-family: APLFont, monospace;
-    font-weight: normal;
+    -webkit-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+    border: 1px solid silver;
+    line-height: 1;
+    border-radius: 5px;
 }
 
 pre > code {
@@ -560,64 +595,103 @@ pre > code {
     padding: 0;
     margin: 0;
     background-color: inherit;
-    color: inherit;
-    font-weight: inherit;
+    font-weight: normal;
     white-space: pre-wrap;
 }
 
+th code ,
 td code {
-    padding: 0;
+    color: var(--table-code-color);
+    background-color: inherit;
+    padding: 0.02em 0.3em;
+    border-radius: 5px;
+    border: 1px solid #737373;
 }
 
 a code {
     padding: 0;
     font-size: 1em;
+    background-color: inherit;
+    color: inherit;
 }
 
 nav code {
     background-color: inherit;
     font-weight: 400;
-    color: inherit;
 }
 
 code {
     font-family: APLFont, monospace;
-    font-weight: 800;
-    color: #950000;
-    background-color: #e7e7e7;
-    line-height: 1.1;
-    font-size: 85%;
+    color: var(--code-color);
+    background-color: var(--code-background-color);
+    line-height: 1.4;
     white-space: nowrap;
-    margin: 0;
-    padding: 0.2em 0.4em;
-    border-radius: 6px;
+    margin: 0 0.2em 0 0.2em;
+    padding: 0.02em 0.3em;
+    border-radius: 5px;
 }
 
 tbody tr:nth-child(even) {
-    background-color: #F0F0F0;
+    background-color: var(--tbody-color-even-color);
+    border-bottom: 1px solid Gray;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: var(--tbody-color-odd-color);
+    border-bottom: 1px solid Gray;
 }
 
 th {
-    background-color: #E6E6E6;
+    background-color: var(--th-background-color);
     color: black;
+    border-bottom: 1px solid Gray;
 }
 
 th, td {
-    padding: 0.16em 0.55em;
+    padding: 0.5em;
     vertical-align: top;
 }
 
-table td + td { border-left:1px solid gray; }
-table th + th { border-left:1px solid gray; }
+table td + td {
+    border-left:1px solid Gray;
+    border-bottom: 1px solid Gray;
+}
+
+table th + th {
+    border-left:1px solid Gray;
+    border-bottom: 1px solid Gray;
+}
 
 table {
-    border-color: Black;
     margin: 0.75em 0;
     border-collapse: collapse;
     font-family: APLFont;
-    font-size: 0.88em;
-    line-height: 1.2;
-    border: 1px solid Gray;
+    font-size: 1em;
+    line-height: 1.0;
+    border: 2px solid Black;
+}
+
+table a {
+    color: var(--table-a-color);
+}
+
+table a:visited {
+    color: var(--table-a-color);
+}
+
+thead th {
+    color: black;
+    background-color: var(--thead-background-color);
+}
+
+td {
+    color: black;
+}
+
+tfoot td {
+    color: black;
+    background-color: var(--tfoot-background-color);
+    font-weight: bold;
 }
 
 li > table {
@@ -630,12 +704,10 @@ tr  {
 
 th {font-weight: bold;}
 
-tfoot td {font-weight: bold;}
-
 blockquote {
-    border-left: 0.25em solid silver;
-    padding-left: 0.25em;
-    margin: 0.8em 0.25em 0.8em 0.25em;
+    border-left: 0.27em solid silver;
+    padding: 0 0.25em;
+    margin: 0.5em 0.25em 0.80em 0.5em;
 }
 
 blockquote p {
@@ -653,12 +725,11 @@ blockquote ol li {
 li > blockquote {margin-left: 0;}
 
 nav {
-    background-color: #f5f5f5;
-    border: 1px solid Black;
+    background-color: var(--nav-background-color);
+    border: 1px solid Silver;
     padding: 0.55em;
-    margin: 0.50em 0.30em 2em 0.30em;
+    margin: 0.50em 0 1em 0;
     margin-right:0;
-    box-shadow: 0.27em 0.27em 0.27em Gray;
     overflow : hidden;
 }
 
@@ -672,8 +743,21 @@ nav ul  {
     padding: 0;
 }
 
+nav ul,
+nav ul  {
+    margin-left: 2em;
+}
+
+nav > ul ul {
+    margin-left: 2em;
+}
+
+nav a {
+    color: var(--nav-a-color);
+}
+
 nav a:visited {
-    color: black;
+    color: var(--nav-a-visited-color);
 }
 
 nav ul li {
@@ -711,13 +795,13 @@ dl {
 dt {
     margin-top: 0.75em;
     margin-bottom: 0.1em;
-    font-weight: 800;
+    font-weight: bold;
 }
 
 .toc-container {
     height: auto;
     margin: 0;
-    padding: 0;
+    padding: 0.5em 0.5em 0 0;
 }
 
 nav h2 {
@@ -726,6 +810,7 @@ nav h2 {
 }
 
 div.toc-container ul {
+    margin-left: 0.5em;
     margin-right: 1em;
     padding-left: 1em;
 }
@@ -745,7 +830,7 @@ label {
 }
 
 div#footnotes_div p {
-    line-height:1;
+    line-height:1.2;
     padding-bottom:0;
     padding-top:0;
 }
@@ -764,17 +849,11 @@ div#footnotes_div ol {
 
 /* User classes */
 
-.no_screen {  /* deprecated: use .hide instead */
-  transition: opacity 400ms, display 400ms;
-  opacity: 0;
-  display: none;
-}
-
 .hide {
   transition: opacity 400ms, display 400ms;
   opacity: 0;
   display: none;
-    }
+}
 
 .red {color: red;}
 
@@ -807,14 +886,24 @@ div.leanpub {
     overflow: auto;
     display: grid;
     grid-template-columns: auto 1fr;
-    grid-gap: 10px;    
+    grid-gap: 10px;
+}
+
+div.leanpub p:first-child,
+div.leanpub h1:first-child,
+div.leanpub h2:first-child,
+div.leanpub h3:first-child,
+div.leanpub ul:first-child,
+div.leanpub ol:first-child {
+    padding-top: 0;
 }
 
 div.leanpub_A {
     border: 1px solid black;
-    background-color: #f1f1f1;
+    background-color: var(--leanpub-background-color);
     padding: 0.55em;
     margin: 1.11em 0 0.83em 0;
+    color: var(--leanpub-color);
 }
 
 div.leanpub h3,
@@ -845,11 +934,6 @@ div.leanpub_A h5 {
     margin: 0;
 }
 
-div.leanpub img {
-    padding: 0;
-    margin: 0 1.11em 0.27em 0;
-}
-
 div.leanpub_A > p:first-child {
     padding-top: 0;
     margin-top: 0;
@@ -857,9 +941,10 @@ div.leanpub_A > p:first-child {
 
 div.leanpub img {
     float: left;
-    padding: 0;
-    margin: 0.55em 1.11em 0 0;
+    padding: 0.5em;
+    margin: 0.5em 1em 0 0;
     clear:both;
+    background-color: var(--leanpub-image-color);
 }
 
 div.leanpub tbody * {
@@ -881,7 +966,7 @@ div.leanpub p {
 }
 
 div.leanpub > div {
-    margin-left: 2.27em;  /* margin (20px) plus width of icon (21px) */
+    margin-left: 3em;
 }
 
 pre[class*="language-"] {
@@ -902,7 +987,7 @@ div.accordion {
     border: 1px solid silver;
     padding: 0;
     margin: 0.5em 0;
-    background-color: #f1f1f1;
+    background-color: var(--accordion-background-color);
 }
 
 div.accordion > div {
@@ -923,7 +1008,7 @@ div.collapsible {
     border: 1px solid silver;
     padding: 0.5em;
     margin: 0.5em 0;
-    background-color: #f1f1f1;
+    background-color: var(--collapsible-background-color);
 }
 
 div.collapsible p,
@@ -943,6 +1028,7 @@ ul.checkboxes {
 li {
   text-indent: 0;
   padding-left: 0;
+  line-height: 1.4;
 }
 
 ul.checkboxes > li::before {content: "☐ ";}
@@ -951,8 +1037,8 @@ ul.checkboxes > li.checked::before {content: "☒ ";}
 
 pre > button {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 5px;
+  right: 5px;
   font-size: 0.8em;
   padding: 0.15em;
   border: 1.25px solid #232326;
@@ -964,7 +1050,7 @@ pre > button {
 
 pre button:hover {
   cursor: pointer;
-  background-color: #bcbabb;
+  background-color: var(--pre-button-background-color);
 }
 
 #main_nav {
@@ -974,15 +1060,28 @@ pre button:hover {
 #main_nav h2 {
     font-size: 1.45em;
     margin: 0;
-    padding: 0.5em;
-    border-bottom: 1px solid Black;
+    padding: 0.5em 0.5em 0em 0.5em;
+    border-bottom: 0px solid Silver;
 }
 
 #toc-toggle {
   position: absolute;
-  top: 1.5em;
+  top: 1.4em;
   right: 1em;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 #toc-list {
     margin: 1em 1em 0.25em 0;
+}
+
+sup, sub {
+    text-decoration: none;
+}
+
+svg {
+    padding: 0.5em;
+    background-color: var(--svg-background-color);
 }

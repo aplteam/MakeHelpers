@@ -1,4 +1,6 @@
 (
+ '* 0.11.0 from 2023-12-11'
+ '  * packages updated, in particular MarkAPL 12.0 with breaking changes, see there. '
  '* 0.10.2 from 2023-09-30'
  '  * Latest packages integrated, fixing the problem with an endless loop when trying to remove a folder'
  '* 0.10.1 from 2023-08-14'
