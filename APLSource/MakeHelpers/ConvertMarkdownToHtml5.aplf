@@ -5,7 +5,7 @@
  noOf←0
  'Create!'F.CheckPath targetFolder
  markdownFiles←⊃F.Dir sourceFolder,'/*.md'
- cssFolder←{0<⎕nc ⍵:⍎⍵ ⋄ MarkAPL.##.TatinVars.GetFullPath2AssetsFolder}'cssFolder'
+ cssFolder←{0<⎕NC ⍵:⍎⍵ ⋄ MarkAPL.##.TatinVars.GetFullPath2AssetsFolder}'cssFolder'
  parms←MarkAPL.CreateParms
  parms.cssURL←cssFolder
  parms.verbose←0
@@ -14,6 +14,5 @@
      parms.inputFilename←markdownFile
      parms.outputFilename←targetFolder,'/',(2⊃⎕NPARTS markdownFile),'.html'
      (html ns)←parms MarkAPL.Markdown2HTML''
-     (⊂html)F.NPUT(targetFolder,'/',(2⊃⎕NPARTS markdownFile),'.html')1
  :EndFor
 ⍝Done
