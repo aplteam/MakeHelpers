@@ -126,7 +126,7 @@
          flag←0
      :EndIf
      :If flag
-     :AndIf (⌊type)∊2 3 4
+     :AndIf API_name≢name
          :If ¯1≡savePath
              fullName←(⍕Tref),'.',name
              ⍝⎕DL 1
