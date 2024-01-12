@@ -6,11 +6,11 @@
  'Create!'F.CheckPath targetFolder
  markdownFiles←⊃F.Dir sourceFolder,'/*.md'
  cssFolder←{0<⎕NC ⍵:⍎⍵ ⋄ MarkAPL.##.TatinVars.GetFullPath2AssetsFolder}'cssFolder'
- parms←MarkAPL.CreateParms
- parms.cssURL←cssFolder
- parms.verbose←0
  :For markdownFile :In markdownFiles
      noOf+←1
+     parms←MarkAPL.CreateParms
+     parms.cssURL←cssFolder
+     parms.verbose←0
      parms.inputFilename←markdownFile
      parms.outputFilename←targetFolder,'/',(2⊃⎕NPARTS markdownFile),'.html'
      (html ns)←parms MarkAPL.Markdown2HTML''

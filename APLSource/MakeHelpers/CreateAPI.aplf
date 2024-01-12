@@ -1,4 +1,4 @@
- {r}←{savePath}CreateAPI y;refTosourceNS;names;API_name;type;name;at;body;header;fullName;targetNamespace;Tref;filename;extension;flag;b;subNamespace;backRef;level
+ {r}←{savePath}CreateAPI y;refTosourceNS;names;API_name;type;name;at;body;header;fullName;targetNamespace;Tref;filename;extension;flag;b;subNamespace;backRef;level;res
 ⍝ Deletes and then re-creates a namespace `API_Name` within `refTosourceNS` and then establishes cover fns/opr
 ⍝ or references (variables) etc serving as API (public interface).\\
 ⍝ If you wish you may specify `API_name` as a fully qualified name which is useful mostly for test cases.
@@ -129,8 +129,10 @@
      :AndIf (⌊type)∊2 3 4
          :If ¯1≡savePath
              fullName←(⍕Tref),'.',name
-             ⎕DL 0.05
-             {}⎕SE.Link.Add fullName
+             ⍝⎕DL 1
+             'Huuh?!'Assert 9=⎕NC targetNamespace   ⍝ Hunting a LINK bug?!  ⍝TODO⍝ <02141>
+             res←⎕SE.Link.Add fullName
+             ('Link.Add signalled a problem with ',fullName)Assert'Added: '{⍺≡(≢⍺)↑⍵}res
          :ElseIf 0<≢savePath
              extension←'aplf'
              filename←name,'.',extension
@@ -141,5 +143,5 @@
          :EndIf
      :EndIf
  :EndFor
- 'There is a problem with creating the API'Assert=/≢¨names(Tref.⎕NL⍳16) ⍝ Yes, this has happened in the past!
+ 'There is a problem with creating the API'Assert=/≢¨(∪{⍵↑⍨¯1+⍵⍳'.'}¨names)(Tref.⎕NL⍳16) ⍝ Yes, this has happened in the past!
 ⍝Done

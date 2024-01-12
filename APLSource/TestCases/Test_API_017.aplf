@@ -11,6 +11,7 @@
  parms.noPkgLoad←1
  parms.importFlag←1
  parms.ignoreUserExec←1
+ ⎕SE.⎕SE.Cider.##.CommTools.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  res←⎕SE.Cider.OpenProject parms
  cfg←⎕SE.Tatin.ReadPackageConfigFile ##.TatinVars.HOME
  noOf←##.MakeHelpers.CreateAPIfromCFG #.TEMP.FilesAndDirs.FilesAndDirs cfg
@@ -18,9 +19,12 @@
  Assert noOf=≢public
  Assert</≢¨public((⊂'Public')~⍨' '~⍨¨↓#.TEMP.FilesAndDirs.FilesAndDirs.⎕NL 3 4)
  #.TEMP.FilesAndDirs.FilesAndDirs.∆GlobalVars←42
- →T.PassesIf 0<#.TEMP.FilesAndDirs.FilesAndDirs.⎕NC'∆GlobalVars'
+ →T.GoToTidyUp 0≥#.TEMP.FilesAndDirs.FilesAndDirs.⎕NC'∆GlobalVars'
  #.TEMP.FilesAndDirs.FilesAndDirs.API.Dispose
- →T.PassesIf 0=#.TEMP.FilesAndDirs.FilesAndDirs.⎕NC'∆GlobalVars'
+ →T.GoToTidyUp 0≠#.TEMP.FilesAndDirs.FilesAndDirs.⎕NC'∆GlobalVars'
 
  R←T._OK
+
+∆TidyUp:
+ ⎕SE.⎕SE.Cider.##.CommTools.Cleanup
 ⍝Done
