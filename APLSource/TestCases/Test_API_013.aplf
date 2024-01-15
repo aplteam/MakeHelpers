@@ -1,6 +1,5 @@
- R←Test_API_013(stopFlag batchFlag);⎕TRAP;noOf;folder1;folder2;list;parms
-⍝ Exercise CreateAPI on a project with sub-namespaces in the API
-⍝ Originally sub-namespaces ween't even allowed
+ R←Test_API_013(stopFlag batchFlag);⎕TRAP;folder1;folder2;list;parms;qdmx
+⍝ Exercise CreateAPI on a project with sub-namespaces in the API (not allowed)
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
@@ -13,11 +12,13 @@
  parms.watch←'ns'
  {}parms ⎕SE.Link.Create'#.TEMP'folder2
 
- noOf←##.MakeHelpers.CreateAPI #.TEMP.APLSource.CompareFiles #.TEMP.APLSource.CompareFiles.Public
-
- →T.GoToTidyUp noOf≠10
- →T.GoToTidyUp 9≠#.TEMP.APLSource.CompareFiles.API.⎕NC'ComparisonTools'
- →T.GoToTidyUp 6≠≢#.TEMP.APLSource.CompareFiles.API.ComparisonTools.⎕nl 3
+ :Trap 11
+     {}##.MakeHelpers.CreateAPI #.TEMP.APLSource.CompareFiles #.TEMP.APLSource.CompareFiles.Public
+      →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+      →T.GoToTidyUp~∨/'Dotted syntax not allowed for API members:'⍷qdmx.EM
+ :EndTrap
 
  R←T._OK
 

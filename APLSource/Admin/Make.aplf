@@ -7,7 +7,7 @@
      version←M.CompileVersionNumberPattern cfg
      M.FetchLaterUserCommand cfg C'[MyUCMDs]'
      M.RecreateFolder path
-     {}##.MakeHelpers.CreateAPIfromCFG ##.MakeHelpers cfg
+     {}##.MakeHelpers.CreateAPI ##.MakeHelpers ##.MakeHelpers.Public cfg.api
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
      parms.version←version

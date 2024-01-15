@@ -1,7 +1,7 @@
-:Namespace ns
+:Namespace ns1
 
 ∇ r←Hello
-  r←'World'
+  r←'Galaxy'
 ∇
 
 :EndNamespace

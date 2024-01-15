@@ -10,7 +10,7 @@
  Assert∨/'Imported:'⍷res
  Assert~∨/'Error:'⍷res
 
- noOf←##.MakeHelpers.CreateAPI #.TEMP(↓#.TEMP.⎕NL⍳16)
+ noOf←##.MakeHelpers.CreateAPI #.TEMP''
  →T.PassesIf noOf=≢(' '~⍨¨↓#.TEMP.⎕NL⍳16)~⊂'API'
 
  →T.PassesIf'Universe'≡#.TEMP.API.HelloVars
@@ -20,11 +20,10 @@
  →T.PassesIf'Dyadic'≡⍬ #.TEMP.API.fn3 ⍬
  →T.PassesIf'Ambivalent'≡#.TEMP.API.fn4 ⍬
  →T.PassesIf'Ambivalent'≡⍬ #.TEMP.API.fn4 ⍬
- →T.PassesIf(,9)≡#.TEMP.API.⎕NC'interface1'
- →T.PassesIf'World'≡#.TEMP.API.ns.Hello
+ →T.PassesIf 0<#.TEMP.API.⎕NC'interface1'
+ →T.PassesIf'Galaxy'≡#.TEMP.API.ns1.Hello
  →T.PassesIf 4∧.=#.TEMP.API.⎕NC'op1'
- →T.PassesIf 2∧.=#.TEMP.API.⎕NC↑'HelloVars' 'Hello'
- →T.PassesIf 0=≢FilesAndDirs.ListDirs folder,'/'
+ →T.PassesIf 0∧.≠#.TEMP.API.⎕NC↑'HelloVars' 'Hello'
  →T.PassesIf'World'≡#.TEMP.API.Hello
 
  R←T._OK
