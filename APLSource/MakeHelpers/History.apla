@@ -1,8 +1,11 @@
 (
  '* 0.11.2 from 2024-01-15'
- '  * Bug fix: `CreateStandAloneExeParms` failed on  `Version` function that returned a simple char vector'
  '  * `MakeStandAloneRunTimeExe` now checks a non-empty icon file for existence  '
  '  * Version now reads from package config file'
+ '  * Bug fixes'
+ '    * `CreateStandAloneExeParms` failed on  `Version` function that returned a simple char vector'
+ '    * Version pretended the package''s name to be `Latest`'
+ '    * `MarkAPL` did not stem from https://tatin.dev'
  '* 0.11.1 from 2024-01-12'
  '  * Sanity check added to `CreateAPI`'
  '  * Bug fixes'

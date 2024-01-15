@@ -132,7 +132,9 @@
              ⍝⎕DL 1
              'Huuh?!'Assert 9=⎕NC targetNamespace   ⍝ Hunting a LINK bug?!  ⍝TODO⍝ <02141>
              res←⎕SE.Link.Add fullName
-             ('Link.Add signalled a problem with ',fullName)Assert'Added: '{⍺≡(≢⍺)↑⍵}res
+             :If 0=∨/'Not in a linked namespace: '⍷res
+                 ('Link.Add signalled a problem with ',fullName)Assert'Added: '{⍺≡(≢⍺)↑⍵}res
+             :EndIf
          :ElseIf 0<≢savePath
              extension←'aplf'
              filename←name,'.',extension
