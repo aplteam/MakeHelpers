@@ -1,4 +1,7 @@
 (
+ '* 0.12.1 from 2024-01-26'
+ '  * Bug fix: `AddBuildIDtoVersionNested` did not always process the `version` of a package, and did not'
+ '    check the `version` for being valid'
  '* 0.12.0 from 2024-01-15'
  '  * Rewrite of `CreateAPI`: creates now either cover-functions/operators or functions that return a ref'
  '    to a variable, a namespace, a class or an interface. Dotted syntax is not allowed anymore.'

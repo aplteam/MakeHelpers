@@ -1,4 +1,4 @@
- {body}←x AddBuildIDtoVersionNested buildID;version;row;version2;fnsname;ref;rc;buff;offset;length;varsName;line;result;assignment;flag
+  {body}←x AddBuildIDtoVersionNested buildID;version;row;version2;fnsname;ref;rc;buff;offset;length;varsName;line;result;assignment;flag
  ⍝ `x` can either be a reference pointing to a class, an Interface or a scripted namespace
  ⍝ or the name of a function in an ordinary namespace.\\
  ⍝ Generally `AddBuildIDtoVersionNested` executes the `Version` function (⍺) if there is any.
@@ -21,7 +21,14 @@
  :Else
      ref←⍎¯1↓⊃'.'A.SplitPath fnsname←x
      body←⎕NR fnsname
-     version←2⊃⍎fnsname
+     buff←⍎fnsname
+     version←2⊃buff
+     :If 2='-'+.=version~⎕D
+     :AndIf ∧/⎕D∊⍨version~'-'
+         version←1⊃buff
+     :EndIf
+     buff←{⍵↑⍨¯1+⌊/⍵⍳' +-'}version
+     'Version number is invalid'Assert(∧/⎕D∊⍨buff~'.')∧('.'∧.=buff~⎕D)
      row←⊃¯1↑⍸∨/¨version∘⍷¨body
  :EndIf
  :If 2='.'+.=version
