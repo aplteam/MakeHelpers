@@ -5,7 +5,10 @@
 
  res←##.MakeHelpers.Version
  →T.PassesIf 1=≡res
- →T.PassesIf{(∧/(⍵~'.')∊⎕D)∨(⍵~⎕D)∧.='.'}{⍵↑⍨¯1+⍵⍳'+'}res
+ →T.PassesIf{(∧/(⍵~'.')∊⎕D)∨(⍵~⎕D)∧.='.'}{⍵↑⍨¯1+⍵⍳'-'}{⍵↑⍨¯1+⍵⍳'+'}res
+ :If ~{(∧/(⍵~'.')∊⎕D)∨(⍵~⎕D)∧.='.'}{⍵↑⍨¯1+⍵⍳'+'}res
+     ⎕←'*** Version number is : ',res
+ :EndIf
 
  R←T._OK
 ⍝Done

@@ -1,0 +1,2 @@
+r←x (fns1 op3 fns2) y
+r←fns2 x fns3 y

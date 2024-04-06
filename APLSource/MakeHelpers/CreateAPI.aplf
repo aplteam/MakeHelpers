@@ -1,4 +1,4 @@
- {r}←{savePath}CreateAPI y;refTosourceNS;names;API_name;b;targetNamespace;Tref;name;flag;type;backRef;at;header;extension;fullName;res;filename;body
+ {r}←{savePath}CreateAPI y;refTosourceNS;names;API_name;b;targetNamespace;Tref;name;flag;type;backRef;at;header;extension;fullName;res;filename;body;Tref2;backRef2
 ⍝ Deletes and then re-creates a namespace `API_Name` within `refTosourceNS` and then establishes cover
 ⍝ fns/oprs for fns/opr and functions returning references (variables, namespaces, classes, interfaces)
 ⍝ as API (public interface).\\
@@ -14,7 +14,8 @@
 ⍝ If you don't want anything to be saved on disk at all then specify `''` as `⍺`.\\
 ⍝ Returns the number of fns/opr established.\\
 ⍝ Handles all kinds of objects: niladic, monadic, dyadic and ambivalent fns as well as
-⍝ monadic and dyadic operators and namespaces, classes, interfaces and variables.
+⍝ monadic and dyadic operators and namespaces, classes, interfaces and variables.\\
+⍝ Supports one level of sub-namespaces.\\
 ⍝ It also honors shy results.\\
  r←0
  (refTosourceNS names API_name)←3↑y,⊂'API'
@@ -24,7 +25,8 @@
  'Source namespace (1⊃⍵) is not a reference'Assert 0 1≡{(≡⍵)(≢⍵)}refTosourceNS
  'Source namespace (1⊃⍵) is not a namespace'Assert 0=+/'[]'∊refTosourceNS
  'Source namespace (1⊃⍵) is not a namespace'Assert 9.1≡⎕NC⊂⍕refTosourceNS
- ('Dotted syntax not allowed for API members: ',{0=≢⍵:'' ⋄ ⊃{⍺,', ',⍵}/⍵}b/names)Assert 0∧.=b←'.'∊¨names
+ b←~0 1∊⍨{'.'+.=⍵}¨names
+ ('Dotted syntax not supported for more than one level: ',{0=≢⍵:'' ⋄ ⊃{⍺,', ',⍵}/⍵}b/names)Assert 0∧.=b
  savePath←{0<⎕NC ⍵:⍎⍵ ⋄ ¯1}'savePath'
  'No API names specified?!'Assert 0<≢names
  names←⊆names
@@ -46,6 +48,10 @@
      :EndIf
  :EndIf
  Tref←⍎targetNamespace ⎕NS''
+ b←{1='.'+.=⍵}¨names
+ :If ∨/b    ⍝ Any sub namespaces?
+     Tref.{⍵ ⎕NS''}¨∪{⍵↑⍨¯1+⍵⍳'.'}¨b/names
+ :EndIf
  :If ¯1≢savePath
  :AndIf 0<≢savePath
      'Create!'F.CheckPath savePath
@@ -58,6 +64,10 @@
      flag←1
      type←refTosourceNS.⎕NC⊂name
      backRef←'##.'
+     :If '.'∊name
+         Tref2←Tref{⍺⍎⍵↑⍨¯1+⍵⍳'.'}name
+         backRef2←backRef,backRef,({⍵↑⍨¯1+⍵⍳'.'}name),'.'
+     :EndIf
      :If 3=⌊type        ⍝ Function?
          r+←1
          at←refTosourceNS.⎕AT name
@@ -65,37 +75,73 @@
          :If 0=1 2⊃at   ⍝ Niladic functions need special treatment
              header←{⍵↑⍨¯1+⌊/⍵⍳'⍝;'}header
              :If '←'∊header  ⍝ With result
-                 Tref.⎕FX header({('{}'~⍨1⊃⍵),'←',backRef,(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
+                 :If '.'∊name
+                     Assert' '=1↑0⍴Tref2.⎕FX header({('{}'~⍨1⊃⍵),'←',backRef2,(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
+                 :Else
+                     Assert' '=1↑0⍴Tref.⎕FX header({('{}'~⍨1⊃⍵),'←',backRef,(2⊃⍵)}'←'A.Split{⍵↑⍨¯1+⍵⍳'⍝'}header)
+                 :EndIf
              :Else           ⍝ Without result
-                 Tref.⎕FX header({backRef,⍵}{⍵↑⍨¯1+⍵⍳'⍝'}header)
+                 :If '.'∊name
+                     Assert' '=1↑0⍴Tref2.⎕FX header({backRef2,⍵}{⍵↓⍨⍵⍳'.'}name)
+                 :Else
+                     Assert' '=1↑0⍴Tref.⎕FX header({backRef,⍵}{⍵↑⍨¯1+⍵⍳'⍝'}header)
+                 :EndIf
              :EndIf
          :Else
              :If 2=|1 2⊃at
                  :If '{'=⊃A.DLB header
-                     backRef Tref.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ ',⍺,⍵,' ⍵}'}name
+                     :If '.'∊name
+                         backRef2 Tref2.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ ',⍺,⍵,' ⍵}'}{⍵↓⍨⍵⍳'.'}name
+                     :Else
+                         backRef Tref.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ ',⍺,⍵,' ⍵}'}name
+                     :EndIf
                  :Else
-                     backRef Tref.{⍎⍵,'←{⍺←⊢ ⋄ ⍺ ',⍺,⍵,' ⍵}'}name
+                     :If '.'∊name
+                         backRef2 Tref2.{⍎⍵,'←{⍺←⊢ ⋄ ⍺ ',⍺,⍵,' ⍵}'}{⍵↓⍨⍵⍳'.'}name
+                     :Else
+                         backRef Tref.{⍎⍵,'←{⍺←⊢ ⋄ ⍺ ',⍺,⍵,' ⍵}'}name
+                     :EndIf
                  :EndIf
              :Else
                  :If '{'=⊃A.DLB header
-                     backRef Tref.{⍎⍵,'←{1:shy←',⍺,⍵,' ⍵}'}name
+                     :If '.'∊name
+                         backRef(Tref{'.'∊⍵:⍺⍎⍵↑⍨¯1+⍵⍳'.' ⋄ ⍺}name).{⍎⍵,'←{1:shy←',⍺,⍵,' ⍵}'}{'.'∊⍵:⍵↑⍨¯1+⍵⍳'.' ⋄ ⍵}name
+                     :Else
+                         backRef Tref.{⍎⍵,'←{1:shy←',⍺,⍵,' ⍵}'}name
+                     :EndIf
                  :Else
-                     backRef Tref.{⍎⍵,'←{',⍺,⍵,' ⍵}'}name
+                     :If '.'∊name
+                         backRef2 Tref2.{⍎⍵,'←{',⍺,⍵,' ⍵}'}{⍵↓⍨⍵⍳'.'}name
+                     :Else
+                         backRef Tref.{⍎⍵,'←{',⍺,⍵,' ⍵}'}name
+                     :EndIf
                  :EndIf
              :EndIf
          :EndIf
      :ElseIf 4=⌊type     ⍝ Operator
-         :Select 12 refTosourceNS.⎕ATX name  ⍝ Syntax
+         :Select 1 3⊃refTosourceNS.⎕AT name  ⍝ Syntax
          :Case 1 ⍝ monadic operator
-             backRef Tref.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ (⍺⍺ ',⍺,⍵,') ⍵}'}name
-         :Case 2 ⍝ monadic operator
-             backRef Tref.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ (⍺⍺ ',⍺,⍵,' ⍵⍵) ⍵}'}name
+             :If '.'∊name
+                 backRef2 Tref2.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ (⍺⍺ ',⍺,⍵,') ⍵}'}{⍵↓⍨⍵⍳'.'}name
+             :Else
+                 backRef Tref.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ (⍺⍺ ',⍺,⍵,') ⍵}'}name
+             :EndIf
+         :Case 2 ⍝ dyadic operator
+             :If '.'∊name
+                 backRef2 Tref2.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ (⍺⍺ ',⍺,⍵,' ⍵⍵) ⍵}'}{⍵↓⍨⍵⍳'.'}name
+             :Else
+                 backRef Tref.{⍎⍵,'←{⍺←⊢ ⋄ 1:shy←⍺ (⍺⍺ ',⍺,⍵,' ⍵⍵) ⍵}'}name
+             :EndIf
          :Else
              'An operator that is neither monadic nor dyadic?!'⎕SIGNAL 11
          :EndSelect
          r+←1
      :ElseIf type∊2.1 9.1 9.4 9.5   ⍝ Variable, Namespace, Class or Interface?
-         backRef Tref.{⎕FX('r←',⍵)('r←',⍺,⍵)}name
+         :If '.'∊name
+             Assert' '=1↑0⍴backRef2 Tref2.{⎕FX('r←',⍵)('r←',⍺,⍵)}{⍵↓⍨⍵⍳'.'}name
+         :Else
+             Assert' '=1↑0⍴backRef Tref.{⎕FX('r←',⍵)('r←',⍺,⍵)}name
+         :EndIf
          r+←1
          extension←'aplf'
      :Else
@@ -107,7 +153,7 @@
          :If ¯1≡savePath
              fullName←(⍕Tref),'.',name
              ⍝⎕DL 1
-             'Huuh?!'Assert 9=⎕NC targetNamespace   ⍝ Hunting a LINK bug?!  ⍝TODO⍝ <02141>
+             'Huuh?!'Assert 9=⎕NC targetNamespace   ⍝ Hunting a LINK bug?!  ⍝TODO⍝ <02141>  (Mantis 21094)
              res←⎕SE.Link.Add fullName
              :If 0=∨/'Not in a linked namespace: '⍷res
                  ('Link.Add signalled a problem with ',fullName)Assert'Added: '{⍺≡(≢⍺)↑⍵}res
