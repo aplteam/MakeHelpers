@@ -1,1 +1,1 @@
- CompileVersionNumberPattern←{⍺←⊢ ⋄ ⍺ ##.CompileVersionNumberPattern ⍵}
+CompileVersionNumberPattern←{⍺←⊢ ⋄ ⍺ ##.CompileVersionNumberPattern ⍵}

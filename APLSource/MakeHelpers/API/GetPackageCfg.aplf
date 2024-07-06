@@ -1,1 +1,1 @@
- GetPackageCfg←{##.GetPackageCfg ⍵}
+GetPackageCfg←{##.GetPackageCfg ⍵}

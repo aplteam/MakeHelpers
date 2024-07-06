@@ -1,1 +1,1 @@
- Pause←{⍺←⊢ ⋄ ⍺ ##.Pause ⍵}
+Pause←{⍺←⊢ ⋄ 1:shy←⍺ ##.Pause ⍵}

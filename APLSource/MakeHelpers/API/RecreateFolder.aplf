@@ -1,1 +1,1 @@
- RecreateFolder←{⍺←⊢ ⋄ 1:shy←⍺ ##.RecreateFolder ⍵}
+RecreateFolder←{⍺←⊢ ⋄ ⍺ ##.RecreateFolder ⍵}

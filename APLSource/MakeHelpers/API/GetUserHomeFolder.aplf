@@ -1,1 +1,1 @@
- GetUserHomeFolder←{⍺←⊢ ⋄ ⍺ ##.GetUserHomeFolder ⍵}
+GetUserHomeFolder←{⍺←⊢ ⋄ ⍺ ##.GetUserHomeFolder ⍵}

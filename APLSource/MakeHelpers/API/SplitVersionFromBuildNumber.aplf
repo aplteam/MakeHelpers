@@ -1,1 +1,1 @@
- SplitVersionFromBuildNumber←{##.SplitVersionFromBuildNumber ⍵}
+SplitVersionFromBuildNumber←{##.SplitVersionFromBuildNumber ⍵}

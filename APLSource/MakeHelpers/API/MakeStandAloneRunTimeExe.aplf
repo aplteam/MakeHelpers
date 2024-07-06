@@ -1,1 +1,1 @@
- MakeStandAloneRunTimeExe←{⍺←⊢ ⋄ 1:shy←⍺ ##.MakeStandAloneRunTimeExe ⍵}
+MakeStandAloneRunTimeExe←{⍺←⊢ ⋄ ⍺ ##.MakeStandAloneRunTimeExe ⍵}

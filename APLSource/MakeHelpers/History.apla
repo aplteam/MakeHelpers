@@ -1,4 +1,7 @@
 (
+ '* 0.14.0 from 2024-07-06'
+ '  * `CreateAPI` has been removed from `MakeHelpers` because it is now part of Cider.'
+ '  * Packages updated'
  '* 0.13.0 from 2024-04-06'
  '  * `CreateAPI` allows one level of sub-namespaces now'
  '  * Packages updated'

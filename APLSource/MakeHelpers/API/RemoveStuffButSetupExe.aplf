@@ -1,1 +1,1 @@
- RemoveStuffButSetupExe←{1:shy←##.RemoveStuffButSetupExe ⍵}
+RemoveStuffButSetupExe←{##.RemoveStuffButSetupExe ⍵}
