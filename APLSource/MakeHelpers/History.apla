@@ -1,4 +1,7 @@
 (
+ '* 0.15.0 from 2024-08-12'
+ '  * Packages updated'
+ '  * Bug fix: the shy-problem got fixed'
  '* 0.14.0 from 2024-07-06'
  '  * `CreateAPI` has been removed from `MakeHelpers` because it is now part of Cider.'
  '  * Packages updated'

@@ -1,1 +1,1 @@
-CopyBetter←{⍺←⊢ ⋄ ⍺ ##.CopyBetter ⍵}
+CopyBetter←{⍺←⊢ ⋄ 1:shy←⍺ ##.CopyBetter ⍵}
