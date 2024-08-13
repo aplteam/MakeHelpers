@@ -1,4 +1,6 @@
 (
+ '* 0.15.1 from 2024-08-13'
+ '  * 0.15.0 introduced a DropBox conflict file which caused trouble.'
  '* 0.15.0 from 2024-08-12'
  '  * Packages updated'
  '  * Bug fix: the shy-problem got fixed'
