@@ -81,7 +81,7 @@ This is `MakeHelpers`' own `Make` function, which lives in `MakeHelpers.Admin`:
      M.FetchLaterUserCommand cfg C'[MyUCMDs]'
      version←M.CompileVersionNumberPattern cfg
      M.RecreateFolder path
-     {}M.CreateAPIfromCFG(⍎'##.',cfg.name)cfg ⍝ Only if a user command
+     {}M.CreateAPIfromCFG(⍎'##.',cfg.name)cfg 
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
      parms.version←version
