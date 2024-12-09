@@ -25,41 +25,29 @@ Since version 0.5.0 installing `MakeHelpers` can and must be installed as a Tati
 ]Tatin.InstallPackages [tatin]makehelpers [myucmds]
 ```
 
-For Tatin to understand `[MyUCMDs]` you need at least version 0.86.0
+For Tatin to be able to "understand" `[MyUCMDs]` you need at least version 0.86.0
 
-After installing `MakeHelpers` this way any new instance of Dyalog APL will know the user command `]MakeHelpers`. However, the API is not available until the user command is invoked once.
+After installing `MakeHelpers` this way, any new instance of Dyalog APL will know the user command `]MakeHelpers`. However, the API is not available until the user command is invoked once.
 
-This can be overcome by introducing or modifying a script `setup.dyalog` in the `MyUCMDs/` folder. Details are available at <https://aplwiki.com/wiki/Dyalog_User_Commands>
+This can be overcome by different means depending on the version of Dyalog you are using:
+
+* For version 18.2, introduce or modify a script `setup.dyalog` in the `MyUCMDs/` folder. 
+
+  Details are available at <https://aplwiki.com/wiki/Dyalog_User_Commands>
+
+* For 19.0 you can either use the same approach as for 18.2 or you use the newly introduced mechanism via `SessionExtenions`.
+
+  Refer to the Dyalog documentation for details.
 
 
 ## API
 
 Once `MakeHelpers` was brought into `⎕SE` it's available via `⎕SE.MakeHelpers`.
 
-This is a list of helpers available:
+This statement produces a list with all public methods:
 
 ```
- CompileVersionNumberPattern
- ConvertMarkdownToHtml5      
- CopyBetter                  
- CopyTo                      
- CreateAPI                   
- CreateStandAloneExeParms    
- CreateZipFile               
- CR                          
- DropBuildNumber             
- FetchLaterUserCommand       
- GetMyUCMDsFolder            
- GetPackageCfg               
- GetUserHomeFolder           
- IncreaseBuildIDInFunction   
- MakeStandAloneRunTimeExe    
- RecreateFolder              
- RemoveStuffButSetupExe      
- Select 
- SplitVersionFromBuildNumber                      
- YesOrNo                     
- Version                                    
+      ⍪⎕se.MakeHelpers.⎕nl -3                       
 ```
 
 Details are available via `]MakeHelpers.Help`.
@@ -71,27 +59,31 @@ Note that `Select`, `YesOrNo` and `Pause` are inherited from `CommTools`.
 This is `MakeHelpers`' own `Make` function, which lives in `MakeHelpers.Admin`:
 
 ```
- Make flag;M;C;path;zipFilename;res;version;cfg;parms
+ Make flag;M;C;path;zipFilename;res;version;cfg;parms;msg
 ⍝ "Make" a new version of this project
  :If flag
+     :If 0=⎕SE.⎕NC'MakeHelpers'
+         msg←'Could not load "MakeHelpers" into ⎕SE?!'
+         msg Assert ⎕SE.Tatin.LoadPackages'[tatin]MakeHelpers'⎕SE
+     :EndIf
      M←⎕SE.MakeHelpers
      C←##.CiderConfig
      path←C.HOME,'/',C.CIDER.distributionFolder
      cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET C.HOME,'/apl-package.json'
-     M.FetchLaterUserCommand cfg C'[MyUCMDs]'
      version←M.CompileVersionNumberPattern cfg
+     M.FetchLaterUserCommand cfg C'[MyUCMDs]'
      M.RecreateFolder path
-     {}M.CreateAPIfromCFG(⍎'##.',cfg.name)cfg ⍝ Only if a user command
+     ⎕SE.Tatin.CreateAPIfromCFG ##.MakeHelpers cfg
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
      parms.version←version
      zipFilename←⎕SE.Tatin.BuildPackage parms
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
-     :If 0<≢cfg.userCommandScript
-     :AndIf 1 M.YesOrNo'Install new version in MyUCMDs?'
-         {}M.##.FilesAndDirs.RmDirByForce M.GetMyUCMDsFolder cfg.name
+     :If 1 M.YesOrNo'Install new version as user command in MyUCMDs?'
+         M.RecreateFolder M.GetMyUCMDsFolder'/MakeHelpers'
          res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
          ⎕←'  New version installed as user command in MyUCMDs/: ',res
      :EndIf
  :EndIf
 ```
+

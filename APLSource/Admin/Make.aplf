@@ -1,5 +1,8 @@
  Make flag;M;C;path;zipFilename;res;version;cfg;parms
  :If flag
+     :If 0=⎕SE.⎕NC'MakeHelpers'
+         'Could not load "MakeHelpers" into ⎕SE?!'Assert ⎕SE.Tatin.LoadPackages'[tatin]MakeHelpers'⎕SE
+     :EndIf
      M←⎕SE.MakeHelpers
      C←##.CiderConfig
      path←C.HOME,'/',C.CIDER.distributionFolder
