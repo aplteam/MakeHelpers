@@ -3,6 +3,7 @@
  r,←⊂'CompileVersionNumberPattern'
  r,←⊂'ConvertMarkdownToHtml5'
  r,←⊂'CopyBetter'
+ r,←⊂'CopyPackageFolderTo'
  r,←⊂'CopyTo'
  r,←⊂'CreateAPI'
  r,←⊂'CreateStandAloneExeParms'

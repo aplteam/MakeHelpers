@@ -1,0 +1,19 @@
+ R←Test_API_010(stopFlag batchFlag);⎕TRAP;folder;tempFolder;sourceFolder;rc;msg;json;ns
+⍝ Exercise CopyPackageFolderTo with a folder that has two Tatin files and a couple of package folders in it
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempFolder←FilesAndDirs.GetTempSubDir⊃⎕SI
+ sourceFolder←##.CiderConfig.HOME,'/Tests/CopyPackageFolderTo'
+ sourceFolder ##.MakeHelpers.CopyPackageFolderTo tempFolder
+ →T.GoToTidyUp~∧/'apl-buildlist.json' 'apl-dependencies.txt'∊{⊃,/1↓⎕NPARTS ⍵}¨FilesAndDirs.ListFiles sourceFolder
+ json←⊃⎕NGET sourceFolder,'/apl-buildlist.json'
+ ns←⎕JSON⍠('Dialect' 'JSON5')⊢json
+ →T.GoToTidyUp(≢ns.packageID)≠≢FilesAndDirs.ListDirs tempFolder,'/'
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempFolder
+ msg Assert rc=0
+⍝Done
