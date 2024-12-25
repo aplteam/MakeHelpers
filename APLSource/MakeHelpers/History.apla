@@ -1,4 +1,11 @@
 (
+ '* 0.17.0 from 2024-12-21'
+ '  * New method `EditVersion` implemented'
+ '  * New method `IsBetaVersion` implemented'
+ '  * `PutPackageCfg` now accepts either a patch to a folder hosting a package config file, or a fully '
+ '    qualified path to such a file'
+ '  * Bug fixes'
+ '    * `CreateAPI` removed from `Public`'
  '* 0.16.0 from 2024-12-10'
  '  * New method `CopyPackageFolderTo` implemented'
  '* 0.15.1 from 2024-08-13'

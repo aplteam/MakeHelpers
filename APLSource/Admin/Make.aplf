@@ -1,25 +1,29 @@
- Make flag;M;C;path;zipFilename;res;version;cfg;parms
+ Make flag;M;C;path;zipFilename;res;version;cfg;parms;pkgCfgFilename
  :If flag
      :If 0=⎕SE.⎕NC'MakeHelpers'
-         'Could not load "MakeHelpers" into ⎕SE?!'Assert ⎕SE.Tatin.LoadPackages'[tatin]MakeHelpers'⎕SE
+         'Could not load "MakeHelpers" into ⎕SE?!'##.MakeHelpers.Assert ⎕SE.Tatin.LoadPackages'[tatin]MakeHelpers'⎕SE
      :EndIf
      M←⎕SE.MakeHelpers
      C←##.CiderConfig
      path←C.HOME,'/',C.CIDER.distributionFolder
+     pkgCfgFilename←C.HOME,'/apl-package.json'
      cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET C.HOME,'/apl-package.json'
-     version←M.CompileVersionNumberPattern cfg
-     M.FetchLaterUserCommand cfg C'[MyUCMDs]'
-     M.RecreateFolder path
-     ⎕SE.Tatin.CreateAPIfromCFG ##.MakeHelpers cfg
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
-     parms.version←version
-     zipFilename←⎕SE.Tatin.BuildPackage parms
-     ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
-     :If 1 M.YesOrNo'Install new version as user command in MyUCMDs?'
-         M.RecreateFolder M.GetMyUCMDsFolder'/MakeHelpers'
-         res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
-         ⎕←'  New version installed as user command in MyUCMDs/: ',res
+     :If ⎕NULL≡cfg←pkgCfgFilename M.EditVersion cfg
+         ⍞←'Cancelled by user' ⋄ →0
+     :Else
+         parms.version←cfg.version
+         M.FetchLaterUserCommand cfg C'[MyUCMDs]'
+         M.RecreateFolder path
+         {}⎕SE.Tatin.CreateAPIfromCFG ##.MakeHelpers cfg
+         zipFilename←⎕SE.Tatin.BuildPackage parms
+         ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
+         :If 1 M.YesOrNo'Install new version as user command in MyUCMDs?'
+             M.RecreateFolder M.GetMyUCMDsFolder'/MakeHelpers'
+             res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
+             ⎕←'  New version installed as user command in MyUCMDs/: ',res
+         :EndIf
      :EndIf
  :EndIf
 ⍝Done

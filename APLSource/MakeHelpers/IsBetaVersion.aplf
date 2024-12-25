@@ -1,0 +1,9 @@
+ flag←IsBetaVersion version;major;minor;patch
+ version←RemoveBuildNumber version
+ (major minor patch)←'.'(≠⊆⊢)version
+ flag←1
+ :If ∧/major∊⎕D
+ :AndIf ∧/minor∊⎕D
+     flag←~∧/patch∊⎕D
+ :EndIf
+⍝Done

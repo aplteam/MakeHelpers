@@ -1,7 +1,8 @@
- {r}←PutPackageCfg(path cfg);json
+ {r}←PutPackageCfg(path cfg);json;filename
 ⍝ Writes package configuration data (`cfg`) to a file "apl-package.json".\\
 ⍝ See also `GetPackageCfg`.
  r←⍬
  json←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣cfg
- (⊂json)⎕NPUT(path,'/apl-package.json')1
+ filename←'apl-package.json'{⍵,(⍺≢(-≢⍺)↑⍵)/'/',⍺}path
+ (⊂json)⎕NPUT filename 1
 ⍝Done

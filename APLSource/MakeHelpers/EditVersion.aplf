@@ -1,0 +1,19 @@
+ cfg←{filename}EditVersion cfg;ref;builNo
+⍝ Allows the user to edit the version number of a package config file.\\
+⍝ * If the version got changed and is not empty, the cfg is returned as result.
+⍝   If the optional `filename` was specified, it is also written to that file.
+⍝ * If it got changed and is empty, ⎕NULL is returned.
+⍝ * If it got not changed, it is just returned without any other action.
+ ref←#.⎕NS''
+ ref.version←cfg.version
+ builNo←{⍵↓⍨⍵⍳'+'}ref.version
+ ref.version←RemoveBuildNumber ref.version
+ ref.⎕ED'version'
+ :If 0=≢ref.version
+     cfg←⎕NULL
+ :ElseIf ref.version≢RemoveBuildNumber cfg.version
+     cfg.version←ref.version{0=≢⍵:⍺ ⋄ ⍺,'+',⍵}builNo
+     :If 0<⎕NC'filename'
+         PutPackageCfg filename cfg
+     :EndIf
+ :EndIf
