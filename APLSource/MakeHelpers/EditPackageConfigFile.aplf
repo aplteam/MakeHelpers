@@ -1,0 +1,34 @@
+ {cfg}←EditPackageConfigFile projectPath;TC;cfgFilename;buff;cfgOrig;ns;newCfg;data;success;ref
+⍝ Allows the user to edit the package config file in the given path.
+⍝ Returns the (possibly new) configuration but ⎕NULL in case the user cancelled the operation.
+⍝ This is a temporary solution until Tatin offers an API function for this.
+ TC←⎕SE._Tatin.Client
+ cfgFilename←projectPath,((⎕C TC.CFG_Name≢⎕C(-≢TC.CFG_Name)↑projectPath))/'/',TC.CFG_Name
+ ('Config file missing: ',cfgFilename)TC.Assert cfgFilename
+ buff←⊃F.NGET cfgFilename
+ (('\'=buff)/buff)←'/'
+ 'Odd number of " ?!'TC.Assert 0=2|'"'+.=buff
+ ns←TC.ReadPackageConfigFile cfgFilename
+ cfg←TC.Reg.JSON ns
+ cfgOrig←cfg
+ (success newCfg)←(CheckPackageConfigFile EditJson)'PackageConfigFile'cfg cfgFilename
+ :If ¯1=success
+     cfg←⎕NULL
+     ⎕←'Cancelled by user' ⋄ →0
+ :EndIf
+ :If success
+     :If newCfg≢cfgOrig
+         ns←TC.Reg.JSON newCfg
+         1 TC.WritePackageConfigFile projectPath ns
+     :AndIf 2≤⍴⎕RSI
+     :AndIf (A.Last⍕2⊃⎕RSI)≡'/'A.Last projectPath
+         :If 0<(2⊃⎕RSI).##.⎕NC'TatinVars'
+             ref←2⊃⎕RSI
+             ref.##.TatinVars.⎕FX'r←CONFIG'('r←''',newCfg,'''') ⍝ Update TatinVars
+         :ElseIf 0<(2⊃⎕RSI).⎕NC'TatinVars'
+             ref←2⊃⎕RSI
+             ref.TatinVars.⎕FX'r←CONFIG'('r←''',newCfg,'''') ⍝ Update TatinVars
+         :EndIf
+     :EndIf
+     cfg←TC.Reg.JSON newCfg
+ :EndIf

@@ -1,0 +1,33 @@
+ (msg json)←CheckPackageConfigFile(json path);cfg2;ns;extensions;⎕TRAP;list
+ ⍝ Returns an empty vector if everything is okay and an error message otherwise as `msg`
+ msg←''
+ ns←TC.Reg.JSON json
+ :Trap ⎕SE._Tatin.UC.ErrNo
+     cfg2←TC.InitPackageConfig ns
+     'name'TC.ValidateName ns.name
+     'group'TC.ValidateName ns.group
+     {}'api'TC.ValidateName⍣(0<≢ns.api)⊣ns.api
+     TC.ValidateVersion ns.version
+     ns←TC.ValidateTags ns
+     ns←TC.ValidateDescription ns
+     ns←TC.ValidateAplVersion ns
+     ns←TC.ValidateOSprops ns
+     :If 0=≢ns.source
+         list←(1+≢path)↓¨⊃TC.F.Dir path,'\'
+         list~←⊂TC.CFG_Name
+         :If 1=≢list
+         :AndIf ((⊂3⊃⎕NPARTS⊃list)∊'.apln' '.aplc' '.apli')∨TC.F.IsDir path,⊃list
+             ns.source←⊃list
+         :Else
+             msg←'Invalid: "source"'
+             :Return
+         :EndIf
+     :EndIf
+     {}{{'source'TC.ValidateName ⍵}⍣(0<≢⍵)⊣⍵}ns.source~'/\'
+     :If '.'∊ns.source
+         '"source" carries an invalid extension'Assert(⊂3⊃⎕NPARTS ns.source)∊⎕SE._Tatin.UC.SupportedExtensions
+     :EndIf
+     json←TC.Reg.JSON ns
+ :Else
+     msg←⎕DMX.EM
+ :EndTrap

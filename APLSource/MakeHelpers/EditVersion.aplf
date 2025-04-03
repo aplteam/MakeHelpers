@@ -3,7 +3,8 @@
 ⍝ * If the version got changed and is not empty, the cfg is returned as result.
 ⍝   If the optional `filename` was specified, it is also written to that file.
 ⍝ * If it got changed and is empty, ⎕NULL is returned.
-⍝ * If it got not changed, it is just returned without any other action.
+⍝ * If it got not changed, it is just returned without any other action.\\
+⍝ See also `EditPackageConfigFile`.
  ref←#.⎕NS''
  ref.version←cfg.version
  builNo←{⍵↓⍨⍵⍳'+'}ref.version

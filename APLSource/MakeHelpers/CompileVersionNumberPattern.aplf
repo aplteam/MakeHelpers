@@ -20,7 +20,7 @@
      (version project)←y
  :EndIf
  currentVersion←DropBuildNumber version
- caption←'Bump version of ',project,' (currently on ',version,')'
+ caption←'BumpVersion@Bump version of ',project,' (currently on ',version,')'
  options←'Don''t change' 'Bump patch number' 'Bump minor number' 'Bump major number',(~force)/⊂'Cancel operation'
  choice←caption 0 1 Select options
  :If choice=5

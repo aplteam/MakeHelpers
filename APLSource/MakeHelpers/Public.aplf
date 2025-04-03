@@ -10,6 +10,7 @@
  r,←⊂'CR'
  r,←⊂'DropBuildNumber'
  r,←⊂'EditVersion'
+ r,←⊂'EditPackageConfigFile'
  r,←⊂'FetchLaterUserCommand'
  r,←⊂'GetMyUCMDsFolder'
  r,←⊂'GetPackageCfg'
