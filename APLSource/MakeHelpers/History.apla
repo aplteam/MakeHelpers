@@ -1,7 +1,8 @@
 (
- '* 0.18.0 from 2025-04-03'
+ '* 0.18.0 from 2025-04-07'
  '  * `EditPackageConfigFile` added as new method'
- '  * `Version` now returns the version number from the package config file if possible.'
+ '  * `Version` now returns the version number from the package config file as char vector'
+ '  * "Make" improved'
  '* 0.17.0 from 2024-12-21'
  '  * New method `EditVersion` implemented'
  '  * New method `IsBetaVersion` implemented'

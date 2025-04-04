@@ -1,34 +1,38 @@
- {cfg}←EditPackageConfigFile projectPath;TC;cfgFilename;buff;cfgOrig;ns;newCfg;data;success;ref
-⍝ Allows the user to edit the package config file in the given path.
+ {cfg}←{updateTatinVars}EditPackageConfigFile y;refToTatinVars;projectPath;TC;cfgFilename;buff;cfgOrig;ns;newCfg;data;success;ref
+⍝ Allows the user to edit the package config file of a particular project identified by a ref pointing
+⍝ to a `TatinVars` namespace in the workspace specified as right argument.
+⍝ Alternativly you can specify a path to a folder hosting a package config file.\\
+⍝ When a ref is passed as `⍵`, by default the function attempts to update `TatinVars.CONFIG`
+⍝ in case of a change. You can prevent this from happening by passing a 0 as `⍺`.\\
+⍝ If a path is specified as `⍵` the function does not know where to find any corresponding
+⍝ `TatinVars`, and therefore no update can be performed; `⍺` is ignored in this case.\\
 ⍝ Returns the (possibly new) configuration but ⎕NULL in case the user cancelled the operation.
-⍝ This is a temporary solution until Tatin offers an API function for this.
  TC←⎕SE._Tatin.Client
+ :If {16::0 ⋄ ' '=1↑0⍴⍵}y ⍝ If it's a char vector it must be a path
+     refToTatinVars←⎕NULL
+     projectPath←y
+     updateTatinVars←0
+ :Else
+     refToTatinVars←y
+     '⍵ is not a reference pointing to a TatinVars namespace?!'Assert 3=refToTatinVars.⎕NC'CONFIG'
+     projectPath←refToTatinVars.HOME
+     updateTatinVars←{0<⎕NC ⍵:⍎⍵ ⋄ 1}'updateTatinVars'
+ :EndIf
  cfgFilename←projectPath,((⎕C TC.CFG_Name≢⎕C(-≢TC.CFG_Name)↑projectPath))/'/',TC.CFG_Name
- ('Config file missing: ',cfgFilename)TC.Assert cfgFilename
+ ('Not found: ',cfgFilename)Assert ⎕NEXISTS cfgFilename
  buff←⊃F.NGET cfgFilename
  (('\'=buff)/buff)←'/'
- 'Odd number of " ?!'TC.Assert 0=2|'"'+.=buff
+ 'Odd number of " found in config file?!'Assert 0=2|'"'+.=buff
  ns←TC.ReadPackageConfigFile cfgFilename
- cfg←TC.Reg.JSON ns
- cfgOrig←cfg
+ cfgOrig←cfg←TC.Reg.JSON ns
  (success newCfg)←(CheckPackageConfigFile EditJson)'PackageConfigFile'cfg cfgFilename
  :If ¯1=success
-     cfg←⎕NULL
-     ⎕←'Cancelled by user' ⋄ →0
+     cfg←⎕NULL ⋄ →0
+ :ElseIf success
+ :AndIf newCfg≢cfgOrig
+     ns←TC.Reg.JSON newCfg
+     1 TC.WritePackageConfigFile projectPath ns
+     refToTatinVars.⎕FX'r←CONFIG'('r←''',newCfg,'''') ⍝ Update TatinVars.CONFIG
  :EndIf
- :If success
-     :If newCfg≢cfgOrig
-         ns←TC.Reg.JSON newCfg
-         1 TC.WritePackageConfigFile projectPath ns
-     :AndIf 2≤⍴⎕RSI
-     :AndIf (A.Last⍕2⊃⎕RSI)≡'/'A.Last projectPath
-         :If 0<(2⊃⎕RSI).##.⎕NC'TatinVars'
-             ref←2⊃⎕RSI
-             ref.##.TatinVars.⎕FX'r←CONFIG'('r←''',newCfg,'''') ⍝ Update TatinVars
-         :ElseIf 0<(2⊃⎕RSI).⎕NC'TatinVars'
-             ref←2⊃⎕RSI
-             ref.TatinVars.⎕FX'r←CONFIG'('r←''',newCfg,'''') ⍝ Update TatinVars
-         :EndIf
-     :EndIf
-     cfg←TC.Reg.JSON newCfg
- :EndIf
+ cfg←TC.Reg.JSON newCfg
+ ⍝Done

@@ -1,1 +1,1 @@
-EditPackageConfigFile←{##.EditPackageConfigFile ⍵}
+EditPackageConfigFile←{⍺←⊢ ⋄ 1:shy←⍺ ##.EditPackageConfigFile ⍵}

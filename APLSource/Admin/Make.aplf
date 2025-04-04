@@ -1,28 +1,20 @@
  Make flag;M;C;path;zipFilename;res;version;parms;cfg
  :If flag
-     :If 0=⎕SE.⎕NC'MakeHelpers'
-         'Could not load "MakeHelpers" into ⎕SE?!'##.MakeHelpers.Assert ⎕SE.Tatin.LoadPackages'[tatin]MakeHelpers'⎕SE
-     :EndIf
-     M←⎕SE.MakeHelpers
+     M←##.MakeHelpers
      C←##.CiderConfig
-     ⎕←'' ⋄ 0 0⍴⍞,0/⍞←'Pause sync services like Dropbox, Google Drive etc. in order to avoid FILE ACCESS errors. Press <enter> to continue '
+     M.CommTools.Pause'>>> Note that this function uses #.MakeHelpers.MakeHelpers, NOT ⎕se.MakeHelpers!'
+     M.CommTools.Pause'>>> Pause sync services like Dropbox, Google Drive etc. in order to avoid FILE ACCESS errors'
      path←C.HOME,'/',C.CIDER.distributionFolder
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
-     :If ⎕NULL≡cfg←M.EditPackageConfigFile C.HOME
+     :If ⎕NULL≡cfg←M.EditPackageConfigFile ##.MakeHelpers.TatinVars
          ⍞←'Cancelled by user' ⋄ →0
      :Else
          parms.version←cfg.version
-         M.FetchLaterUserCommand cfg C'[MyUCMDs]'
          M.RecreateFolder path
          {}⎕SE.Tatin.CreateAPIfromCFG ##.MakeHelpers cfg
          zipFilename←⎕SE.Tatin.BuildPackage parms
-         ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
-         :If 1 M.YesOrNo'Install new version as user command in MyUCMDs?'
-             M.RecreateFolder M.GetMyUCMDsFolder'/MakeHelpers'
-             res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
-             ⎕←'  New version installed as user command in MyUCMDs/: ',res
-         :EndIf
+         ⎕←'*** New version built successfully:',M.CR,'   ',zipFilename
      :EndIf
  :EndIf
 ⍝Done
