@@ -1,4 +1,7 @@
 (
+ '* 0.18.1 from 2025-04-10'
+ '  * Bug fixes'
+ '    * `EditPackageConfigFile` contained superfluous - though harmless - code'
  '* 0.18.0 from 2025-04-07'
  '  * `EditPackageConfigFile` added as new method'
  '  * `Version` now returns the version number from the package config file as char vector'
