@@ -1,4 +1,4 @@
- {cfg}←{updateTatinVars}EditPackageConfigFile y;refToTatinVars;projectPath;TC;cfgFilename;cfgOrig;ns;newCfg;data;success;ref
+ {cfg}←{updateTatinVars}EditPackageConfigFile y;refToTatinVars;projectPath;TC;cfgFilename;buff;cfgOrig;ns;newCfg;data;success;ref
 ⍝ Allows the user to edit the package config file of a particular project identified by a ref pointing
 ⍝ to a `TatinVars` namespace in the workspace specified as right argument.
 ⍝ Alternativly you can specify a path to a folder hosting a package config file.\\
@@ -20,7 +20,14 @@
  :EndIf
  cfgFilename←projectPath,((⎕C TC.CFG_Name≢⎕C(-≢TC.CFG_Name)↑projectPath))/'/',TC.CFG_Name
  ('Not found: ',cfgFilename)Assert ⎕NEXISTS cfgFilename
- ns←TC.ReadPackageConfigFile cfgFilename
+ :If 3=TC.⎕NC'GetPackageConfigFileAsNS'
+     ns←TC.GetPackageConfigFileAsNS cfgFilename
+ :Else
+     buff←⊃F.NGET cfgFilename
+     (('\'=buff)/buff)←'/'
+     'Odd number of " found in config file?!'Assert 0=2|'"'+.=buff
+     ns←Reg.JSON buff
+ :EndIf
  cfgOrig←cfg←TC.Reg.JSON ns
  (success newCfg)←(CheckPackageConfigFile EditJson)'PackageConfigFile'cfg cfgFilename
  :If ¯1=success

@@ -1,5 +1,7 @@
 (
- '* 0.18.1 from 2025-04-10'
+ '* 0.19.0 from 2025-07-17'
+ '  * `EditPackageConfigFile` can deal with Tatin 120.1 and later as well as earlier versions '
+ '    (rename of `ReadPackageConfigFile` into `GetPackageConfigFileAsNS`)'
  '  * Bug fixes'
  '    * `EditPackageConfigFile` contained superfluous - though harmless - code'
  '* 0.18.0 from 2025-04-07'

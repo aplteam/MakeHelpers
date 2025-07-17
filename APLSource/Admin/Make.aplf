@@ -3,7 +3,6 @@
      M←##.MakeHelpers
      C←##.CiderConfig
      M.CommTools.Pause'>>> Note that this function uses #.MakeHelpers.MakeHelpers, NOT ⎕se.MakeHelpers!'
-     M.CommTools.Pause'>>> Pause sync services like Dropbox, Google Drive etc. in order to avoid FILE ACCESS errors'
      path←C.HOME,'/',C.CIDER.distributionFolder
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
