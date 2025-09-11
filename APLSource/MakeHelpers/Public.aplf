@@ -3,6 +3,7 @@
  r,←⊂'CompileVersionNumberPattern'
  r,←⊂'ConvertMarkdownToHtml5'
  r,←⊂'CopyBetter'
+ r,←⊂'CopyLicenseFiles'
  r,←⊂'CopyPackageFolderTo'
  r,←⊂'CopyTo'
  r,←⊂'CreateStandAloneExeParms'

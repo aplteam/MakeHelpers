@@ -1,0 +1,45 @@
+ R←Test_API_110(stopFlag batchFlag);⎕TRAP;tempFolder;C;F;CFG;noOf1;parms;parms2;noOf2;list2;list1;report
+⍝ Exercise CopyLicenseFiles
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ C←##.CiderConfig
+ F←FilesAndDirs
+ tempFolder←F.GetTempSubDir⊃⎕SI
+ F.MkDir tempFolder,'/MarkAPL'
+ (tempFolder,'/MarkAPL/')⎕NCOPY C.HOME,'/Tests/MarkAPL/packages'
+ (tempFolder,'/MarkAPL/')⎕NCOPY C.HOME,'/Tests/MarkAPL/packages_dev'
+ (tempFolder,'/MarkAPL/')⎕NCOPY C.HOME,'/Tests/MarkAPL/apl-package.json'
+ (tempFolder,'/MarkAPL/')⎕NCOPY C.HOME,'/Tests/MarkAPL/cider.config'
+
+ CFG←⎕NS''
+ CFG.HOME←tempFolder,'/MarkAPL'
+ 'CIDER'CFG.⎕NS''
+ 'CIDER.dependencies'CFG.⎕NS''
+ CFG.CIDER.dependencies.tatin←'packages'
+ CFG.CIDER.distributionFolder←'Dist'
+
+ (noOf1 report)←{(⍵[1 2])(3⊃⍵)}##.MakeHelpers.CopyLicenseFiles CFG
+ →T.GoToTidyUp 3 2≢noOf1
+ →T.GoToTidyUp 1≠≢report
+ →T.GoToTidyUp'aplteam-OS'≢∊report
+ parms←⎕NS''
+ parms.recurse←1
+ list1←parms F.ListFiles2 tempFolder,'/MarkAPL/Dist'
+ →T.GoToTidyUp noOf1[2]≠+/'LICENSE'∘≡¨2⊃¨⎕NPARTS¨list1
+
+ (tempFolder)⎕NCOPY C.HOME,'/Tests/HandleError'
+ parms2←⎕NS''
+ parms2.from←tempFolder,'/HandleError/packages'
+ parms2.to←CFG.HOME,'/Dist'
+ (noOf2 report)←{(⍵[1 2])(3⊃⍵)}0 ##.MakeHelpers.CopyLicenseFiles parms2
+ →T.GoToTidyUp 4 4≢noOf2
+ →T.GoToTidyUp 0≠≢report
+ list2←parms F.ListFiles2 tempFolder,'/MarkAPL/Dist'
+ →T.GoToTidyUp(noOf1[2]+≢list2~list1)≠+/'LICENSE'∘≡¨2⊃¨⎕NPARTS¨list2
+
+ R←T._OK
+
+∆TidyUp:
+ {}FilesAndDirs.RmDirByForce tempFolder
+⍝Done
