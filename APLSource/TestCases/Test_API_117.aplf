@@ -1,0 +1,37 @@
+ R←Test_API_117(stopFlag batchFlag);⎕TRAP;C;tempFolder;F;CFG;report;buff;expected;notice
+⍝ Exercise ##.MakeHelpers.CreateNoticeFile but specify markdown as laeft argument
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ C←##.CiderConfig ⋄ F←FilesAndDirs
+ tempFolder←F.GetTempSubDir⊃⎕SI
+ F.MkDir tempFolder,'/MarkAPL'
+ (tempFolder,'/MarkAPL/')⎕NCOPY C.HOME,'/Tests/MarkAPL/packages'
+ (tempFolder,'/MarkAPL/')⎕NCOPY C.HOME,'/Tests/MarkAPL/packages_dev'
+ (tempFolder,'/MarkAPL/')⎕NCOPY C.HOME,'/Tests/MarkAPL/apl-package.json'
+ (tempFolder,'/MarkAPL/')⎕NCOPY C.HOME,'/Tests/MarkAPL/cider.config'
+
+ CFG←⎕NS''
+ CFG.HOME←tempFolder,'/MarkAPL'
+ 'CIDER'CFG.⎕NS''
+ 'CIDER.dependencies'CFG.⎕NS''
+ CFG.CIDER.dependencies.tatin←'packages'
+ CFG.CIDER.distributionFolder←'Dist'
+ ⎕MKDIR CFG.HOME,'/',CFG.CIDER.distributionFolder
+
+ notice←'# This and that' 'Some paragraph'
+ report←notice ##.MakeHelpers.CreateNoticeFile(⊂CFG.HOME,'/'),¨CFG.CIDER.dependencies.tatin CFG.CIDER.distributionFolder
+ →T.GoToTidyUp 1≠≢report
+ →T.GoToTidyUp'aplteam-OS-3.0.1'≢∊report
+
+ buff←⊃⎕NGET(CFG.HOME,'/',CFG.CIDER.distributionFolder,'/NOTICE.md')1
+ expected←{⊃,/1↓⎕NPARTS ⍵}¨F.ListDirs2 CFG.HOME,'/',CFG.CIDER.dependencies.tatin,'/'
+ expected~←⊂'aplteam-OS-3.0.1'
+ →T.GoToTidyUp~expected ∆LazyMatch'## '{(≢⍺)↓¨⍵/⍨⍺∘≡¨(≢⍺)↑¨⍵}buff
+ →T.GoToTidyUp notice≢2↑buff
+
+ R←T._OK
+
+∆TidyUp:
+ {}FilesAndDirs.RmDirByForce tempFolder
+⍝Done

@@ -9,7 +9,7 @@
   license: "MIT",
   lx: "Init",
   maintainer: "kai@aplteam.com",
-  minimumAplVersion: "18.0",
+  minimumAplVersion: "18.2",
   ml: 1,
   name: "MakeHelpers",
   os_lin: 1,
@@ -19,5 +19,5 @@
   source: "APLSource/MakeHelpers",
   tags: "build,make",
   userCommandScript: "APLSource/MakeHelpers_UC.dyalog",
-  version: "0.20.0+250",
+  version: "0.21.0+253",
 }

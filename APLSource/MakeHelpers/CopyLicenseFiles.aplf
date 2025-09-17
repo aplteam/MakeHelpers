@@ -1,11 +1,11 @@
  (expected copied report)←{replace}CopyLicenseFiles y;parms;list;path;pkg;name;filename
 ⍝ (Re)creates a folder Licenses/ and populates it with folders for each Tatin package the project depends on.
 ⍝ Each such sub-folder contains the corresponding LICENSE file of that package if there is one.
-⍝ If there is none then a warning is printed to the session.
+⍝ If there is none then the name is added as an enclosed item to `report`.
 ⍝ Returns a three-item vector:
 ⍝ 1. The number of LICENSE files expected
 ⍝ 2. The number of files copied
-⍝ 3. Names of the packages that did not have a LICENSE file\\
+⍝ 3. Names of the packages that did not have a LICENSE file as a vector of text vectors\\
 ⍝ Needs one of:
 ⍝ * A CiderConfig namespace of the project in question. In this case "HOME", "CIDER.dependencies.tatin"
 ⍝   and "CIDER.distributionFolder" rule.

@@ -6,6 +6,7 @@
  r,←⊂'CopyLicenseFiles'
  r,←⊂'CopyPackageFolderTo'
  r,←⊂'CopyTo'
+ r,←⊂'CreateNoticeFile'
  r,←⊂'CreateStandAloneExeParms'
  r,←⊂'CreateZipFile'
  r,←⊂'CR'
