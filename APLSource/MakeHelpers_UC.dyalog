@@ -19,6 +19,10 @@
     ∇ r←Run(Cmd Args)
       :Access Shared Public
       r←''
+      :If 0=⎕SE.⎕NC'MakeHelpers'
+      :AndIf 0=⎕SE.Tatin.LoadPackages'MakeHelpers'⎕SE
+          'Could not load MakeHelpers'⎕SIGNAL 6
+      :EndIf
       {}⎕SE.UCMD'ADOC ',(⍕⎕SE.MakeHelpers),' -title=MakeHelpers'
     ∇
 

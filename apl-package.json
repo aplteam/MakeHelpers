@@ -1,6 +1,7 @@
 {
   api: "API",
   assets: "",
+  checkLICENSEfile: 1,
   description: "Collections of helpers for building an application",
   documentation: "",
   files: "",
@@ -19,5 +20,5 @@
   source: "APLSource/MakeHelpers",
   tags: "build,make",
   userCommandScript: "APLSource/MakeHelpers_UC.dyalog",
-  version: "0.21.0+253",
+  version: "0.21.0+261",
 }

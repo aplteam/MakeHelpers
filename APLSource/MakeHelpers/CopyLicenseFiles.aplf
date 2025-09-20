@@ -12,6 +12,7 @@
 ⍝ * A namespace with two variables: "from" and "to".
 ⍝ You can prevent the "to"-folder from being re-created by passing a 0 as optional left argument.
 ⍝ That means that licenses are added to the folder.
+⍝ *** See also the (recommended) function CreateNoticeFile!
  expected←copied←0
  report←''
  replace←{0<⎕NC ⍵:⍎⍵ ⋄ 1}'replace'
