@@ -1,6 +1,7 @@
 (
  '* 0.21.0 from 2025-09-21'
  '  * New method `CreateNoticeFile` added which is recommended'
+ '  * Documentation and README polished'
  '  * Packages updated '
  '* 0.20.0 from 2025-09-11'
  '  * New method `CopyLicenseFiles` added'
