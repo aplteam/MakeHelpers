@@ -26,6 +26,7 @@
      :If ts1_>ts2_
          cancelled←0
          :If quietFlag
+             msg←'Regarding ',⊃,/1↓⎕NPARTS file1
              msg←'Copy newer version in',sep,('  ',caption1),sep,'from ',A.FormatDateTime ts1
              msg,←sep,'over',sep,('  ',caption2),sep,'from ',(A.FormatDateTime ts2),'  ?'
          :OrIf ~cancelled←~YesOrNo msg
@@ -38,7 +39,8 @@
      :ElseIf ts1_<ts2_
          cancelled←0
          :If quietFlag
-             msg←'Copy newer version in',sep,('  ',caption2),sep,'from ',A.FormatDateTime ts2
+             msg←'Regarding ',⊃,/1↓⎕NPARTS file1
+             msg,←sep,'Copy newer version in',sep,('  ',caption2),sep,'from ',A.FormatDateTime ts2
              msg,←sep,'over',sep,('  ',caption1),sep,'from ',(A.FormatDateTime ts1),'  ?'
          :OrIf ~cancelled←~YesOrNo msg
              file2 CopyTo file1

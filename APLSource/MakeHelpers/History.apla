@@ -1,4 +1,7 @@
 (
+ '* 0.22.0 from 2026-06-23'
+ '  * Packages updated'
+ '  * Minor improvement in CopyBetter'
  '* 0.21.0 from 2025-09-21'
  '  * New method `CreateNoticeFile` added which is recommended'
  '  * Documentation and README polished'
