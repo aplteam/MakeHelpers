@@ -1,0 +1,3 @@
+ RemoveBuildNumber←{
+     ⍵↑⍨¯1+⍵⍳'+'
+ }
